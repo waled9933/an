@@ -3,34 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق المسلم الشامل</title>
+    <title>اختبار الاستجابة</title>
     <style>
-        /* كود منع الرسائل المزعجة */
-        .webintoapp-pop-up, #wia-container, div[class*="wia"], div[id*="wia"] {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-        
-        body { font-family: sans-serif; background: #f4f7f6; margin: 0; padding-bottom: 70px; text-align: center; }
-        header { background: #2d5a27; color: white; padding: 15px; position: sticky; top: 0; z-index: 1000; }
-        .card { background: white; margin: 10px; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; z-index: 1000; }
-        #ai-btn { position: fixed; bottom: 80px; left: 20px; cursor: pointer; background: #2d5a27; color: white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2000; }
+        body { font-family: sans-serif; text-align: center; background: #f0f4f8; padding: 20px; }
+        .btn { background: #2e7d32; color: white; padding: 20px; margin: 10px; border-radius: 10px; cursor: pointer; display: block; font-size: 20px; }
+        #robot { position: fixed; bottom: 20px; left: 20px; background: orange; width: 70px; height: 70px; border-radius: 50%; font-size: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 4px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
-    <header><h1>تطبيق المسلم الشامل</h1></header>
-    <div class="card"><h3>📖 القرآن الكريم</h3><p>جاري تحديث السور بصوت الشيوخ...</p></div>
-    <div class="card"><h3>🤲 أدعية وأذكار</h3><p>"ربّنا آتنا في الدنيا حسنة وفي الآخرة حسنة"</p></div>
-    
-    <div id="ai-btn" onclick="alert('أهلاً بك! أنا الشيخ الروبوت، اسألني ما شئت.')">🤖</div>
 
-    <div class="nav-bar">
-        <div>📖 قرآن</div>
-        <div>🤲 أدعية</div>
-        <div>🖼️ خلفيات</div>
-    </div>
+    <h2>اضغط على أي زرار للتجربة:</h2>
+    
+    <div class="btn" onclick="alert('شغال: القرآن هيفتح هنا الصبح')">📖 فتح القرآن</div>
+    <div class="btn" onclick="alert('شغال: الأذكار هتفتح هنا الصبح')">🤲 فتح الأذكار</div>
+    
+    <div id="robot" onclick="alert('أنا الروبوت وشغال يا وليد، مفيش أي تعليق في الكود!')">🤖</div>
+
 </body>
 </html>
