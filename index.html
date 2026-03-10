@@ -3,78 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق المسلم الشامل</title>
+    <title>تطبيق القرآن والأدعية</title>
     <style>
-        :root { --main-color: #2d5a27; --bg-color: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-color); margin: 0; padding-bottom: 70px; }
-        header { background: var(--main-color); color: white; text-align: center; padding: 20px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        
-        .section { display: none; padding: 15px; animation: fadeIn 0.5s; }
-        .active-section { display: block; }
-
-        /* تنسيق الأزرار والقوائم */
-        .card { background: white; margin: 10px 0; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
-        .card button { background: var(--main-color); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
-
-        /* شريط التنقل السفلي */
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; }
-        .nav-item { cursor: pointer; text-align: center; color: #777; font-size: 12px; }
-        .nav-item.active { color: var(--main-color); font-weight: bold; }
-        .nav-item i { font-size: 20px; display: block; }
-
-        /* قسم الخلفيات */
-        .bg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .bg-card img { width: 100%; border-radius: 10px; transition: 0.3s; }
-        
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        body { font-family: sans-serif; background: #f4f7f6; margin: 0; padding-bottom: 70px; text-align: center; }
+        header { background: #2d5a27; color: white; padding: 15px; position: sticky; top: 0; }
+        .card { background: white; margin: 10px; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; }
+        .nav-item { cursor: pointer; color: #777; font-size: 14px; }
+        #ai-btn { position: fixed; bottom: 80px; left: 20px; cursor: pointer; background: #2d5a27; color: white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
+    <header><h1>تطبيق المسلم الشامل</h1></header>
+    <div class="card"><h3>قسم القرآن الكريم</h3><p>قريباً سيتم إضافة جميع السور...</p></div>
+    <div class="card"><h3>قسم الأدعية</h3><p>"اللهم اشرح لي صدري ويسر لي أمري"</p></div>
+    
+    <div id="ai-btn" onclick="alert('أهلاً بك! أنا الشيخ الروبوت، اسألني ما شئت وسأجيبك فوراً.')">🤖</div>
 
-<header>
-    <h1 id="page-title">المصحف الشريف</h1>
-</header>
-
-<div id="quran" class="section active-section">
-    <div class="card"><span>سورة الفاتحة</span><button onclick="alert('تشغيل سورة الفاتحة...')">استماع</button></div>
-    <div class="card"><span>سورة البقرة</span><button onclick="alert('تشغيل سورة البقرة...')">استماع</button></div>
+    <div class="nav-bar">
+        <div class="nav-item">📖 قرآن</div>
+        <div class="nav-item">🤲 أدعية</div>
+        <div class="nav-item">🖼️ خلفيات</div>
     </div>
-
-<div id="adhkar" class="section">
-    <div class="card"><p><b>دعاء الاستيقاظ:</b> "الحمد لله الذي أحيانا بعد ما أماتنا وإليه النشور"</p></div>
-    <div class="card"><p><b>دعاء الهم:</b> "اللهم إني أعوذ بك من الهم والحزن والعجز والكسل"</p></div>
-</div>
-
-<div id="wallpapers" class="section">
-    <div class="bg-grid">
-        <div class="bg-card"><img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=400" alt="Islamic 1"><p>خلفية الكعبة</p></div>
-        <div class="bg-card"><img src="https://images.unsplash.com/photo-1590075865003-e48277da448d?w=400" alt="Islamic 2"><p>خلفية طبيعة</p></div>
-    </div>
-</div>
-
-<div class="nav-bar">
-    <div class="nav-item active" onclick="showSection('quran', 'المصحف الشريف', this)">📖<br>القرآن</div>
-    <div class="nav-item" onclick="showSection('adhkar', 'الأدعية والأذكار', this)">🤲<br>الأدعية</div>
-    <div class="nav-item" onclick="showSection('wallpapers', 'خلفيات إسلامية', this)">🖼️<br>خلفيات</div>
-</div>
-
-<script>
-    function showSection(sectionId, title, element) {
-        // إخفاء كل الأقسام
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
-        // إظهار القسم المطلوب
-        document.getElementById(sectionId).classList.add('active-section');
-        // تغيير العنوان
-        document.getElementById('page-title').innerText = title;
-        // تغيير حالة زر التنقل
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        element.classList.add('active');
-    }
-</script>
-
-<div id="ai-sheikh" style="position: fixed; bottom: 80px; left: 20px; z-index: 2000; cursor: pointer;" onclick="alert('أهلاً بك! أنا الشيخ الروبوت، اسألني ما شئت.')">
-    <img src="https://cdn-icons-png.flaticon.com/512/2044/2044921.png" width="60">
-</div>
-
 </body>
 </html>
