@@ -3,36 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوت القرآن الكريم</title>
+    <title>المصحف الإلكتروني الكامل</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        header { background-color: #2d5a27; color: white; width: 100%; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 20px; }
-        .container { max-width: 500px; width: 100%; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .surah-card { background: #e9f5e8; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #d4e8d3; text-align: center; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f4f2; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        header { background-color: #2d5a27; color: white; width: 100%; padding: 20px; text-align: center; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .search-box { margin: 20px 0; width: 100%; max-width: 500px; }
+        input { width: 100%; padding: 12px; border-radius: 25px; border: 1px solid #ccc; text-align: center; font-size: 16px; }
+        .container { max-width: 600px; width: 100%; display: grid; gap: 15px; }
+        .surah-card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; border-right: 5px solid #2d5a27; }
+        h3 { margin: 5px 0; color: #2d5a27; }
         audio { width: 100%; margin-top: 10px; }
-        h2 { color: #2d5a27; margin-top: 0; }
+        footer { margin-top: 30px; color: #777; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>بوت القرآن الكريم</h1>
-        <p>استمع للذكر الحكيم</p>
+        <h1>المصحف الإلكتروني الشامل</h1>
+        <p>استمع لجميع سور القرآن الكريم بصوت الشيخ ماهر المعيقلي</p>
     </header>
 
-    <div class="container">
-        <div class="surah-card">
-            <h2>سورة الفاتحة</h2>
-            <audio controls src="https://server8.mp3quran.net/afs/001.mp3"></audio>
-        </div>
-
-        <div class="surah-card">
-            <h2>سورة الكهف</h2>
-            <audio controls src="https://server12.mp3quran.net/maher/018.mp3"></audio>
-        </div>
-        
-        <p style="text-align:center; color:#777;">سيتم إضافة المزيد قريباً...</p>
+    <div class="search-box">
+        <input type="text" id="searchInput" onkeyup="searchSurah()" placeholder="ابحث عن اسم السورة...">
     </div>
 
+    <div class="container" id="surahContainer">
+        </div>
+
+    <footer>تم التطوير بواسطة waled9933 &copy; 2026</footer>
+
+    <script>
+        const surahNames = [
+            "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"
+        ];
+
+        const container = document.getElementById('surahContainer');
+
+        // كود لتوليد الـ 114 سورة
+        surahNames.forEach((name, index) => {
+            const surahNumber = (index + 1).toString().padStart(3, '0');
+            const card = document.createElement('div');
+            card.className = 'surah-card';
+            card.innerHTML = `
+                <h3>سورة ${name}</h3>
+                <audio controls preload="none">
+                    <source src="https://server12.mp3quran.net/maher/${surahNumber}.mp3" type="audio/mpeg">
+                </audio>
+            `;
+            container.appendChild(card);
+        });
+
+        // كود البحث
+        function searchSurah() {
+            let input = document.getElementById('searchInput').value;
+            let cards = document.getElementsByClassName('surah-card');
+            for (let i = 0; i < cards.length; i++) {
+                if (cards[i].innerText.includes(input)) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 </body>
 </html>
