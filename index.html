@@ -3,113 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق وليد - المصحف المتكلم</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>تطبيق وليد للقرآن</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #1b5e20; --accent: #ff9800; --bg: #f8faf9; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding-bottom: 80px; }
-        header { background: var(--primary); color: white; padding: 25px; text-align: center; border-radius: 0 0 30px 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        :root { --gold: #d4af37; --green: #1b5e20; --white: #ffffff; }
+        body { font-family: 'Tajawal', sans-serif; background: #f0f0f0; margin: 0; padding-bottom: 80px; }
         
-        /* شبكة السور */
-        .surah-container { padding: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
-        .surah-card { background: white; padding: 18px; border-radius: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #eee; color: var(--primary); font-weight: bold; transition: 0.3s; }
-        .surah-card:active { transform: scale(0.9); background: #e8f5e9; }
+        /* تصميم الهيدر زي الصورة اللي بعتها */
+        header { background: var(--green); color: var(--gold); padding: 30px 10px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border-bottom: 4px solid var(--gold); }
+        
+        .container { padding: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .card { background: var(--white); padding: 25px 10px; border-radius: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid var(--gold); cursor: pointer; transition: 0.3s; color: var(--green); font-weight: bold; font-size: 18px; }
+        .card:active { transform: scale(0.9); background: #f9f9f9; }
 
-        /* شاشة القراءة الناطقة */
-        #reader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 25px; box-sizing: border-box; }
-        .quran-text { font-family: 'Amiri', serif; font-size: 28px; line-height: 2.3; text-align: center; color: #333; }
-        .nav-btns { display: flex; justify-content: space-between; margin-bottom: 20px; }
-        .btn { padding: 10px 20px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; }
+        /* شاشة القراءة */
+        #quran-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        .q-text { font-size: 28px; line-height: 2.2; text-align: center; color: #222; margin-top: 20px; }
+        .close-q { background: var(--green); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; }
 
-        /* الروبوت المتكلم */
-        #bot-btn { position: fixed; bottom: 20px; left: 20px; background: var(--accent); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; cursor: pointer; z-index: 1001; box-shadow: 0 5px 20px rgba(0,0,0,0.4); border: 3px solid white; }
-        #chat-ui { position: fixed; bottom: 100px; left: 20px; width: 320px; height: 450px; background: white; border-radius: 20px; display: none; flex-direction: column; box-shadow: 0 15px 35px rgba(0,0,0,0.3); z-index: 1000; border: 2px solid var(--primary); overflow: hidden; }
-        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #fdfdfd; display: flex; flex-direction: column; }
-        .m { margin-bottom: 12px; padding: 12px; border-radius: 15px; max-width: 85%; font-size: 15px; line-height: 1.5; }
-        .bot { background: #e8f5e9; align-self: flex-start; color: #1b5e20; border-right: 5px solid var(--primary); }
-        .user { background: #eee; align-self: flex-end; }
-        .chat-input { display: flex; padding: 12px; background: white; border-top: 1px solid #eee; }
-        .chat-input input { flex: 1; border: 1px solid #ddd; padding: 12px; border-radius: 25px; outline: none; }
+        /* بوت وليد الذكي */
+        #bot-icon { position: fixed; bottom: 25px; left: 25px; background: var(--gold); width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 4px solid var(--white); z-index: 1000; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }
+
+        #chat-box { position: fixed; bottom: 110px; left: 20px; width: 85%; max-width: 350px; height: 450px; background: white; border-radius: 25px; display: none; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 1001; border: 3px solid var(--green); overflow: hidden; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>تطبيق المسلم الذكي</h1>
-    <p>بإشراف وليد 🧑‍💻 المصحف كامل 📖</p>
+    <img src="https://cdn-icons-png.flaticon.com/512/2904/2904831.png" width="80" alt="logo">
+    <h1>تطبيق القرآن الكريم</h1>
+    <p>برمجة وليد الذكية</p>
 </header>
 
-<div class="surah-container" id="grid"></div>
-
-<div id="reader">
-    <div class="nav-btns">
-        <button class="btn" style="background:#c62828; color:white;" onclick="closeReader()">❌ إغلاق</button>
-        <button class="btn" style="background:var(--primary); color:white;" id="play-surah">🔊 استماع</button>
+<div class="container" id="surah-grid">
     </div>
-    <div id="quran-content" class="quran-text"></div>
+
+<div id="bot-icon" onclick="toggleChat()">🤖</div>
+
+<div id="chat-box">
+    <div style="background:var(--green); color:white; padding:15px; text-align:center; font-weight:bold;">الشيخ الروبوت (مساعد وليد)</div>
+    <div id="msgs" style="flex:1; padding:15px; overflow-y:auto; background:#f9f9f9;">
+        <div style="background:#e8f5e9; padding:10px; border-radius:12px; margin-bottom:10px;">أهلاً يا مبرمج وليد! أنا الروبوت الذكي، جاهز أرد عليك بالصوت والكتابة. اسألني أي حاجة.</div>
+    </div>
+    <div style="display:flex; padding:10px; border-top:1px solid #ddd;">
+        <input type="text" id="bot-in" style="flex:1; border:1px solid #ddd; padding:10px; border-radius:20px; outline:none;" placeholder="اكتب سؤالك...">
+        <button onclick="askBot()" style="background:var(--green); color:white; border:none; padding:10px 15px; border-radius:50%; margin-right:5px;">➡️</button>
+    </div>
 </div>
 
-<div id="bot-btn" onclick="toggleChat()">🤖</div>
-
-<div id="chat-ui">
-    <div style="background:var(--primary); color:white; padding:15px; text-align:center; font-weight:bold;">الشيخ الروبوت المتكلم</div>
-    <div class="chat-messages" id="chat-msgs">
-        <div class="m bot">مرحباً بك يا وليد! أنا مساعدك الذكي المتكلم. اختر أي سورة أو اسألني أي سؤال ديني وسأجيبك فوراً بالصوت.</div>
-    </div>
-    <div class="chat-input">
-        <input type="text" id="bot-input" placeholder="اكتب سؤالك هنا...">
-        <button onclick="talkToBot()" style="background:var(--primary); color:white; border:none; width:45px; height:45px; border-radius:50%; margin-right:5px; cursor:pointer;">➡️</button>
-    </div>
+<div id="quran-screen">
+    <button class="close-q" onclick="closeQuran()">❌ رجوع للقائمة</button>
+    <div id="q-content" class="q-text"></div>
 </div>
 
 <script>
-    const surahList = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبيـاء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
+    const surahs = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
 
-    const grid = document.getElementById('grid');
-    surahList.forEach((n, i) => {
-        grid.innerHTML += `<div class="surah-card" onclick="openSurah(${i+1}, '${n}')">${i+1}<br>${n}</div>`;
+    const grid = document.getElementById('surah-grid');
+    surahs.forEach((s, i) => {
+        grid.innerHTML += `<div class="card" onclick="openS(${i+1},'${s}')">${s}</div>`;
     });
 
-    async function openSurah(id, name) {
-        const content = document.getElementById('quran-content');
-        content.innerHTML = "جاري تحميل سورة " + name + "...";
-        document.getElementById('reader').style.display = 'block';
-        try {
-            const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}`);
-            const data = await res.json();
-            let txt = `<h2>${data.data.name}</h2>`;
-            data.data.ayahs.forEach(a => { txt += ` ${a.text} ﴿${a.numberInSurah}﴾ `; });
-            content.innerHTML = txt;
-        } catch(e) { content.innerHTML = "حدث خطأ في الاتصال."; }
+    async function openS(id, name) {
+        const c = document.getElementById('q-content');
+        c.innerHTML = "جاري تحميل سورة " + name + "...";
+        document.getElementById('quran-screen').style.display = 'block';
+        const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}`);
+        const d = await res.json();
+        let txt = `<h2>${d.data.name}</h2>`;
+        d.data.ayahs.forEach(a => { txt += a.text + ` ﴿${a.numberInSurah}﴾ `; });
+        c.innerHTML = txt;
     }
 
-    function closeReader() { document.getElementById('reader').style.display = 'none'; }
+    function closeQuran() { document.getElementById('quran-screen').style.display = 'none'; }
     function toggleChat() { 
-        const ui = document.getElementById('chat-ui');
-        ui.style.display = (ui.style.display === 'flex') ? 'none' : 'flex';
+        const b = document.getElementById('chat-box');
+        b.style.display = (b.style.display==='flex') ? 'none' : 'flex';
     }
 
-    function talkToBot() {
-        const input = document.getElementById('bot-input');
-        const msgs = document.getElementById('chat-msgs');
-        if(!input.value) return;
-
-        const val = input.value;
-        msgs.innerHTML += `<div class="m user">${val}</div>`;
-        input.value = "";
-
+    function askBot() {
+        const i = document.getElementById('bot-in');
+        const m = document.getElementById('msgs');
+        if(!i.value) return;
+        m.innerHTML += `<div style="text-align:left; margin:10px 0;"><span style="background:#ddd; padding:10px; border-radius:15px;">${i.value}</span></div>`;
+        const val = i.value; i.value = "";
+        
         setTimeout(() => {
-            let reply = "يا وليد، سؤالك عن (" + val + ") جميل جداً. بصفتي مساعدك الذكي، سأقوم بتحليل هذا الموضوع دينيًا والرد عليك بالتفصيل.";
-            if(val.includes("سلام")) reply = "وعليكم السلام يا وليد! نورت تطبيقك، أنا الروبوت الخاص بك وجاهز لمساعدتك.";
-            if(val.includes("قرآن")) reply = "المصحف كامل أمامك الآن يا وليد، يمكنك اختيار أي سورة من الـ 114 سورة والقراءة فوراً.";
+            let reply = "بصفتي مساعدك الذكي يا وليد، أقول لك أن " + val + " موضوع مهم سأشرحه لك بالصوت الآن.";
+            if(val.includes("سلام")) reply = "وعليكم السلام يا مبرمج وليد! نورت تطبيقك الحقيقي.";
             
-            msgs.innerHTML += `<div class="m bot">${reply}</div>`;
-            msgs.scrollTop = msgs.scrollHeight;
+            m.innerHTML += `<div style="text-align:right; margin:10px 0;"><span style="background:var(--green); color:white; padding:10px; border-radius:15px;">${reply}</span></div>`;
+            m.scrollTop = m.scrollHeight;
 
-            // خاصية النطق الصوتي
-            const speech = new SpeechSynthesisUtterance(reply);
-            speech.lang = 'ar-SA';
-            window.speechSynthesis.speak(speech);
+            const speak = new SpeechSynthesisUtterance(reply);
+            speak.lang = 'ar-SA';
+            window.speechSynthesis.speak(speak);
         }, 600);
     }
 </script>
