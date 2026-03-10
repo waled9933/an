@@ -3,27 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق القرآن والأدعية</title>
+    <title>تطبيق المسلم الشامل</title>
     <style>
+        /* كود منع الرسائل المزعجة */
+        .webintoapp-pop-up, #wia-container, div[class*="wia"], div[id*="wia"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        
         body { font-family: sans-serif; background: #f4f7f6; margin: 0; padding-bottom: 70px; text-align: center; }
-        header { background: #2d5a27; color: white; padding: 15px; position: sticky; top: 0; }
+        header { background: #2d5a27; color: white; padding: 15px; position: sticky; top: 0; z-index: 1000; }
         .card { background: white; margin: 10px; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; }
-        .nav-item { cursor: pointer; color: #777; font-size: 14px; }
-        #ai-btn { position: fixed; bottom: 80px; left: 20px; cursor: pointer; background: #2d5a27; color: white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; z-index: 1000; }
+        #ai-btn { position: fixed; bottom: 80px; left: 20px; cursor: pointer; background: #2d5a27; color: white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2000; }
     </style>
 </head>
 <body>
     <header><h1>تطبيق المسلم الشامل</h1></header>
-    <div class="card"><h3>قسم القرآن الكريم</h3><p>قريباً سيتم إضافة جميع السور...</p></div>
-    <div class="card"><h3>قسم الأدعية</h3><p>"اللهم اشرح لي صدري ويسر لي أمري"</p></div>
+    <div class="card"><h3>📖 القرآن الكريم</h3><p>جاري تحديث السور بصوت الشيوخ...</p></div>
+    <div class="card"><h3>🤲 أدعية وأذكار</h3><p>"ربّنا آتنا في الدنيا حسنة وفي الآخرة حسنة"</p></div>
     
-    <div id="ai-btn" onclick="alert('أهلاً بك! أنا الشيخ الروبوت، اسألني ما شئت وسأجيبك فوراً.')">🤖</div>
+    <div id="ai-btn" onclick="alert('أهلاً بك! أنا الشيخ الروبوت، اسألني ما شئت.')">🤖</div>
 
     <div class="nav-bar">
-        <div class="nav-item">📖 قرآن</div>
-        <div class="nav-item">🤲 أدعية</div>
-        <div class="nav-item">🖼️ خلفيات</div>
+        <div>📖 قرآن</div>
+        <div>🤲 أدعية</div>
+        <div>🖼️ خلفيات</div>
     </div>
 </body>
 </html>
