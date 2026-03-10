@@ -3,68 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المصحف الإلكتروني الكامل</title>
+    <title>تطبيق المسلم الشامل</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f4f2; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        header { background-color: #2d5a27; color: white; width: 100%; padding: 20px; text-align: center; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .search-box { margin: 20px 0; width: 100%; max-width: 500px; }
-        input { width: 100%; padding: 12px; border-radius: 25px; border: 1px solid #ccc; text-align: center; font-size: 16px; }
-        .container { max-width: 600px; width: 100%; display: grid; gap: 15px; }
-        .surah-card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; border-right: 5px solid #2d5a27; }
-        h3 { margin: 5px 0; color: #2d5a27; }
-        audio { width: 100%; margin-top: 10px; }
-        footer { margin-top: 30px; color: #777; font-size: 14px; }
+        :root { --main-color: #2d5a27; --bg-color: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-color); margin: 0; padding-bottom: 70px; }
+        header { background: var(--main-color); color: white; text-align: center; padding: 20px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        
+        .section { display: none; padding: 15px; animation: fadeIn 0.5s; }
+        .active-section { display: block; }
+
+        /* تنسيق الأزرار والقوائم */
+        .card { background: white; margin: 10px 0; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .card button { background: var(--main-color); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+
+        /* شريط التنقل السفلي */
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; }
+        .nav-item { cursor: pointer; text-align: center; color: #777; font-size: 12px; }
+        .nav-item.active { color: var(--main-color); font-weight: bold; }
+        .nav-item i { font-size: 20px; display: block; }
+
+        /* قسم الخلفيات */
+        .bg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .bg-card img { width: 100%; border-radius: 10px; transition: 0.3s; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>المصحف الإلكتروني الشامل</h1>
-        <p>استمع لجميع سور القرآن الكريم بصوت الشيخ ماهر المعيقلي</p>
-    </header>
+<header>
+    <h1 id="page-title">المصحف الشريف</h1>
+</header>
 
-    <div class="search-box">
-        <input type="text" id="searchInput" onkeyup="searchSurah()" placeholder="ابحث عن اسم السورة...">
+<div id="quran" class="section active-section">
+    <div class="card"><span>سورة الفاتحة</span><button onclick="alert('تشغيل سورة الفاتحة...')">استماع</button></div>
+    <div class="card"><span>سورة البقرة</span><button onclick="alert('تشغيل سورة البقرة...')">استماع</button></div>
     </div>
 
-    <div class="container" id="surahContainer">
-        </div>
+<div id="adhkar" class="section">
+    <div class="card"><p><b>دعاء الاستيقاظ:</b> "الحمد لله الذي أحيانا بعد ما أماتنا وإليه النشور"</p></div>
+    <div class="card"><p><b>دعاء الهم:</b> "اللهم إني أعوذ بك من الهم والحزن والعجز والكسل"</p></div>
+</div>
 
-    <footer>تم التطوير بواسطة waled9933 &copy; 2026</footer>
+<div id="wallpapers" class="section">
+    <div class="bg-grid">
+        <div class="bg-card"><img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=400" alt="Islamic 1"><p>خلفية الكعبة</p></div>
+        <div class="bg-card"><img src="https://images.unsplash.com/photo-1590075865003-e48277da448d?w=400" alt="Islamic 2"><p>خلفية طبيعة</p></div>
+    </div>
+</div>
 
-    <script>
-        const surahNames = [
-            "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"
-        ];
+<div class="nav-bar">
+    <div class="nav-item active" onclick="showSection('quran', 'المصحف الشريف', this)">📖<br>القرآن</div>
+    <div class="nav-item" onclick="showSection('adhkar', 'الأدعية والأذكار', this)">🤲<br>الأدعية</div>
+    <div class="nav-item" onclick="showSection('wallpapers', 'خلفيات إسلامية', this)">🖼️<br>خلفيات</div>
+</div>
 
-        const container = document.getElementById('surahContainer');
+<script>
+    function showSection(sectionId, title, element) {
+        // إخفاء كل الأقسام
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
+        // إظهار القسم المطلوب
+        document.getElementById(sectionId).classList.add('active-section');
+        // تغيير العنوان
+        document.getElementById('page-title').innerText = title;
+        // تغيير حالة زر التنقل
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        element.classList.add('active');
+    }
+</script>
 
-        // كود لتوليد الـ 114 سورة
-        surahNames.forEach((name, index) => {
-            const surahNumber = (index + 1).toString().padStart(3, '0');
-            const card = document.createElement('div');
-            card.className = 'surah-card';
-            card.innerHTML = `
-                <h3>سورة ${name}</h3>
-                <audio controls preload="none">
-                    <source src="https://server12.mp3quran.net/maher/${surahNumber}.mp3" type="audio/mpeg">
-                </audio>
-            `;
-            container.appendChild(card);
-        });
+<div id="ai-sheikh" style="position: fixed; bottom: 80px; left: 20px; z-index: 2000; cursor: pointer;" onclick="alert('أهلاً بك! أنا الشيخ الروبوت، اسألني ما شئت.')">
+    <img src="https://cdn-icons-png.flaticon.com/512/2044/2044921.png" width="60">
+</div>
 
-        // كود البحث
-        function searchSurah() {
-            let input = document.getElementById('searchInput').value;
-            let cards = document.getElementsByClassName('surah-card');
-            for (let i = 0; i < cards.length; i++) {
-                if (cards[i].innerText.includes(input)) {
-                    cards[i].style.display = "";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
-        }
-    </script>
 </body>
 </html>
