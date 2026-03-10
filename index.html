@@ -1,12 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>المصحف الإلكتروني</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوت القرآن الكريم</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        header { background-color: #2d5a27; color: white; width: 100%; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 20px; }
+        .container { max-width: 500px; width: 100%; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .surah-card { background: #e9f5e8; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #d4e8d3; text-align: center; }
+        audio { width: 100%; margin-top: 10px; }
+        h2 { color: #2d5a27; margin-top: 0; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>بوت القرآن الكريم</h1>
+        <p>استمع للذكر الحكيم</p>
+    </header>
+
+    <div class="container">
+        <div class="surah-card">
+            <h2>سورة الفاتحة</h2>
+            <audio controls src="https://server8.mp3quran.net/afs/001.mp3"></audio>
+        </div>
+
+        <div class="surah-card">
+            <h2>سورة الكهف</h2>
+            <audio controls src="https://server12.mp3quran.net/maher/018.mp3"></audio>
+        </div>
+        
+        <p style="text-align:center; color:#777;">سيتم إضافة المزيد قريباً...</p>
+    </div>
+
+</body>
 </html>
