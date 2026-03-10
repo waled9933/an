@@ -3,44 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق وليد الذكي - النسخة الذهبية</title>
+    <title>تطبيق وليد الذكي المتكلم</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Amiri&family=Cairo:wght@400;700&display=swap');
-        body { font-family: 'Cairo', sans-serif; background: #f4f7f6; margin: 0; padding-bottom: 90px; }
-        header { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 30px 15px; text-align: center; border-radius: 0 0 30px 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .surah-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px; }
-        .surah-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); cursor: pointer; border-right: 6px solid #1b5e20; font-weight: bold; transition: 0.3s; }
-        .surah-card:active { transform: scale(0.95); background: #e8f5e9; }
-
-        /* بوت الدردشة الذكي */
-        #bot-window { position: fixed; bottom: 100px; left: 20px; width: 330px; height: 480px; background: white; border-radius: 20px; display: none; flex-direction: column; box-shadow: 0 15px 40px rgba(0,0,0,0.3); z-index: 2000; border: 2px solid #1b5e20; overflow: hidden; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .bot-header { background: #1b5e20; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .messages { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; }
-        .msg { margin: 8px 0; padding: 10px 15px; border-radius: 15px; max-width: 80%; font-size: 14px; line-height: 1.5; }
-        .bot-msg { background: #e8f5e9; align-self: flex-start; border-bottom-right-radius: 2px; color: #1b5e20; }
-        .user-msg { background: #1b5e20; color: white; align-self: flex-end; border-bottom-left-radius: 2px; }
-        .input-area { display: flex; padding: 10px; border-top: 1px solid #eee; background: white; }
-        .input-area input { flex: 1; border: 1px solid #ddd; padding: 12px; border-radius: 25px; outline: none; margin-left: 5px; }
-        .input-area button { background: #ff9800; border: none; width: 45px; height: 45px; border-radius: 50%; color: white; cursor: pointer; font-size: 20px; }
-
-        #main-bot-btn { position: fixed; bottom: 25px; left: 25px; background: #ff9800; width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; cursor: pointer; z-index: 2001; box-shadow: 0 8px 20px rgba(0,0,0,0.4); border: 4px solid white; transition: 0.3s; }
-        #main-bot-btn:hover { transform: rotate(15deg) scale(1.1); }
+        body { font-family: 'Amiri', serif; background: #f0f4f8; margin: 0; padding-bottom: 80px; text-align: center; }
+        header { background: #1b5e20; color: white; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .surah-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; }
+        .surah-card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; color: #1b5e20; font-weight: bold; border: 1px solid #ddd; }
+        
+        /* نافذة الدردشة المتطورة */
+        #chat-window { position: fixed; bottom: 90px; left: 20px; width: 320px; height: 450px; background: white; border-radius: 20px; display: none; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 1000; border: 2px solid #1b5e20; overflow: hidden; }
+        .chat-header { background: #1b5e20; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; text-align: right; }
+        .chat-input { display: flex; padding: 10px; border-top: 1px solid #eee; }
+        .chat-input input { flex: 1; border: 1px solid #ddd; padding: 12px; border-radius: 25px; outline: none; }
+        
+        #bot-btn { position: fixed; bottom: 20px; left: 20px; background: #ff9800; width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; cursor: pointer; z-index: 1001; box-shadow: 0 5px 15px rgba(0,0,0,0.4); border: 3px solid white; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1 style="margin:0;">تطبيق وليد الإسلامي 🌟</h1>
-    <p style="opacity:0.9;">المصحف الشامل والمساعد الذكي المتحدث</p>
+    <h1>تطبيق وليد المتكلم 🤖🔊</h1>
+    <p>اسأل الشيخ الروبوت وسيجيبك بالصوت!</p>
 </header>
 
-<div class="surah-container" id="surah-list">
+<div class="surah-grid" id="list"></div>
+
+<div id="bot-btn" onclick="toggleChat()">🤖</div>
+
+<div id="chat-window">
+    <div class="chat-header"><span>الشيخ الروبوت المتكلم</span> <span onclick="toggleChat()" style="cursor:pointer">✖️</span></div>
+    <div class="chat-messages" id="msgs">
+        <div style="background:#e8f5e9; padding:10px; border-radius:10px;">أهلاً يا وليد! أنا الروبوت الذكي، اكتب سؤالك وسأرد عليك بصوتي الآن.</div>
     </div>
+    <div class="chat-input">
+        <input type="text" id="user-in" placeholder="اسألني أي شيء...">
+        <button onclick="askBot()" style="background:#1b5e20; color:white; border:none; padding:10px 15px; border-radius:50%; margin-right:5px; cursor:pointer;">➡️</button>
+    </div>
+</div>
 
-<div id="main-bot-btn" onclick="toggleBot()">🤖</div>
+<script>
+    // قائمة السور
+    const names = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس"];
+    const list = document.getElementById('list');
+    names.forEach((n, i) => { list.innerHTML += `<div class="surah-card">${i+1}. ${n}</div>`; });
 
-<div id="bot-window">
-    <div class="bot-header">
-        <span>الشيخ الروبوت (مساعد وليد)</span>
-        <button onclick="toggleBot()" style="background:none; border:none; color:white;
+    function toggleChat() { 
+        const win = document.getElementById('chat-window');
+        win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    // وظيفة الرد الذكي والنطق بصوت حقيقي
+    function askBot() {
+        const input = document.getElementById('user-in');
+        const msgs = document.getElementById('msgs');
+        if(!input.value) return;
+
+        const userText = input.value;
+        msgs.innerHTML += `<div style="margin:10px 0; text-align:left;"><span style="background:#ddd; padding:8px; border-radius:10px;">${userText}</span></div>`;
+        input.value = "";
+
+        // محاكاة تفكير الذكاء الاصطناعي
+        setTimeout(() => {
+            let reply = "أبشر يا وليد، بصفتي مساعدك الذكي أقول لك أن " + userText + " موضوع مهم جداً وسأبحث لك عن تفاصيله الدينية الآن.";
+            if(userText.includes("سلام")) reply = "وعليكم السلام ورحمة الله وبركاته يا مبرمج وليد، كيف أساعدك اليوم في تطبيقك؟";
+            
+            msgs.innerHTML += `<div style="margin:10px 0; text-align:right;"><span style="background:#1b5e20; color:white; padding:8px; border-radius:10px;">${reply}</span></div>`;
+            msgs.scrollTop = msgs.scrollHeight;
+
+            // --- ميزة الصوت (Text to Speech) ---
+            const speech = new SpeechSynthesisUtterance();
+            speech.text = reply;
+            speech.lang = 'ar-SA'; // لغة عربية
+            window.speechSynthesis.speak(speech);
+            
+        }, 600);
+    }
+</script>
+</body>
+</html>
