@@ -3,59 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق المسلم - وليد</title>
+    <title>تطبيق وليد - المصحف والذكاء الاصطناعي</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #e8f5e9; margin: 0; padding-bottom: 90px; text-align: center; }
-        header { background: #2e7d32; color: white; padding: 25px; border-radius: 0 0 20px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .container { padding: 15px; }
-        .card { background: white; margin-bottom: 15px; padding: 25px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-right: 8px solid #2e7d32; transition: 0.3s; cursor: pointer; }
-        .card:active { transform: scale(0.95); background: #f1f8e9; }
-        .card h3 { margin: 0; color: #1b5e20; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: sans-serif; overflow: hidden; }
         
-        /* زر الشيخ الروبوت الذكي */
-        #ai-btn { position: fixed; bottom: 100px; left: 20px; background: #ff9800; color: white; border-radius: 50%; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); border: 3px solid white; z-index: 9999; }
-        
-        /* شريط التنقل السفلي */
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 3px solid #2e7d32; z-index: 1000; }
-        .nav-item { font-size: 16px; color: #2e7d32; font-weight: bold; cursor: pointer; }
+        /* إطار عرض القرآن الكريم */
+        #quran-frame { width: 100%; height: 100%; border: none; }
+
+        /* زر الروبوت العائم */
+        #ai-button {
+            position: fixed; bottom: 20px; left: 20px;
+            width: 60px; height: 60px; background: #2e7d32;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 30px; color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; z-index: 1000;
+        }
+
+        /* نافذة الدردشة السرية */
+        #chat-window {
+            position: fixed; bottom: 90px; left: 20px;
+            width: 300px; height: 400px; background: white;
+            border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            display: none; flex-direction: column; overflow: hidden; z-index: 1000;
+            border: 2px solid #2e7d32;
+        }
+
+        .chat-header { background: #2e7d32; color: white; padding: 10px; text-align: center; font-weight: bold; }
+        .chat-content { flex: 1; padding: 10px; overflow-y: auto; background: #f9f9f9; font-size: 14px; }
+        .chat-input { display: flex; border-top: 1px solid #ddd; }
+        .chat-input input { flex: 1; border: none; padding: 10px; outline: none; }
+        .chat-input button { background: #2e7d32; color: white; border: none; padding: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>تطبيق المسلم الشامل</h1>
-        <p>بإشراف المبرمج وليد</p>
-    </header>
+    <iframe id="quran-frame" src="https://quran.ksu.edu.sa/m.php"></iframe>
 
-    <div class="container">
-        <div class="card" onclick="window.location.href='https://quran.ksu.edu.sa/m.php'">
-            <h3>📖 القرآن الكريم (قراءة واستماع)</h3>
-            <p>اضغط للفتح الآن</p>
-        </div>
+    <div id="ai-button" onclick="toggleChat()">🤖</div>
 
-        <div class="card" onclick="window.location.href='https://www.hisnmuslim.com/index.php?ar=ar_azkar_morning'">
-            <h3>🤲 أذكار الصباح والمساء</h3>
-            <p>حصن المسلم كاملاً</p>
+    <div id="chat-window">
+        <div class="chat-header">الشيخ الروبوت (مساعد وليد)</div>
+        <div class="chat-content" id="chat-box">
+            <div>مرحباً بك يا وليد، أنا معك أثناء القراءة. اسألني عن أي آية أو تفسير.</div>
         </div>
-
-        <div class="card" onclick="window.location.href='https://www.tvquran.com/ar/'">
-            <h3>🎧 إذاعات القرآن الكريم</h3>
-            <p>بث مباشر 24 ساعة</p>
-        </div>
-        
-        <div class="card" onclick="window.location.href='https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%B1%D9%82%D9%8A%D8%A9_%D8%A7%D9%84%D8%B4%D8%B1%D8%B1%D8%B9%D9%8A%D8%A9'">
-            <h3>🛡️ الرقية الشرعية</h3>
-            <p>للعلاج والتحصين</p>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="اكتب سؤالك هنا...">
+            <button onclick="sendMessage()">إرسال</button>
         </div>
     </div>
 
-    <div id="ai-btn" onclick="alert('أهلاً بك يا وليد! أنا المساعد الذكي، التطبيق الآن يعمل بكامل طاقته وكل الأزرار تستجيب.')">🤖</div>
+    <script>
+        function toggleChat() {
+            var chat = document.getElementById('chat-window');
+            chat.style.display = (chat.style.display === 'flex') ? 'none' : 'flex';
+        }
 
-    <div class="nav-bar">
-        <div class="nav-item" onclick="location.reload()">🏠 الرئيسية</div>
-        <div class="nav-item" onclick="window.location.href='https://quran.ksu.edu.sa/'">📖 القرآن</div>
-        <div class="nav-item" onclick="window.location.href='https://tanzil.net/'">⚙️ إعدادات</div>
-    </div>
-
+        function sendMessage() {
+            var input = document.getElementById('user-input');
+            var box = document.getElementById('chat-box');
+            if (input.value.trim() !== "") {
+                box.innerHTML += "<div style='margin-top:10px; color:blue;'><b>أنت:</b> " + input.value + "</div>";
+                
+                // رد الروبوت التجريبي (الصبح نربطه بالذكاء الحقيقي)
+                setTimeout(() => {
+                    box.innerHTML += "<div style='margin-top:10px; color:green;'><b>الشيخ الروبوت:</b> جاري البحث في التفسير لـ (" + input.value + ").. سأرد عليك بالتفصيل الصباح إن شاء الله.</div>";
+                    box.scrollTop = box.scrollHeight;
+                }, 1000);
+                
+                input.value = "";
+                box.scrollTop = box.scrollHeight;
+            }
+        }
+    </script>
 </body>
 </html>
