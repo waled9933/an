@@ -3,51 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق وليد - المصحف والذكاء الاصطناعي</title>
+    <title>تطبيق وليد</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; font-family: sans-serif; overflow: hidden; }
-        
-        /* إطار عرض القرآن الكريم */
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #f4f4f4; }
+        /* الإطار اللي بيعرض المصحف */
         #quran-frame { width: 100%; height: 100%; border: none; }
-
-        /* زر الروبوت العائم */
+        
+        /* زر الروبوت */
         #ai-button {
             position: fixed; bottom: 20px; left: 20px;
-            width: 60px; height: 60px; background: #2e7d32;
+            width: 60px; height: 60px; background: #1b5e20;
             border-radius: 50%; display: flex; align-items: center;
             justify-content: center; font-size: 30px; color: white;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; z-index: 1000;
         }
 
-        /* نافذة الدردشة السرية */
+        /* نافذة الدردشة */
         #chat-window {
             position: fixed; bottom: 90px; left: 20px;
             width: 300px; height: 400px; background: white;
             border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-            display: none; flex-direction: column; overflow: hidden; z-index: 1000;
-            border: 2px solid #2e7d32;
+            display: none; flex-direction: column; z-index: 1000; border: 2px solid #1b5e20;
         }
-
-        .chat-header { background: #2e7d32; color: white; padding: 10px; text-align: center; font-weight: bold; }
-        .chat-content { flex: 1; padding: 10px; overflow-y: auto; background: #f9f9f9; font-size: 14px; }
+        .chat-header { background: #1b5e20; color: white; padding: 10px; text-align: center; border-radius: 12px 12px 0 0; }
+        .chat-content { flex: 1; padding: 10px; overflow-y: auto; background: #f9f9f9; }
         .chat-input { display: flex; border-top: 1px solid #ddd; }
         .chat-input input { flex: 1; border: none; padding: 10px; outline: none; }
-        .chat-input button { background: #2e7d32; color: white; border: none; padding: 10px; cursor: pointer; }
+        .chat-input button { background: #1b5e20; color: white; border: none; padding: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <iframe id="quran-frame" src="https://quran.ksu.edu.sa/m.php"></iframe>
+    <iframe id="quran-frame" src="https://quran.com/ar"></iframe>
 
     <div id="ai-button" onclick="toggleChat()">🤖</div>
 
     <div id="chat-window">
-        <div class="chat-header">الشيخ الروبوت (مساعد وليد)</div>
+        <div class="chat-header">الشيخ الروبوت</div>
         <div class="chat-content" id="chat-box">
-            <div>مرحباً بك يا وليد، أنا معك أثناء القراءة. اسألني عن أي آية أو تفسير.</div>
+            <div>أهلاً وليد، أنا معاك دلوقتي والمصحف قدامك. اطلب أي مساعدة!</div>
         </div>
         <div class="chat-input">
-            <input type="text" id="user-input" placeholder="اكتب سؤالك هنا...">
+            <input type="text" id="user-input" placeholder="اسأل الروبوت...">
             <button onclick="sendMessage()">إرسال</button>
         </div>
     </div>
@@ -57,19 +54,15 @@
             var chat = document.getElementById('chat-window');
             chat.style.display = (chat.style.display === 'flex') ? 'none' : 'flex';
         }
-
         function sendMessage() {
             var input = document.getElementById('user-input');
             var box = document.getElementById('chat-box');
             if (input.value.trim() !== "") {
                 box.innerHTML += "<div style='margin-top:10px; color:blue;'><b>أنت:</b> " + input.value + "</div>";
-                
-                // رد الروبوت التجريبي (الصبح نربطه بالذكاء الحقيقي)
                 setTimeout(() => {
-                    box.innerHTML += "<div style='margin-top:10px; color:green;'><b>الشيخ الروبوت:</b> جاري البحث في التفسير لـ (" + input.value + ").. سأرد عليك بالتفصيل الصباح إن شاء الله.</div>";
+                    box.innerHTML += "<div style='margin-top:10px; color:green;'><b>الروبوت:</b> الله يفتح عليك يا وليد، هرد عليك بكرة بالتفصيل لما نربط الذكاء الحقيقي.</div>";
                     box.scrollTop = box.scrollHeight;
-                }, 1000);
-                
+                }, 800);
                 input.value = "";
                 box.scrollTop = box.scrollHeight;
             }
