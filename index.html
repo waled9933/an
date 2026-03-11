@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
+<head><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script>
+    // طلب إذن الميكروفون برمجياً أول ما التطبيق يفتح
+    navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(function(stream) {
+        console.log("تم تفعيل الميكروفون");
+    })
+    .catch(function(err) {
+        console.log("الميكروفون محظور: " + err);
+    });
+
+    // كود فك كتم الصوت التلقائي
+    window.addEventListener('click', function() {
+        const context = new (window.AudioContext || window.webkitAudioContext)();
+        if (context.state === 'suspended') {
+            context.resume();
+        }
+    }, { once: true });
+</script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>مصحف وليد PRO</title>
