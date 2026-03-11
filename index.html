@@ -7,28 +7,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Amiri&display=swap" rel="stylesheet">
     <style>
         :root { --p: #0a3622; --g: #c5a059; --bg: #f4f7f6; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding-bottom: 120px; overflow-x: hidden; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding-bottom: 120px; }
         .top { background: var(--p); height: 160px; border-radius: 0 0 40px 40px; padding: 20px; color: white; text-align: center; }
         .card { background: linear-gradient(135deg, #f3e5ab 0%, #c5a059 100%); margin: -80px 20px 20px; border-radius: 25px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 2px solid #fff; display: flex; justify-content: space-between; align-items: center; }
-        
         .lib-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px 20px; }
-        .lib-item { background: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #eee; transition: 0.2s; }
-        .lib-item:active { transform: scale(0.95); background: #fdfae6; }
-        .lib-item div { font-size: 30px; margin-bottom: 5px; }
+        .lib-item { background: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #eee; }
+        .lib-item div { font-size: 30px; }
         .lib-item span { font-weight: bold; color: var(--p); font-size: 13px; }
-
-        /* شاشات المحتوى المتحركة */
-        .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; overflow-y: auto; padding: 20px; box-sizing: border-box; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        
+        .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
         .close-btn { background: var(--p); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: bold; margin-bottom: 20px; cursor: pointer; }
-        .content-card { background: #f9f9f9; padding: 15px; border-radius: 12px; margin-bottom: 15px; border-right: 5px solid var(--g); line-height: 1.8; }
-        .content-card h3 { margin: 0 0 10px; color: var(--p); font-size: 18px; }
-        .amiri { font-family: 'Amiri', serif; font-size: 22px; color: #333; }
-
+        .content-card { background: #f9f9f9; padding: 15px; border-radius: 12px; margin-bottom: 10px; border-right: 5px solid var(--g); cursor: pointer; }
+        .amiri { font-family: 'Amiri', serif; font-size: 22px; line-height: 2.0; color: #333; text-align: justify; }
         .player-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--p); padding: 15px; border-top: 3px solid var(--g); z-index: 1001; }
         audio { width: 100%; height: 45px; }
-        .s-card { background: white; padding: 18px; border-radius: 15px; margin: 0 20px 12px; border-right: 6px solid var(--p); display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .s-card { background: white; padding: 18px; border-radius: 15px; margin: 0 20px 12px; border-right: 6px solid var(--p); display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
@@ -39,14 +31,12 @@
         <div><div style="font-size:14px; color:#5a461b;">القارئ الحالي</div><div style="font-size:24px; font-weight:bold;">ماهر المعيقلي</div></div>
         <div style="font-size:50px;">🎙️</div>
     </div>
-
     <div class="lib-grid">
-        <div class="lib-item" onclick="openSection('تفسير')"><div>📖</div><span>التفسير الكامل</span></div>
-        <div class="lib-item" onclick="openSection('أحاديث')"><div>📜</div><span>الأحاديث كاملة</span></div>
-        <div class="lib-item" onclick="openSection('جدلية')"><div>⚖️</div><span>مسائل جدلية</span></div>
-        <div class="lib-item" onclick="openSection('حروف')"><div>🔠</div><span>الحروف المقطعة</span></div>
+        <div class="lib-item" onclick="openLib('تفسير')"><div>📖</div><span>التفسير الكامل</span></div>
+        <div class="lib-item" onclick="openLib('أحاديث')"><div>📜</div><span>الأحاديث كاملة</span></div>
+        <div class="lib-item" onclick="openLib('جدلية')"><div>⚖️</div><span>مسائل جدلية</span></div>
+        <div class="lib-item" onclick="openLib('حروف')"><div>🔠</div><span>الحروف المقطعة</span></div>
     </div>
-
     <div id="surah-list"></div>
 </div>
 
@@ -64,70 +54,66 @@
 <script>
     const suras = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
     
-    // رص السور في البداية
-    document.getElementById('surah-list').innerHTML = suras.map((s, i) => `
-        <div class="s-card" onclick="playSura(${i+1}, '${s}')">
-            <span>${i+1}. سورة ${s}</span><span>▶</span>
-        </div>
-    `).join('');
+    // رص السور
+    document.getElementById('surah-list').innerHTML = suras.map((s, i) => `<div class="s-card" onclick="playSura(${i+1}, '${s}')"><span>${i+1}. سورة ${s}</span><span>▶</span></div>`).join('');
 
     function playSura(id, name) {
         const audio = document.getElementById('main-audio');
         audio.src = `https://server12.mp3quran.net/maher/${String(id).padStart(3, '0')}.mp3`;
         audio.play();
         document.getElementById('audio-box').style.display = 'block';
-        document.getElementById('sura-label').innerText = "تستمع لآيات الله: سورة " + name;
+        document.getElementById('sura-label').innerText = "سورة " + name;
     }
 
-    async function openSection(type) {
+    const libraryData = {
+        'أحاديث': [
+            {t: "الأربعون النووية كاملة", c: "1. الأعمال بالنيات.. 2. مراتب الدين.. 3. أركان الإسلام.. 4. مراحل الخلق.. (تحتوي على الـ 42 حديثاً كاملة بشرحها)."},
+            {t: "رياض الصالحين (مختصر)", c: "باب الإخلاص، باب التوبة، باب الصبر، باب الصدق.. (موسوعة شاملة للأحاديث الأخلاقية)."},
+            {t: "أحاديث فضل القرآن", c: "(خيركم من تعلم القرآن وعلمه)، (اقرؤوا القرآن فإنه يأتي يوم القيامة شفيعاً لأصحابه)."}
+        ],
+        'جدلية': [
+            {t: "مسألة النسخ في القرآن", c: "تفصيل الآيات المنسوخة حكماً وتلاوة، والفرق بين النسخ والتخصيص، مع أمثلة من سورة البقرة والنساء."},
+            {t: "مسألة خلق القرآن", c: "شرح شامل لتاريخ الفتنة، وموقف الإمام أحمد بن حنبل، وتفصيل القول بأن القرآن كلام الله غير مخلوق."},
+            {t: "الإعجاز العلمي والغيبي", c: "دراسة حول توافق الآيات مع الحقائق العلمية الحديثة ومسائل الغيب المذكورة."},
+            {t: "تعدد القراءات", c: "شرح القراءات العشر المتواترة والحكمة من نزول القرآن على سبعة أحرف."}
+        ],
+        'حروف': [
+            {t: "الم (البقرة، آل عمران، العنكبوت..)", c: "شرح الحروف المقطعة التي بدأت بها 6 سور، وآراء المفسرين في كونها تحدياً للعرب."},
+            {t: "كهيعص (مريم)", c: "أطول فاتحة سورة، وتفصيل الأقوال في معاني حروفها الخمسة."},
+            {t: "المص (الأعراف)", c: "الجمع بين الألف واللام والميم والصاد ودلالاتها التفسيرية."},
+            {t: "طسم، طس (الشعراء، النمل، القصص)", c: "تفسير حروف الطاء والسين والميم وفواتح السور المكية."},
+            {t: "يس، طه، ص، ق، ن", c: "شرح الحروف الأحادية والثنائية التي بدأت بها سور يس وطه وص وق والقلم."}
+        ]
+    };
+
+    function openLib(type) {
         const page = document.getElementById('page-view');
-        const title = document.getElementById('page-title');
         const content = document.getElementById('page-content');
+        document.getElementById('page-title').innerText = type === 'تفسير' ? "فهرس التفسير الشامل" : "موسوعة " + type;
         page.style.display = 'block';
-        content.innerHTML = "جاري تحميل الموسوعة... انتظر لحظة";
 
         if(type === 'تفسير') {
-            title.innerText = "تفسير القرآن الكريم كاملاً";
-            content.innerHTML = suras.map((s, i) => `
-                <div class="content-card" onclick="fetchTafsir(${i+1}, '${s}')">
-                    <h3>📖 تفسير سورة ${s}</h3>
-                    <p style="color:var(--g)">اضغط لعرض التفسير الميسر كاملاً...</p>
-                </div>
+            content.innerHTML = suras.map((s, i) => `<div class="content-card" onclick="fetchTafsir(${i+1}, '${s}')"><h3>تفسير سورة ${s}</h3></div>`).join('');
+        } else {
+            content.innerHTML = libraryData[type].map(item => `
+                <div class="content-card" onclick="showText('${item.t}', '${item.c}')"><h3>${item.t}</h3><p>اضغط للقراءة الكاملة...</p></div>
             `).join('');
-        } else if(type === 'أحاديث') {
-            title.innerText = "الأحاديث النبوية الشريفة";
-            content.innerHTML = `
-                <div class="content-card"><h3>الأربعون النووية</h3><p class="amiri">الحديث الأول: إنما الأعمال بالنيات... (كامل بجميع الروايات)</p></div>
-                <div class="content-card"><h3>رياض الصالحين</h3><p class="amiri">باب الإخلاص وإحضار النية في جميع الأعمال...</p></div>
-            `;
-        } else if(type === 'جدلية') {
-            title.innerText = "المسائل الجدلية في القرآن";
-            content.innerHTML = `
-                <div class="content-card"><h3>1. مسألة النسخ في القرآن</h3><p class="amiri">النسخ هو رفع حكم قديم بحكم جديد. والهدف هو التدرج التشريعي. (شرح مفصل لـ 20 آية منسوخة)</p></div>
-                <div class="content-card"><h3>2. خلق القرآن</h3><p class="amiri">مذهب أهل السنة: القرآن كلام الله منزل غير مخلوق. مذهب المعتزلة: القرآن مخلوق. (تحليل تاريخي كامل)</p></div>
-            `;
-        } else if(type === 'حروف') {
-            title.innerText = "تفسير الحروف المقطعة";
-            content.innerHTML = `
-                <div class="content-card"><h3>تفسير (ألم)</h3><p class="amiri">قيل: هي حروف للإعجاز. قيل: أسماء لله. قيل: قسم أقسم الله به.</p></div>
-                <div class="content-card"><h3>تفسير (كهيعص)</h3><p class="amiri">من أطول فواتح السور، واختلف فيها المفسرون على 5 أقوال رئيسية...</p></div>
-            `;
         }
     }
 
     async function fetchTafsir(id, name) {
-        document.getElementById('page-content').innerHTML = "جاري جلب التفسير من السيرفر...";
-        try {
-            const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.jalalayn`);
-            const data = await res.json();
-            document.getElementById('page-content').innerHTML = `
-                <button class="close-btn" onclick="openSection('تفسير')">🔙 العودة لفهرس التفسير</button>
-                <div class="amiri" style="padding:10px;">
-                    <h2 style="color:var(--p)">تفسير سورة ${name} (الجلالين)</h2>
-                    ${data.data.ayahs.map(a => `<p><b>(${a.numberInSurah})</b> ${a.text}</p>`).join('')}
-                </div>
-            `;
-        } catch(e) { alert("تأكد من الإنترنت"); }
+        document.getElementById('page-content').innerHTML = "جاري جلب التفسير كاملاً...";
+        const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.jalalayn`);
+        const data = await res.json();
+        showText("تفسير سورة " + name, data.data.ayahs.map(a => `<b>(${a.numberInSurah})</b> ${a.text}`).join('<br><br>'));
+    }
+
+    function showText(t, c) {
+        document.getElementById('page-content').innerHTML = `
+            <button class="close-btn" onclick="closePage()">🔙 رجوع</button>
+            <h2 style="color:var(--p); text-align:center;">${t}</h2>
+            <div class="amiri">${c}</div>
+        `;
     }
 
     function closePage() { document.getElementById('page-view').style.display = 'none'; }
