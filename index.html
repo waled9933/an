@@ -1,8 +1,68 @@
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مصحف وليد PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --p: #0a3622; --g: #c5a059; --bg: #f4f7f6; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding-bottom: 80px; }
+        .top { background: var(--p); height: 160px; border-radius: 0 0 40px 40px; padding: 20px; color: white; }
+        .card { background: linear-gradient(135deg, #f3e5ab 0%, #c5a059 100%); margin: -80px 20px 20px; border-radius: 25px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 2px solid #fff; display: flex; justify-content: space-between; align-items: center; }
+        .time { font-size: 40px; font-weight: bold; color: #3a2d0d; }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 10px 20px; }
+        .item { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 11px; font-weight: bold; color: #444; }
+        .icon { width: 55px; height: 55px; background: white; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .nav { position: fixed; bottom: 0; width: 100%; background: white; height: 70px; display: flex; border-top: 1px solid #eee; }
+        .n-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #888; font-size: 10px; }
+        .n-btn.active { color: var(--p); font-weight: bold; }
+        .q-list { padding: 20px; }
+        .s-card { background: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; border-right: 5px solid var(--p); box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+    </style>
+</head>
+<body>
+
+<div class="top">
+    <div style="display:flex; justify-content:space-between; font-size:12px;">
+        <span>📍 القاهرة، مصر</span>
+        <span>21 رمضان، 1447 هـ</span>
+    </div>
+</div>
+
+<div class="card">
+    <div>
+        <div style="font-size:14px; color:#5a461b;">الصلاة القادمة: الفجر</div>
+        <div class="time">04:42</div>
+        <div style="font-size:11px; color:#5a461b;">باقي: 02:15:10</div>
+    </div>
+    <div style="font-size:60px;">🕌</div>
+</div>
+
+<div class="grid">
+    <div class="item"><div class="icon">📖</div><span>القرآن</span></div>
+    <div class="item"><div class="icon">🤲</div><span>الأذكار</span></div>
+    <div class="item"><div class="icon">🧭</div><span>القبلة</span></div>
+    <div class="item"><div class="icon">📿</div><span>السبحة</span></div>
+</div>
+
+<div class="q-list">
+    <div class="s-card">1. الفاتحة</div>
+    <div class="s-card">2. البقرة</div>
+    <div class="s-card">3. آل عمران</div>
+</div>
+
+<div class="nav">
+    <div class="n-btn active">🏠<br>الرئيسية</div>
+    <div class="n-btn">🕌<br>الصلاة</div>
+    <div class="n-btn">🌍<br>الأمة</div>
+    <div class="n-btn">💬<br>الرسائل</div>
+    <div class="n-btn">👤<br>أنا</div>
+</div>
+
 <script>
-    // منع الخروج من التطبيق عند الضغط على زر الرجوع بالخطأ
-    window.addEventListener('popstate', function (event) {
-        history.pushState(null, document.title, location.href);
-    });
+    console.log("مصحف وليد PRO جاهز!");
 </script>
+
+</body>
+</html>
