@@ -3,266 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مصحف وليد الملكي</title>
+    <title>مصحف وليد - التدبر الشامل</title>
     
     <meta name="theme-color" content="#0a3622">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
     <link rel="icon" href="https://i.ibb.co/L5Q3QJm/walid-quran-icon.png">
-    <link rel="apple-touch-icon" href="https://i.ibb.co/L5Q3QJm/walid-quran-icon.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --green: #0a3622; --gold: #c5a059; --bg: #fdfcf0; }
         body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding-bottom: 90px; }
+        header { background: var(--green); color: var(--gold); padding: 25px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         
-        /* الهيدر الملكي */
-        header { background: var(--green); color: var(--gold); padding: 30px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
-        header h1 { font-family: 'Amiri', serif; font-size: 35px; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        /* التبويبات السفلية */
+        .tabs-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--green); display: flex; padding: 10px 0; border-top: 4px solid var(--gold); z-index: 4000; }
+        .tab-btn { flex: 1; color: #fff; text-align: center; cursor: pointer; font-size: 12px; opacity: 0.7; }
+        .tab-btn.active { opacity: 1; color: var(--gold); font-weight: bold; }
+        .tab-btn i { display: block; font-size: 20px; margin-bottom: 4px; }
 
-        /* التبويبات السفلية الاحترافية */
-        .main-tabs { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--green); display: flex; justify-content: space-around; padding: 10px; border-top: 5px solid var(--gold); z-index: 4000; box-shadow: 0 -5px 15px rgba(0,0,0,0.2); }
-        .main-tab { color: #888; text-align: center; cursor: pointer; flex: 1; transition: 0.3s; }
-        .main-tab.active { color: var(--gold); font-weight: bold; }
-        .main-tab span { display: block; font-size: 20px; }
-        .main-tab p { margin: 0; font-size: 12px; }
+        .section { display: none; padding: 20px; }
+        .section.active { display: block; }
 
-        /* الشبكة والقوائم */
-        .content-sec { display: none; padding: 20px; }
-        .content-sec.active { display: block; }
+        /* شبكة السور */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
-        .surah-card { background: white; border: 2px solid var(--gold); border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; position: relative; transition: 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .surah-card:active { transform: scale(0.95); }
-        .surah-status { position: absolute; top: 5px; left: 5px; font-size: 10px; color: var(--green); }
-
+        .card { background: white; border: 2px solid var(--gold); border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+        
         /* شاشة القراءة */
-        #viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 5000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .q-content { font-family: 'Amiri', serif; font-size: 28px; line-height: 2.3; text-align: center; padding: 25px; background: #fffdf5; border: 2px solid var(--gold); border-radius: 15px; }
-        .fixed-controls { position: sticky; bottom: 0; width: 100%; background: var(--green); padding: 15px; border-top: 4px solid var(--gold); margin-left: -20px; display: flex; flex-direction: column; align-items: center; }
+        #q-viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 5000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        .ayah-text { font-family: 'Amiri', serif; font-size: 26px; line-height: 2.2; text-align: center; background: #fffdf5; padding: 20px; border-radius: 15px; border: 1px solid var(--gold); }
+        .player-box { position: sticky; bottom: 0; background: var(--green); padding: 15px; border-radius: 20px 20px 0 0; margin: 20px -20px -20px -20px; }
 
-        /* قسم الأذكار */
-        .azkar-card { background: white; padding: 15px; border-radius: 15px; border-right: 5px solid var(--green); margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .azkar-card:active { background: #f9f9f9; }
-        #azkar-view { display: none; padding: 20px; }
-        .zekr-item { background: white; padding: 20px; border-radius: 15px; border: 1px solid #eee; margin-bottom: 10px; font-size: 16px; line-height: 1.6; text-align: center; color: var(--green); }
-        .zekr-count { background: var(--gold); color: white; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; margin-top: 10px; }
-
-        /* قسم السبحة الملكي */
-        #sibha-sec { text-align: center; padding-top: 50px; }
-        #sibha-counter { font-size: 60px; color: var(--green); font-weight: bold; margin-bottom: 20px; font-family: 'Amiri', serif; }
-        .sibha-btns { display: flex; gap: 15px; justify-content: center; }
-        .sibha-btn { background: var(--green); color: white; border: none; padding: 15px 30px; border-radius: 15px; font-size: 18px; cursor: pointer; transition: 0.3s; }
-        .sibha-btn:active { transform: scale(0.9); background: var(--gold); }
+        /* الأذكار */
+        .azkar-item { background: white; padding: 15px; border-radius: 12px; border-right: 5px solid var(--gold); margin-bottom: 10px; line-height: 1.6; }
 
         /* الروبوت المتدبر */
-        #bot-icon { position: fixed; bottom: 100px; left: 20px; background: var(--gold); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; border: 3px solid white; box-shadow: 0 5px 20px rgba(0,0,0,0.4); z-index: 3000; cursor: pointer; }
-        #chat { position: fixed; bottom: 180px; left: 20px; width: 330px; height: 450px; background: white; border-radius: 25px; display: none; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.4); z-index: 3001; border: 2px solid var(--green); overflow: hidden; }
-        .msgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #fdfdfd; }
-        .msg { padding: 10px 15px; border-radius: 15px; font-size: 14px; max-width: 85%; }
-        .bot { background: #e8f5e9; align-self: flex-start; color: #1b5e20; border-right: 5px solid var(--green); }
-        .user { background: var(--gold); color: white; align-self: flex-end; }
+        #bot-box { position: fixed; bottom: 85px; left: 15px; background: var(--gold); width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 3000; cursor: pointer; border: 3px solid white; }
+        #chat-window { position: fixed; bottom: 160px; left: 15px; width: 330px; height: 450px; background: white; border-radius: 20px; display: none; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 3001; border: 2px solid var(--green); overflow: hidden; }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 10px 14px; border-radius: 12px; font-size: 14px; max-width: 85%; line-height: 1.5; }
+        .msg.bot { background: #e8f5e9; align-self: flex-start; border-right: 4px solid var(--green); }
+        .msg.user { background: var(--gold); color: white; align-self: flex-end; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>مصحف وليد الملكي</h1>
-    <p>قرآن • أذكار • سبحة • تدبر 🌐</p>
+    <h1>مصحف وليد للتدبر</h1>
+    <p>القرآن كاملاً • أذكار شاملة • روبوت فقهي</p>
 </header>
 
-<div class="main-tabs">
-    <div class="main-tab active" onclick="showMainTab('quran')"><span>📖</span><p>القرآن</p></div>
-    <div class="main-tab" onclick="showMainTab('azkar')"><span>🤲</span><p>الأذكار</p></div>
-    <div class="main-tab" onclick="showMainTab('sibha')"><span>📿</span><p>السبحة</p></div>
+<div class="tabs-bar">
+    <div class="tab-btn active" onclick="showSec('quran')">📖<br>القرآن</div>
+    <div class="tab-btn" onclick="showSec('azkar')">🤲<br>الأذكار</div>
+    <div class="tab-btn" onclick="showSec('sibha')">📿<br>السبحة</div>
 </div>
 
-<div id="quran-sec" class="content-sec active">
+<div id="quran-sec" class="section active">
     <div class="grid" id="surah-grid"></div>
 </div>
 
-<div id="viewer">
-    <button onclick="closeV()" style="background:#c62828; color:white; border:none; padding:12px 25px; border-radius:15px; cursor:pointer; font-weight:bold;">⬅️ العودة للقائمة</button>
-    <div id="q-content" class="q-content"></div>
-    <div class="fixed-controls">
-        <div id="playing-info" style="color:white; font-size:12px; margin-bottom:8px; text-align:center;">اختر سورة للبدء</div>
-        <audio id="audio-player" controls style="width:100%"></audio>
+<div id="q-viewer">
+    <button onclick="closeV()" style="padding:10px 20px; background:red; color:white; border:none; border-radius:10px; cursor:pointer;">❌ إغلاق</button>
+    <div id="q-content" class="ayah-text"></div>
+    <div class="player-box">
+        <div id="p-title" style="color:white; font-size:12px; text-align:center; margin-bottom:5px;"></div>
+        <audio id="main-audio" controls style="width:100%"></audio>
     </div>
 </div>
 
-<div id="azkar-sec" class="content-sec">
-    <div class="azkar-card" onclick="openZekr('morning')"><span>أذكار الصباح</span> ➡️</div>
-    <div class="azkar-card" onclick="openZekr('evening')"><span>أذكار المساء</span> ➡️</div>
-    
-    <div id="azkar-view">
-        <button onclick="closeZekr()" style="background:#c62828; color:white; border:none; padding:10px; border-radius:10px; margin-bottom:15px; cursor:pointer;">❌ إغلاق</button>
-        <div id="zekr-content"></div>
-    </div>
+<div id="azkar-sec" class="section">
+    <h3 style="color:var(--green)">الأذكار اليومية الشاملة</h3>
+    <div id="azkar-list"></div>
 </div>
 
-<div id="sibha-sec" class="content-sec">
-    <div id="sibha-counter">0</div>
-    <div class="sibha-btns">
-        <button class="sibha-btn" style="background:#ddd; color:#333;" onclick="resetSibha()">إعادة</button>
-        <button class="sibha-btn" onclick="incrementSibha()">تسبيح (+1)</button>
-    </div>
+<div id="sibha-sec" class="section" style="text-align:center; padding-top:50px;">
+    <div id="count" style="font-size:80px; color:var(--green); font-weight:bold;">0</div>
+    <button onclick="inc()" style="width:150px; height:150px; border-radius:50%; background:var(--green); color:white; font-size:20px; border:8px solid var(--gold); cursor:pointer;">سبّح</button>
+    <br><button onclick="res()" style="margin-top:20px; background:none; border:none; color:red; cursor:pointer;">إعادة العداد</button>
 </div>
 
-<div id="bot-icon" onclick="toggleChat()">🤖</div>
-<div id="chat">
-    <div style="background:var(--green); color:white; padding:15px; text-align:center; font-weight:bold; font-size:18px;">الشيخ الروبوت (المتدبر الذكي)</div>
-    <div class="msgs" id="chat-msgs">
-        <div class="msg bot">أهلاً يا وليد. اسألني عن حكمة الله، لماذا فرض الله كذا؟ أو تفسير آية.. أنا هنا لأتدبر معك بالصوت والكتابة. كيف أخدمك؟</div>
+<div id="bot-box" onclick="toggleChat()">🤖</div>
+<div id="chat-window">
+    <div style="background:var(--green); color:white; padding:15px; text-align:center; font-weight:bold;">الشيخ الروبوت (للتدبر والفقه)</div>
+    <div class="chat-body" id="chat-msgs">
+        <div class="msg bot">مرحباً يا وليد.. أنا هنا لأتدبر معك كلام الله. اسألني عن أي حكم شرعي أو حكمة من عبادة وسأجيبك بتفصيل.</div>
     </div>
-    <div style="display:flex; padding:10px; background:white; border-top:1px solid #eee;">
-        <input type="text" id="bot-in" style="flex:1; border:1px solid #ddd; padding:12px; border-radius:20px; outline:none;" placeholder="اكتب سؤالك الديني هنا...">
-        <button onclick="askAI()" style="background:var(--green); color:white; border:none; width:45px; height:45px; border-radius:50%; margin-right:5px; cursor:pointer;">➡️</button>
+    <div style="display:flex; padding:10px; border-top:1px solid #ddd;">
+        <input type="text" id="bot-in" style="flex:1; padding:10px; border-radius:20px; border:1px solid #ddd;" placeholder="لماذا فرضت الصلاة؟">
+        <button onclick="askAI()" style="background:var(--green); color:white; border:none; width:40px; height:40px; border-radius:50%; margin-right:5px;">➡️</button>
     </div>
 </div>
 
 <script>
-    const surahNames = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
-
+    // 1. إدارة السور والتحميل
+    const surahs = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
     const grid = document.getElementById('surah-grid');
-    const audio = document.getElementById('audio-player');
-    let db;
+    surahs.forEach((n, i) => {
+        grid.innerHTML += `<div class="card" onclick="openS(${i+1}, '${n}')"><b>${n}</b><br><small style="color:gray">${i+1}</small></div>`;
+    });
 
-    // فتح قاعدة البيانات الداخلية IndexedDB (للتشغيل بدون نت)
-    const request = indexedDB.open("WalidRoyalQuranDB", 1);
-    request.onupgradeneeded = e => { e.target.result.createObjectStore("surahs", { keyPath: "id" }); };
-    request.onsuccess = e => { db = e.target.result; renderGrid(); };
+    async function openS(id, name) {
+        document.getElementById('q-viewer').style.display = 'block';
+        document.getElementById('q-content').innerHTML = "جاري تحميل نص السورة...";
+        const audio = document.getElementById('main-audio');
+        audio.src = `https://server12.mp3quran.net/maher/${id.toString().padStart(3, '0')}.mp3`;
+        audio.play();
+        document.getElementById('p-title').innerText = "استماع إلى سورة: " + name;
 
-    // توليد الـ 114 سورة كاملة
-    function renderGrid() {
-        grid.innerHTML = "";
-        surahNames.forEach((name, i) => {
-            const id = i + 1;
-            grid.innerHTML += `<div class="surah-card" onclick="startSurah(${id}, '${name}')">
-                <span id="stat-${id}" class="surah-status"></span>
-                <div style="font-size:12px; color:#aaa; margin-bottom:5px;">${id}</div>
-                <div style="font-weight:bold; color:var(--green);">${name}</div>
-            </div>`;
-            checkOfflineStatus(id);
-        });
-    }
-
-    async function checkOfflineStatus(id) {
-        const tx = db.transaction("surahs", "readonly");
-        tx.objectStore("surahs").get(id).onsuccess = e => {
-            if(e.target.result) document.getElementById(`stat-${id}`).innerHTML = "✅ لمحمل";
-        };
-    }
-
-    async function startSurah(id, name) {
-        document.getElementById('playing-info').innerText = "جاري فتح: " + name;
-        document.getElementById('viewer').style.display = "block";
-        const content = document.getElementById('q-content');
-        content.innerHTML = "جاري تحميل نص سورة " + name + "...";
-
-        // تشغيل الصوت (ذكاء التحميل)
-        const tx = db.transaction("surahs", "readonly");
-        tx.objectStore("surahs").get(id).onsuccess = async e => {
-            if(e.target.result) {
-                // موجودة أوفلاين شغلها علطول
-                audio.src = URL.createObjectURL(e.target.result.audio);
-                audio.play();
-                document.getElementById('playing-info').innerText = "تشغيل بدون نت: " + name + " ✅";
-            } else {
-                // مش موجودة شغلها أونلاين ونزلها
-                const onlineUrl = `https://server12.mp3quran.net/maher/${id.toString().padStart(3, '0')}.mp3`;
-                audio.src = onlineUrl;
-                audio.play();
-                document.getElementById('playing-info').innerText = "جاري التحميل والحفظ: " + name + "...";
-                // تحميل السورة في الخزنة تلقائياً
-                fetch(onlineUrl).then(r => r.blob()).then(blob => {
-                    const saveTx = db.transaction("surahs", "readwrite");
-                    saveTx.objectStore("surahs").put({ id: id, name: name, audio: blob });
-                    saveTx.oncomplete = () => {
-                        document.getElementById('playing-info').innerText = "تم حفظ السورة ✅. تشغيل: " + name;
-                        document.getElementById(`stat-${id}`).innerHTML = "✅ لمحمل";
-                    };
-                });
-            }
-        };
-
-        // جلب النص (قراءة)
         try {
             const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}`);
             const data = await res.json();
-            let html = `<h2>${data.data.name}</h2>`;
-            data.data.ayahs.forEach(a => html += a.text + ` ﴿${a.numberInSurah}﴾ `);
-            content.innerHTML = html;
-        } catch(e) { content.innerHTML = "عذراً، يجب الاتصال بالنت لجلب نص السورة لأول مرة."; }
+            let h = `<h2>${data.data.name}</h2>`;
+            data.data.ayahs.forEach(a => h += a.text + ` ﴿${a.numberInSurah}﴾ `);
+            document.getElementById('q-content').innerHTML = h;
+        } catch(e) { document.getElementById('q-content').innerHTML = "تحتاج لنت لتحميل النص أول مرة."; }
     }
 
-    function closeV() { document.getElementById('viewer').style.display = 'none'; audio.pause(); }
+    function closeV() { document.getElementById('q-viewer').style.display = 'none'; document.getElementById('main-audio').pause(); }
 
-    // إدارة التبويبات السفلية
-    function showMainTab(id) {
-        document.querySelectorAll('.content-sec').forEach(s => s.classList.remove('active'));
-        document.getElementById(id + '-sec').classList.add('active');
-        document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
-        event.currentTarget.classList.add('active');
-        closeZekr();
-    }
+    // 2. إدارة الأذكار الشاملة
+    const azkarArr = [
+        {t: "أذكار الصباح", d: "أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له."},
+        {t: "أذكار المساء", d: "أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له."},
+        {t: "أذكار النوم", d: "باسمك ربي وضعت جنبي، وبك أرفعه، فإن أمسكت نفسي فارحمها."},
+        {t: "بعد الصلاة", d: "أستغفر الله (3 مرات).. اللهم أنت السلام ومنك السلام تباركت يا ذا الجلال والإكرام."},
+        {t: "دعاء الكرب", d: "لا إله إلا الله العظيم الحليم، لا إله إلا الله رب العرش العظيم."}
+    ];
+    const azkarList = document.getElementById('azkar-list');
+    azkarArr.forEach(a => {
+        azkarList.innerHTML += `<div class="azkar-item"><b>${a.t}</b><br>${a.d}</div>`;
+    });
 
-    // إدارة الأذكار الملكية
-    const azkar = {
-        morning: ["سبحان الله العظيم وبحمده (100 مرة)", "أستغفر الله وأتوب إليه (100 مرة)", "اللهم أنت ربي لا إله إلا أنت... (سيد الاستغفار)", "يا حي يا قيوم برحمتك أستغيث... (3 مرات)"],
-        evening: ["سبحان الله وبحمده (100 مرة)", "أستغفر الله العظيم (100 مرة)", "اللهم بك أمسينا وبك أصبحنا... (سيد الاستغفار)", "اللهم إني أمسيـت أُشهدك... (4 مرات)"]
-    };
+    // 3. السبحة
+    let c = localStorage.getItem('s-count') || 0;
+    document.getElementById('count').innerText = c;
+    function inc() { c++; document.getElementById('count').innerText = c; localStorage.setItem('s-count', c); if(window.navigator.vibrate) window.navigator.vibrate(50); }
+    function res() { c=0; document.getElementById('count').innerText = 0; localStorage.setItem('s-count', 0); }
 
-    function openZekr(type) {
-        document.getElementById('azkar-view').style.display = 'block';
-        document.querySelectorAll('.azkar-card').forEach(c => c.style.display = 'none');
-        const content = document.getElementById('zekr-content');
-        content.innerHTML = "";
-        azkar[type].forEach(z => content.innerHTML += `<div class="zekr-item">${z}<br><span class="zekr-count">🔁</span></div>`);
-    }
-
-    function closeZekr() {
-        document.getElementById('azkar-view').style.display = 'none';
-        document.querySelectorAll('.azkar-card').forEach(c => c.style.display = 'flex');
-    }
-
-    // إدارة السبحة الملكية
-    let sibhaCount = parseInt(localStorage.getItem('sibhaCount')) || 0;
-    document.getElementById('sibha-counter').innerText = sibhaCount;
-
-    function incrementSibha() {
-        sibhaCount++;
-        document.getElementById('sibha-counter').innerText = sibhaCount;
-        localStorage.setItem('sibhaCount', sibhaCount);
-        if('vibrate' in navigator) navigator.vibrate(50); // اهتزاز بسيط
-    }
-
-    function resetSibha() {
-        if(confirm('هل تريد إعادة عداد السبحة للصفر؟')) {
-            sibhaCount = 0;
-            document.getElementById('sibha-counter').innerText = 0;
-            localStorage.setItem('sibhaCount', 0);
-        }
-    }
-
-    // الروبوت الملكي المتدبر
-    function toggleChat() { const c = document.getElementById('chat'); c.style.display = (c.style.display==='flex') ? 'none' : 'flex'; }
-
+    // 4. الروبوت المتدبر (العقل المطور)
+    function toggleChat() { const w = document.getElementById('chat-window'); w.style.display = (w.style.display==='flex')?'none':'flex'; }
+    
     function askAI() {
         const input = document.getElementById('bot-in');
+        const msgs = document.getElementById('chat-msgs');
         if(!input.value) return;
         const q = input.value;
-        document.getElementById('chat-msgs').innerHTML += `<div class="msg user">${q}</div>`;
+        msgs.innerHTML += `<div class="msg user">${q}</div>`;
         input.value = "";
 
         setTimeout(() => {
-            let res = "يا وليد، هذا سؤال عظيم. التدبر في الإسلام هو مفتاح الفهم.";
-            if(q.includes("صلاة") || q.includes("الصلاة")) res = "فرض الله الصلاة لتكون حبل الوصل الذي لا ينقطع بينك وبينه، ولأنها تنهى عن الفحشاء والمنكر.";
-            if(q.includes("تفسير") || q.includes("معنى")) res = "معاني القرآن هي بحر لا ينفد، وكلما تدبرت آية، فتح الله عليك فتوح العارفين.";
+            let res = "يا وليد، تدبرك في " + q + " يفتح لك أبواب الخير. الله عز وجل يريد منا فهم الحكمة وراء كل فعل.";
             
-            document.getElementById('chat-msgs').innerHTML += `<div class="msg bot">${res}</div>`;
-            document.getElementById('chat-msgs').scrollTop = document.getElementById('chat-msgs').scrollHeight;
+            // محرك التدبر الذكي
+            if(q.includes("صلاة") || q.includes("الصلاة")) {
+                res = "لماذا فرض الله الصلاة 5 مرات؟ لتكون معراجاً لروحك كل بضع ساعات. هي ليست عبئاً، بل هي محطات وقود إيمانية تفرغ فيها همومك وتستمد القوة من الخالق. (أرحنا بها يا بلال) تدل على أنها راحة لا تكليف شاق.";
+            } else if(q.includes("حكم") || q.includes("لماذا فرض")) {
+                res = "كل ما فرضه الله هو لحماية الإنسان؛ فالحلال طيب للنفس، والحرام خبيث يؤذي الجسد أو المجتمع. الله غني عن عباداتنا، لكننا نحن الفقراء إليه لنرتقي بأنفسنا.";
+            } else if(q.includes("تدبر") || q.includes("كيف")) {
+                res = "التدبر يا وليد هو ألا تمر على الآية دون أن تسأل: (ماذا يريد الله مني هنا؟). ابدأ بسورة الفاتحة، تأمل في (إياك نعبد)، ستجد أنك تطلب العون من القوي الذي لا يهزم.";
+            }
+
+            msgs.innerHTML += `<div class="msg bot">${res}</div>`;
+            msgs.scrollTop = msgs.scrollHeight;
             const s = new SpeechSynthesisUtterance(res); s.lang = 'ar-SA'; window.speechSynthesis.speak(s);
-        }, 500);
+        }, 600);
+    }
+
+    function showSec(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id+'-sec').classList.add('active');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        event.currentTarget.classList.add('active');
     }
 </script>
 </body>
