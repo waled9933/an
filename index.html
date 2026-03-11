@@ -3,85 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المسائل الجدلية - الصلاح الديني</title>
+    <title>صحيح البخاري - الصلاح الديني</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Amiri&display=swap" rel="stylesheet">
     <style>
         :root { --p: #0a3622; --g: #c5a059; --bg: #f4f7f6; }
         body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
-        .back-btn { background: var(--p); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px; }
-        .header { text-align: center; color: var(--p); border-bottom: 2px solid var(--g); padding-bottom: 10px; margin-bottom: 25px; }
-        .issue-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; border-right: 6px solid var(--g); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .issue-card h3 { color: var(--p); margin-top: 0; border-bottom: 1px dashed #ddd; padding-bottom: 10px; }
-        .amiri { font-family: 'Amiri', serif; font-size: 20px; line-height: 1.9; color: #333; text-align: justify; }
-        .label { background: #eee; color: #666; font-size: 12px; padding: 3px 8px; border-radius: 5px; margin-bottom: 10px; display: inline-block; }
+        .back-btn { background: var(--p); color: white; border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; margin-bottom: 20px; display: block; width: 100%; }
+        .header { text-align: center; color: var(--p); margin-bottom: 25px; border-bottom: 2px solid var(--g); padding-bottom: 10px; }
+        
+        /* قائمة الكتب */
+        .books-list { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .book-card { background: white; padding: 20px; border-radius: 15px; border-right: 6px solid var(--p); box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .book-card:active { transform: scale(0.98); background: #f9f9f9; }
+        .book-card h3 { margin: 0; font-size: 18px; color: var(--p); }
+
+        /* عرض الأحاديث */
+        #hadith-display { display: none; }
+        .hadith-item { background: #fff; padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .hadith-number { color: var(--g); font-weight: bold; font-size: 14px; margin-bottom: 10px; display: block; }
+        .amiri { font-family: 'Amiri', serif; font-size: 22px; line-height: 1.9; color: #222; text-align: justify; }
+        .loading { text-align: center; color: var(--p); font-weight: bold; padding: 50px; }
     </style>
 </head>
 <body>
 
-<button class="back-btn" onclick="window.history.back()">🔙 رجوع للرئيسية</button>
+<div id="main-view">
+    <div class="header">
+        <h2>صحيح البخاري كاملاً</h2>
+        <p>موسوعة الصلاح الديني للقرآن</p>
+    </div>
 
-<div class="header">
-    <h2>المسائل الجدلية في القرآن الكريم</h2>
-    <p>بحث مفصل في القضايا العلمية والتاريخية</p>
+    <div class="books-list">
+        <div class="book-card" onclick="loadHadiths(1, 'كتاب بدء الوحي')"><h3>📖 كتاب بدء الوحي</h3> <span>◀</span></div>
+        <div class="book-card" onclick="loadHadiths(2, 'كتاب الإيمان')"><h3>📖 كتاب الإيمان</h3> <span>◀</span></div>
+        <div class="book-card" onclick="loadHadiths(3, 'كتاب العلم')"><h3>📖 كتاب العلم</h3> <span>◀</span></div>
+        <div class="book-card" onclick="loadHadiths(4, 'كتاب الوضوء')"><h3>📖 كتاب الوضوء</h3> <span>◀</span></div>
+        <div class="book-card" onclick="loadHadiths(10, 'كتاب الأذان')"><h3>📖 كتاب الأذان</h3> <span>◀</span></div>
+        <div class="book-card" onclick="loadHadiths(24, 'كتاب الزكاة')"><h3>📖 كتاب الزكاة</h3> <span>◀</span></div>
+    </div>
 </div>
 
-<div class="issue-card">
-    <div class="label">علوم القرآن</div>
-    <h3>1. مسألة النسخ (الناسخ والمنسوخ)</h3>
-    <p class="amiri">
-        <b>التعريف:</b> هو رفع حكم شرعي سابق بدليل شرعي لاحق. 
-        <br><b>الجدل:</b> اختلف العلماء في عدد الآيات المنسوخة؛ فمنهم من توسع فيها ومنهم من ضيقها جداً. 
-        <br><b>أنواعه:</b> نسخ الحكم والتلاوة معاً، نسخ الحكم وبقاء التلاوة (مثل آية مصابرة العشرة لواحد)، ونسخ التلاوة وبقاء الحكم (مثل آية الرجم). الحكمة منه التدرج في التشريع رحمة بالأمة.
-    </p>
+<div id="hadith-display">
+    <button class="back-btn" onclick="goBack()">🔙 العودة لفهرس الكتب</button>
+    <h2 id="current-book-title" style="text-align:center; color:var(--g);"></h2>
+    <div id="hadiths-container"></div>
 </div>
 
-<div class="issue-card">
-    <div class="label">العقيدة والتاريخ</div>
-    <h3>2. مسألة خلق القرآن (المحنة الكبرى)</h3>
-    <p class="amiri">
-        <b>القضية:</b> هل القرآن كلام الله المنزّل (قديم بصفتك كلام الله) أم مخلوق؟ 
-        <br><b>الخلاف:</b> ادعت المعتزلة في عهد المأمون أن القرآن مخلوق، بينما وقف الإمام أحمد بن حنبل والجمهور موقفاً حازماً بأن القرآن كلام الله غير مخلوق، ومنه بدأ وإليه يعود، وهو صفة من صفات الله الذاتية والفعليّة.
-    </p>
-</div>
+<script>
+    // دالة سحب الأحاديث من الـ API العالمي
+    async function loadHadiths(bookId, bookName) {
+        const container = document.getElementById('hadiths-container');
+        document.getElementById('main-view').style.display = 'none';
+        document.getElementById('hadith-display').style.display = 'block';
+        document.getElementById('current-book-title').innerText = bookName;
+        
+        container.innerHTML = '<div class="loading">جاري سحب الأحاديث من المكتبة الشاملة...</div>';
 
-<div class="issue-card">
-    <div class="label">التفسير</div>
-    <h3>3. المحكم والمتشابه</h3>
-    <p class="amiri">
-        <b>القضية:</b> قوله تعالى (منه آيات محكمات هن أم الكتاب وأخر متشابهات). 
-        <br><b>الجدل:</b> اختلفوا في تحديد "المتشابه"؛ هل هو ما لا يعلمه إلا الله (مثل صفات الله وكيفيتها) أم هو ما يحتاج لتأويل؟ والجمهور على أن المحكم هو واضح المعنى، والمتشابه هو ما خفي معناه أو احتمل أوجهًا كثيرة.
-    </p>
-</div>
+        try {
+            // الربط بـ API الأحاديث (بخاري)
+            const response = await fetch(`https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-buchari/sections/${bookId}.json`);
+            const data = await response.json();
+            
+            let html = '';
+            data.hadiths.forEach((h, index) => {
+                html += `
+                    <div class="hadith-item">
+                        <span class="hadith-number">حديث رقم: ${index + 1}</span>
+                        <div class="amiri">${h.text}</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        } catch (error) {
+            container.innerHTML = '<div style="color:red; text-align:center;">عذراً، حدث خطأ في الاتصال بالمكتبة. تأكد من إنترنت الموبايل.</div>';
+        }
+    }
 
-<div class="issue-card">
-    <div class="label">الغيبيات</div>
-    <h3>4. حقيقة الروح</h3>
-    <p class="amiri">
-        <b>القضية:</b> قوله تعالى (ويسألونك عن الروح قل الروح من أمر ربي). 
-        <br><b>الجدل:</b> هل الروح جسم لطيف يسري في البدن أم هي عرض؟ الأرجح أن الله استأثر بعلم حقيقتها وجوهرها، وما أوتي الإنسان من العلم فيها إلا قليلاً، وهو رد إلهي على من حاول حصر الوجود في الماديات فقط.
-    </p>
-</div>
-
-<div class="issue-card">
-    <div class="label">العصر الحديث</div>
-    <h3>5. قضية الإعجاز العلمي</h3>
-    <p class="amiri">
-        <b>الخلاف:</b> هل القرآن نزل لبيان الحقائق العلمية (الذرة، الفضاء، الأجنة) أم هو كتاب هداية فقط؟ 
-        <br><b>الرأي الوسط:</b> القرآن ليس كتاب فيزياء أو كيمياء، ولكن لا يمكن أن يصطدم بحقيقة علمية ثابتة، وإشاراته العلمية هي "لطائف" لتأكيد صدق المصدر الإلهي وليست هي المقصد الأساسي من التنزيل.
-    </p>
-</div>
-
-<div class="issue-card">
-    <div class="label">القراءات</div>
-    <h3>6. نزول القرآن على سبعة أحرف</h3>
-    <p class="amiri">
-        <b>الجدل:</b> ما المقصود بالأحرف السبعة؟ قيل هي سبع لغات من لغات العرب، وقيل هي وجوه من التغاير (تقديم، تأخير، إبدال). والجدل يدور حول هل المصحف العثماني الذي بين أيدينا يحتوي على الأحرف السبعة كلها أم حرف قريش فقط؟ والراجح أنه يحتوي على ما يحتمله رسم المصحف منها.
-    </p>
-</div>
-
-<div style="text-align: center; color: #999; font-size: 14px; margin-bottom: 40px;">
-    تمت المراجعة من المصادر الموثوقة (الإتقان للسيوطي، البرهان للزركشي).
-</div>
+    function goBack() {
+        document.getElementById('main-view').style.display = 'block';
+        document.getElementById('hadith-display').style.display = 'none';
+    }
+</script>
 
 </body>
 </html>
