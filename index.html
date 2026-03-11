@@ -13,14 +13,20 @@
         .q-list { padding: 20px; }
         .s-card { background: white; padding: 18px; border-radius: 15px; margin-bottom: 12px; border-right: 6px solid var(--p); display: flex; justify-content: space-between; cursor: pointer; align-items: center; }
         
-        .special-section { background: #fff3cd; border: 2px dashed var(--g); padding: 15px; margin: 20px; border-radius: 15px; text-align: center; cursor: pointer; font-weight: bold; color: #856404; }
+        /* تصميم قسم المسائل الجدلية */
+        .special-section { background: #fff3cd; border: 2px dashed var(--g); padding: 15px; margin: 20px; border-radius: 15px; text-align: center; cursor: pointer; font-weight: bold; color: #856404; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
-        #reader, #issues-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .ayat-text { font-family: 'Amiri', serif; font-size: 26px; line-height: 2.2; text-align: justify; margin-top: 20px; color: #222; }
-        .issue-item { background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-right: 4px solid var(--g); }
+        /* الشاشات المنبثقة */
+        #reader, #issues-page, #issue-detail { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        
+        .ayat-text, .detail-text { font-family: 'Amiri', serif; font-size: 24px; line-height: 2.0; text-align: justify; margin-top: 20px; color: #222; }
+        .issue-item { background: #f9f9f9; padding: 20px; border-radius: 15px; margin-bottom: 15px; border-right: 5px solid var(--g); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .issue-item h3 { margin: 0 0 10px 0; color: var(--p); font-size: 18px; }
+        .issue-item p { margin: 0; font-size: 14px; color: #666; }
 
-        .player-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--p); padding: 15px; border-top: 3px solid var(--g); z-index: 1001; display: none; }
+        .player-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--p); padding: 15px; border-top: 3px solid var(--g); z-index: 1001; }
         audio { width: 100%; height: 45px; }
+        .close-btn { background: var(--p); color: white; border: none; padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -33,28 +39,44 @@
     </div>
 
     <div class="special-section" onclick="openIssues()">
-        🔍 قسم المسائل الجدلية في القرآن
+        <span>🔍</span> قسم المسائل الجدلية في القرآن
     </div>
 
     <div class="q-list" id="list"></div>
 </div>
 
 <div id="issues-page">
-    <button onclick="closeIssues()" style="background:var(--p); color:white; border:none; padding:10px 25px; border-radius:12px; cursor:pointer;">🔙 العودة للرئيسية</button>
+    <button class="close-btn" onclick="closeIssues()">🔙 العودة للرئيسية</button>
     <h2 style="color:var(--p); text-align:center;">المسائل الجدلية والتفسيرية</h2>
     
-    <div class="issue-item">
-        <h3>مسألة النسخ في القرآن</h3>
-        <p>محتوى تعليمي وتفسيري حول الآيات المنسوخة والناسخة.</p>
+    <div class="issue-item" onclick="showDetail('النسخ', 'النسخ في القرآن هو رفع حكم شرعي بدليل شرعي متأخر عنه. والعلماء انقسموا في عدد الآيات المنسوخة، والهدف منه هو التدرج في التشريع رحمة بالعباد.')">
+        <h3>1. مسألة النسخ في القرآن</h3>
+        <p>اضغط لمعرفة التفاصيل حول الآيات الناسخة والمنسوخة...</p>
+    </div>
+
+    <div class="issue-item" onclick="showDetail('خلق القرآن', 'هي مسألة كلامية تاريخية حول ما إذا كان القرآن كلام الله المنزّل أم مخلوق. وأهل السنة والجماعة يؤمنون بأنه كلام الله غير مخلوق.')">
+        <h3>2. مسألة خلق القرآن</h3>
+        <p>نبذة عن الخلاف التاريخي المشهور في عهد المأمون...</p>
+    </div>
+
+    <div class="issue-item" onclick="showDetail('الحروف المقطعة', 'هي الحروف التي تبدأ بها بعض السور مثل (ألم) و(كهيعص). قيل هي أسرار الله في كتابه، وقيل هي للتحدي والإعجاز للعرب.')">
+        <h3>3. الحروف المقطعة</h3>
+        <p>تفسير معاني فواتح السور في بداية القرآن...</p>
     </div>
 </div>
 
+<div id="issue-detail">
+    <button class="close-btn" onclick="closeDetail()">🔙 رجوع للقائمة</button>
+    <h2 id="detail-title" style="color:var(--g); text-align:center;"></h2>
+    <div id="detail-content" class="detail-text"></div>
+</div>
+
 <div id="reader">
-    <button onclick="closeReader()" style="background:var(--p); color:white; border:none; padding:10px 25px; border-radius:12px; cursor:pointer; margin-bottom:10px;">🔙 رجوع</button>
+    <button class="close-btn" onclick="closeReader()">🔙 رجوع للمصحف</button>
     <div id="ayat-content" class="ayat-text"></div>
 </div>
 
-<div class="player-footer" id="audio-box">
+<div class="player-footer" id="audio-box" style="display:none;">
     <div id="sura-label" style="color:white; font-size:14px; margin-bottom:8px; text-align:center;"></div>
     <audio id="main-audio" controls autoplay></audio>
 </div>
@@ -63,6 +85,7 @@
     const suras = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
     const audio = document.getElementById('main-audio');
 
+    // بناء قائمة السور
     document.getElementById('list').innerHTML = suras.map((s, i) => `
         <div class="s-card" onclick="playSura(${i+1}, '${s}')">
             <span>${i+1}. سورة ${s}</span><span style="color:var(--g)">▶</span>
@@ -70,19 +93,27 @@
     `).join('');
 
     function playSura(id, name) {
-        const audioId = String(id).padStart(3, '0');
-        audio.src = `https://server12.mp3quran.net/maher/${audioId}.mp3`;
+        audio.src = `https://server12.mp3quran.net/maher/${String(id).padStart(3, '0')}.mp3`;
         audio.play();
         document.getElementById('audio-box').style.display = 'block';
         document.getElementById('sura-label').innerText = "تستمع الآن: سورة " + name;
         document.getElementById('reader').style.display = 'block';
         fetch(`https://api.alquran.cloud/v1/surah/${id}`).then(r => r.json()).then(d => {
-            document.getElementById('ayat-content').innerHTML = `<h3>سورة ${name}</h3>` + d.data.ayahs.map(a => a.text + ` ﴿${a.numberInSurah}﴾`).join(" ");
+            document.getElementById('ayat-content').innerHTML = `<h3 style='text-align:center'>${name}</h3>` + d.data.ayahs.map(a => a.text + ` ﴿${a.numberInSurah}﴾`).join(" ");
         });
     }
 
+    // وظائف المسائل الجدلية
     function openIssues() { document.getElementById('issues-page').style.display = 'block'; }
     function closeIssues() { document.getElementById('issues-page').style.display = 'none'; }
+    
+    function showDetail(title, content) {
+        document.getElementById('detail-title').innerText = title;
+        document.getElementById('detail-content').innerText = content;
+        document.getElementById('issue-detail').style.display = 'block';
+    }
+    
+    function closeDetail() { document.getElementById('issue-detail').style.display = 'none'; }
     function closeReader() { document.getElementById('reader').style.display = 'none'; }
 </script>
 
