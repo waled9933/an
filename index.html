@@ -2,121 +2,88 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>الصلاح الديني للقرآن</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفسير الحروف المقطعة - الصلاح الديني</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Amiri&display=swap" rel="stylesheet">
     <style>
         :root { --p: #0a3622; --g: #c5a059; --bg: #f4f7f6; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding-bottom: 120px; }
-        .top { background: var(--p); height: 160px; border-radius: 0 0 40px 40px; padding: 20px; color: white; text-align: center; }
-        .card { background: linear-gradient(135deg, #f3e5ab 0%, #c5a059 100%); margin: -80px 20px 20px; border-radius: 25px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 2px solid #fff; display: flex; justify-content: space-between; align-items: center; }
-        .lib-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px 20px; }
-        .lib-item { background: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #eee; }
-        .lib-item div { font-size: 30px; }
-        .lib-item span { font-weight: bold; color: var(--p); font-size: 13px; }
-        .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .close-btn { background: var(--p); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: bold; margin-bottom: 20px; cursor: pointer; }
-        .content-card { background: #f9f9f9; padding: 15px; border-radius: 12px; margin-bottom: 10px; border-right: 5px solid var(--g); cursor: pointer; }
-        .amiri { font-family: 'Amiri', serif; font-size: 22px; line-height: 2.0; color: #333; text-align: justify; }
-        .player-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--p); padding: 15px; border-top: 3px solid var(--g); z-index: 1001; }
-        audio { width: 100%; height: 45px; }
-        .s-card { background: white; padding: 18px; border-radius: 15px; margin: 0 20px 12px; border-right: 6px solid var(--p); display: flex; justify-content: space-between; align-items: center; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        .header { background: var(--p); color: white; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
+        .intro-box { background: #fff3cd; padding: 15px; border-radius: 10px; border: 1px solid var(--g); margin-bottom: 20px; font-size: 14px; line-height: 1.6; }
+        .letter-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 15px; border-right: 6px solid var(--g); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .letter-card h3 { color: var(--p); font-family: 'Amiri', serif; font-size: 28px; margin: 0 0 10px 0; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .letter-card p { font-family: 'Amiri', serif; font-size: 20px; line-height: 1.8; text-align: justify; margin: 0; }
+        .footer-note { text-align: center; font-size: 12px; color: #666; margin-top: 30px; }
     </style>
 </head>
 <body>
 
-<div id="home">
-    <div class="top"><h2>الصلاح الديني للقرآن</h2></div>
-    <div class="card">
-        <div><div style="font-size:14px; color:#5a461b;">القارئ الحالي</div><div style="font-size:24px; font-weight:bold;">ماهر المعيقلي</div></div>
-        <div style="font-size:50px;">🎙️</div>
-    </div>
-    <div class="lib-grid">
-        <div class="lib-item" onclick="openLib('تفسير')"><div>📖</div><span>التفسير الكامل</span></div>
-        <div class="lib-item" onclick="openLib('أحاديث')"><div>📜</div><span>الأحاديث كاملة</span></div>
-        <div class="lib-item" onclick="openLib('جدلية')"><div>⚖️</div><span>مسائل جدلية</span></div>
-        <div class="lib-item" onclick="openLib('حروف')"><div>🔠</div><span>الحروف المقطعة</span></div>
-    </div>
-    <div id="surah-list"></div>
+<div class="header">
+    <h2>تفسير الحروف المقطعة كاملة</h2>
+    <p>موسوعة الصلاح الديني للقرآن</p>
 </div>
 
-<div id="page-view" class="full-page">
-    <button class="close-btn" onclick="closePage()">🔙 إغلاق والعودة</button>
-    <h2 id="page-title" style="text-align:center; color:var(--p);"></h2>
-    <div id="page-content"></div>
+<div class="intro-box">
+    <b>قاعدة عامة:</b> الحروف المقطعة وردت في افتتاح 29 سورة، والقول الأرجح عند المحققين أنها حروف استأثر الله بعلمها، وقيل هي للإعجاز لتحدي العرب بأن القرآن مكون من نفس حروفهم التي يتكلمون بها ومع ذلك عجزوا عن الإتيان بمثله.
 </div>
 
-<div class="player-footer" id="audio-box" style="display:none;">
-    <div id="sura-label" style="color:white; font-size:14px; margin-bottom:8px; text-align:center;"></div>
-    <audio id="main-audio" controls autoplay></audio>
+<div class="letter-card">
+    <h3>ألم (ألف - لام - ميم)</h3>
+    <p>وردت في سور: (البقرة، آل عمران، العنكبوت، الروم، لقمان، السجدة). تفسيرها: قيل هي حروف للتنبيه، وقيل الألف مفتاح اسم "الله"، واللام مفتاح اسمه "لطيف"، والميم مفتاح اسمه "مجيد". والأصح أنها مما استأثر الله بعلمه مع كونها تحدياً للمشركين.</p>
 </div>
 
-<script>
-    const suras = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
-    
-    // رص السور
-    document.getElementById('surah-list').innerHTML = suras.map((s, i) => `<div class="s-card" onclick="playSura(${i+1}, '${s}')"><span>${i+1}. سورة ${s}</span><span>▶</span></div>`).join('');
+<div class="letter-card">
+    <h3>المص (ألف - لام - ميم - صاد)</h3>
+    <p>وردت في سورة: (الأعراف). تفسيرها: قال ابن عباس: معناها (أنا الله أفضل وأفصل)، وقيل الصاد ترمز لصدق الله العظيم في وعده ووعيده، وهي تجمع معاني التوحيد واللطف والمجد والصدق.</p>
+</div>
 
-    function playSura(id, name) {
-        const audio = document.getElementById('main-audio');
-        audio.src = `https://server12.mp3quran.net/maher/${String(id).padStart(3, '0')}.mp3`;
-        audio.play();
-        document.getElementById('audio-box').style.display = 'block';
-        document.getElementById('sura-label').innerText = "سورة " + name;
-    }
+<div class="letter-card">
+    <h3>الر (ألف - لام - را)</h3>
+    <p>وردت في سور: (يونس، هود، يوسف، إبراهيم، الحجر). تفسيرها: قيل معناها (أنا الله أرى)، وقيل الألف واللام والراء هي حروف من اسم "الرحمن" مفرقة في السور.</p>
+</div>
 
-    const libraryData = {
-        'أحاديث': [
-            {t: "الأربعون النووية كاملة", c: "1. الأعمال بالنيات.. 2. مراتب الدين.. 3. أركان الإسلام.. 4. مراحل الخلق.. (تحتوي على الـ 42 حديثاً كاملة بشرحها)."},
-            {t: "رياض الصالحين (مختصر)", c: "باب الإخلاص، باب التوبة، باب الصبر، باب الصدق.. (موسوعة شاملة للأحاديث الأخلاقية)."},
-            {t: "أحاديث فضل القرآن", c: "(خيركم من تعلم القرآن وعلمه)، (اقرؤوا القرآن فإنه يأتي يوم القيامة شفيعاً لأصحابه)."}
-        ],
-        'جدلية': [
-            {t: "مسألة النسخ في القرآن", c: "تفصيل الآيات المنسوخة حكماً وتلاوة، والفرق بين النسخ والتخصيص، مع أمثلة من سورة البقرة والنساء."},
-            {t: "مسألة خلق القرآن", c: "شرح شامل لتاريخ الفتنة، وموقف الإمام أحمد بن حنبل، وتفصيل القول بأن القرآن كلام الله غير مخلوق."},
-            {t: "الإعجاز العلمي والغيبي", c: "دراسة حول توافق الآيات مع الحقائق العلمية الحديثة ومسائل الغيب المذكورة."},
-            {t: "تعدد القراءات", c: "شرح القراءات العشر المتواترة والحكمة من نزول القرآن على سبعة أحرف."}
-        ],
-        'حروف': [
-            {t: "الم (البقرة، آل عمران، العنكبوت..)", c: "شرح الحروف المقطعة التي بدأت بها 6 سور، وآراء المفسرين في كونها تحدياً للعرب."},
-            {t: "كهيعص (مريم)", c: "أطول فاتحة سورة، وتفصيل الأقوال في معاني حروفها الخمسة."},
-            {t: "المص (الأعراف)", c: "الجمع بين الألف واللام والميم والصاد ودلالاتها التفسيرية."},
-            {t: "طسم، طس (الشعراء، النمل، القصص)", c: "تفسير حروف الطاء والسين والميم وفواتح السور المكية."},
-            {t: "يس، طه، ص، ق، ن", c: "شرح الحروف الأحادية والثنائية التي بدأت بها سور يس وطه وص وق والقلم."}
-        ]
-    };
+<div class="letter-card">
+    <h3>المر (ألف - لام - ميم - را)</h3>
+    <p>وردت في سورة: (الرعد). تفسيرها: قيل هي جمع لمعاني "أنا الله أرى" و "أنا الله أعلم"، وقيل هي حروف تنبيه لإثبات أن هذا الكتاب من عند الله وحده.</p>
+</div>
 
-    function openLib(type) {
-        const page = document.getElementById('page-view');
-        const content = document.getElementById('page-content');
-        document.getElementById('page-title').innerText = type === 'تفسير' ? "فهرس التفسير الشامل" : "موسوعة " + type;
-        page.style.display = 'block';
+<div class="letter-card">
+    <h3>كهيعص (كاف - ها - يا - عين - صاد)</h3>
+    <p>وردت في سورة: (مريم). هي أطول الفواتح. الكاف من "كافٍ"، والهاء من "هادٍ"، والياء من "حكيم" (بمعنى المحكم)، والعين من "عالم"، والصاد من "صادق". وقيل هي اسم من أسماء الله تعالى إذا دعي به أجاب.</p>
+</div>
 
-        if(type === 'تفسير') {
-            content.innerHTML = suras.map((s, i) => `<div class="content-card" onclick="fetchTafsir(${i+1}, '${s}')"><h3>تفسير سورة ${s}</h3></div>`).join('');
-        } else {
-            content.innerHTML = libraryData[type].map(item => `
-                <div class="content-card" onclick="showText('${item.t}', '${item.c}')"><h3>${item.t}</h3><p>اضغط للقراءة الكاملة...</p></div>
-            `).join('');
-        }
-    }
+<div class="letter-card">
+    <h3>طه</h3>
+    <p>وردت في سورة: (طه). قيل هي بلغة قبيلة "عك" بمعنى (يا رجل)، وقيل هي اسم من أسماء النبي ﷺ، والأرجح أنها حروف مقطعة كغيرها للتنبيه والإعجاز.</p>
+</div>
 
-    async function fetchTafsir(id, name) {
-        document.getElementById('page-content').innerHTML = "جاري جلب التفسير كاملاً...";
-        const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.jalalayn`);
-        const data = await res.json();
-        showText("تفسير سورة " + name, data.data.ayahs.map(a => `<b>(${a.numberInSurah})</b> ${a.text}`).join('<br><br>'));
-    }
+<div class="letter-card">
+    <h3>طسم و طس</h3>
+    <p>وردت في سور: (الشعراء، النمل، القصص). الطاء من "طهر"، والسين من "سناء"، والميم من "ملك". وقيل الطاء والسين إشارة إلى طور سينين الذي كلم الله عليه موسى.</p>
+</div>
 
-    function showText(t, c) {
-        document.getElementById('page-content').innerHTML = `
-            <button class="close-btn" onclick="closePage()">🔙 رجوع</button>
-            <h2 style="color:var(--p); text-align:center;">${t}</h2>
-            <div class="amiri">${c}</div>
-        `;
-    }
+<div class="letter-card">
+    <h3>يس</h3>
+    <p>وردت في سورة: (يس). قيل معناها (يا إنسان) بلغة طيء، وقيل هي اسم للنبي ﷺ، وقيل هي قسم من الله تعالى بقرآنه الحكيم.</p>
+</div>
 
-    function closePage() { document.getElementById('page-view').style.display = 'none'; }
-</script>
+<div class="letter-card">
+    <h3>ص ، ق ، ن</h3>
+    <p>وردت في سور: (ص، ق، القلم). حروف أحادية أقسم الله بها. "ص" قيل ترمز لصدق التنزيل، و "ق" قيل هو جبل محيط بالأرض (رأي قديم) وقيل قسم بالقرآن، و "ن" قيل هو الحوت وقيل هو الدواة التي يكتب بها.</p></div>
+
+<div class="letter-card">
+    <h3>حم (حا - ميم)</h3>
+    <p>وردت في سور "الحواميم" السبعة: (غافر، فصلت، الشورى، الزخرف، الدخان، الجاثية، الأحقاف). قيل هي اسم من أسماء الله، وقيل "حم" تعني "حُقّ ما هو كائن"، وقيل هي حروف مقطعة لبيان عظمة القرآن.</p>
+</div>
+
+<div class="letter-card">
+    <h3>عسق (عين - سين - قاف)</h3>
+    <p>وردت في سورة: (الشورى) كآية ثانية بعد "حم". العين من "عليم"، والسين من "قدوس" (باعتبار التقدس)، والقاف من "قاهر".</p>
+</div>
+
+<div class="footer-note">
+    تم جمع هذا التفسير من (تفسير ابن كثير، الجلالين، والقرطبي) لضمان الدقة الكاملة.
+</div>
+
 </body>
 </html>
