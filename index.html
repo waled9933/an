@@ -3,90 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مصحف وليد الذكي</title>
+    <title>مصحف وليد العالمي</title>
     
     <meta name="theme-color" content="#0a3622">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2904/2904831.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2904/2904831.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #c5a059; --green: #0a3622; --bg: #fdfcf0; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding-bottom: 70px; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding-bottom: 70px; user-select: none; }
         
-        /* الهيدر */
-        header { background: var(--green); color: var(--gold); padding: 30px 10px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; }
-        header h1 { font-family: 'Amiri', serif; font-size: 32px; margin: 0; }
-        
-        /* قائمة السور */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; padding: 20px; }
-        .surah-card { background: white; border: 2px solid var(--gold); border-radius: 20px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .surah-card:hover { transform: scale(1.05); background: var(--gold); color: white; }
+        /* تصميم الهيدر العالمي */
+        header { background: var(--green); color: var(--gold); padding: 30px 10px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        header h1 { font-family: 'Amiri', serif; font-size: 35px; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
 
-        /* شاشة القراءة */
+        /* شبكة السور الاحترافية */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 20px; }
+        .surah-card { background: white; border: 2px solid var(--gold); border-radius: 20px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
+        .surah-card:active { transform: scale(0.95); }
+        .surah-card .dl-btn { position: absolute; top: 8px; left: 8px; background: var(--gold); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
+
+        /* مشغل القراءة والاستماع */
         #viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .q-text { font-family: 'Amiri', serif; font-size: 28px; line-height: 2.2; text-align: center; padding: 20px; border-radius: 15px; background: #fffdf5; border: 2px solid var(--gold); }
-        .controls { position: sticky; bottom: 0; background: var(--green); padding: 15px; width: 100%; margin-left: -20px; border-top: 4px solid var(--gold); }
+        .q-content { font-family: 'Amiri', serif; font-size: 28px; line-height: 2.3; text-align: center; color: #222; background: #fffdf5; padding: 25px; border-radius: 20px; border: 2px solid var(--gold); margin: 20px 0; }
+        .footer-player { position: sticky; bottom: 0; width: 100%; background: var(--green); padding: 20px; border-top: 5px solid var(--gold); display: flex; flex-direction: column; align-items: center; }
 
-        /* الروبوت المتدبر */
-        #bot-icon { position: fixed; bottom: 20px; left: 20px; background: var(--gold); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; border: 4px solid white; box-shadow: 0 5px 20px rgba(0,0,0,0.4); z-index: 1000; cursor: pointer; }
-        #chat { position: fixed; bottom: 100px; left: 20px; width: 320px; height: 450px; background: white; border-radius: 25px; display: none; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 1001; border: 2px solid var(--green); overflow: hidden; }
-        .msgs { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 12px; border-radius: 15px; font-size: 14px; line-height: 1.6; max-width: 80%; }
-        .bot { background: #e8f5e9; align-self: flex-start; color: #1b5e20; border-right: 5px solid var(--green); }
-        .user { background: #ddd; align-self: flex-end; }
-        .chat-input { display: flex; padding: 10px; background: white; border-top: 1px solid #eee; }
-        .chat-input input { flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 20px; outline: none; }
+        /* الروبوت المتدبر الذكي */
+        #bot-icon { position: fixed; bottom: 20px; left: 20px; background: var(--gold); width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; border: 4px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 1000; cursor: pointer; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        
+        #chat { position: fixed; bottom: 105px; left: 20px; width: 340px; height: 480px; background: white; border-radius: 30px; display: none; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.4); z-index: 1001; border: 3px solid var(--green); overflow: hidden; }
+        .msgs { flex: 1; padding: 15px; overflow-y: auto; background: #fdfdfd; display: flex; flex-direction: column; gap: 12px; }
+        .msg { padding: 12px 16px; border-radius: 20px; font-size: 15px; line-height: 1.6; max-width: 85%; }
+        .bot { background: #e8f5e9; align-self: flex-start; color: #1b5e20; border-bottom-left-radius: 4px; }
+        .user { background: var(--gold); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>مصحف وليد للتدبر</h1>
-    <p>برنامج كامل • صوت • تدبر 🤖</p>
+    <h1>مصحف وليد الذكي</h1>
+    <p>نسخة التطبيقات العالمية 🌐</p>
 </header>
 
-<div class="grid" id="surah-grid"></div>
+<div class="grid" id="main-grid"></div>
 
 <div id="viewer">
-    <button onclick="closeV()" style="background:#c62828; color:white; border:none; padding:10px 20px; border-radius:15px; cursor:pointer; margin-bottom:10px;">⬅️ رجوع</button>
-    <div id="q-content" class="q-text"></div>
-    <div class="controls"><audio id="audio" controls style="width:100%"></audio></div>
+    <button onclick="closeV()" style="background:#c62828; color:white; border:none; padding:12px 30px; border-radius:25px; cursor:pointer; font-weight:bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">⬅️ العودة للقائمة</button>
+    <div id="q-text" class="q-content"></div>
+    <div class="footer-player">
+        <audio id="audio" controls style="width:100%"></audio>
+        <p id="dl-status" style="color:var(--gold); font-size:14px; margin-top:10px; font-weight:bold;"></p>
+    </div>
 </div>
 
 <div id="bot-icon" onclick="toggleChat()">🤖</div>
 <div id="chat">
-    <div style="background:var(--green); color:white; padding:15px; text-align:center; font-weight:bold;">الشيخ الروبوت (المتدبر)</div>
+    <div style="background:var(--green); color:white; padding:18px; text-align:center; font-weight:bold; font-size:18px;">الشيخ الروبوت (المتدبر الذكي)</div>
     <div class="msgs" id="chat-msgs">
-        <div class="msg bot">مرحباً يا وليد. اسألني عن حكمة الله في أي شيء أو تفسير آية وسأدبر معك القول.</div>
+        <div class="msg bot">أهلاً يا وليد. اسألني عن حكمة الله، لماذا فرض الله كذا؟ أو تفسير آية.. أنا هنا لأتدبر معك.</div>
     </div>
-    <div class="chat-input">
-        <input type="text" id="bot-in" placeholder="لماذا فرضت الصلاة؟">
-        <button onclick="askAI()" style="background:var(--green); color:white; border:none; padding:10px 15px; border-radius:20px; margin-right:5px; cursor:pointer;">➡️</button>
+    <div style="display:flex; padding:15px; background:white; border-top:1px solid #eee;">
+        <input type="text" id="bot-in" style="flex:1; border:2px solid #eee; padding:12px; border-radius:25px; outline:none;" placeholder="اكتب سؤالك هنا...">
+        <button onclick="askAI()" style="background:var(--green); color:white; border:none; width:45px; height:45px; border-radius:50%; margin-right:8px; cursor:pointer;">➡️</button>
     </div>
 </div>
 
 <script>
-    const surahs = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
+    const surahList = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
 
-    const grid = document.getElementById('surah-grid');
-    surahs.forEach((n, i) => {
-        grid.innerHTML += `<div class="surah-card" onclick="startSurah(${i+1}, '${n}')">${n}</div>`;
+    const grid = document.getElementById('main-grid');
+    surahList.forEach((name, i) => {
+        const id = i + 1;
+        const audioUrl = `https://server12.mp3quran.net/maher/${id.toString().padStart(3, '0')}.mp3`;
+        grid.innerHTML += `
+            <div class="surah-card">
+                <button class="dl-btn" onclick="downloadS('${audioUrl}', '${name}')">📥</button>
+                <div onclick="openS(${id}, '${name}', '${audioUrl}')">
+                    <div style="font-size:13px; color:#888; margin-bottom:5px;">${id}</div>
+                    <div style="font-weight:bold; color:var(--green); font-size:18px;">${name}</div>
+                </div>
+            </div>`;
     });
 
-    async function startSurah(id, name) {
+    async function openS(id, name, url) {
         document.getElementById('viewer').style.display = 'block';
+        const txt = document.getElementById('q-text');
         const audio = document.getElementById('audio');
-        const content = document.getElementById('q-content');
-        content.innerHTML = "جاري التحميل...";
-        audio.src = `https://server12.mp3quran.net/maher/${id.toString().padStart(3, '0')}.mp3`;
+        txt.innerHTML = "جاري فتح سورة " + name + "...";
+        audio.src = url;
         audio.play();
-        const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}`);
-        const data = await res.json();
-        let html = `<h2>${data.data.name}</h2>`;
-        data.data.ayahs.forEach(a => { html += a.text + ` (${a.numberInSurah}) `; });
-        content.innerHTML = html;
+
+        try {
+            const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}`);
+            const data = await res.json();
+            let html = `<h2>${data.data.name}</h2>`;
+            data.data.ayahs.forEach(a => { html += a.text + ` ﴿${a.numberInSurah}﴾ `; });
+            txt.innerHTML = html;
+            localStorage.setItem('surah_'+id, html); // ميزة الـ Offline الاحترافية
+        } catch(e) {
+            const saved = localStorage.getItem('surah_'+id);
+            txt.innerHTML = saved ? saved : "أنت غير متصل بالإنترنت حالياً.";
+        }
+    }
+
+    function downloadS(url, name) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `مصحف_وليد_${name}.mp3`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     }
 
     function closeV() { document.getElementById('viewer').style.display = 'none'; document.getElementById('audio').pause(); }
@@ -101,17 +132,17 @@
         input.value = "";
 
         setTimeout(() => {
-            let res = "يا وليد، هذا سؤال عظيم. التدبر فيه يوصلنا للإيمان.";
-            if(q.includes("صلاة") || q.includes("الصلاة")) {
-                res = "فرض الله الصلاة لتكون معراجاً للروح وراحة للقلب (أرحنا بها يا بلال)، ولأنها تنهى عن الفحشاء والمنكر.";
-            } else if(q.includes("معنى") || q.includes("تفسير")) {
-                res = "القرآن نزل لنتدبره، والمعنى الذي تبحث عنه موجود في ثنايا الآيات التي تحث على العمل الصالح.";
+            let res = "يا وليد، هذا سؤال ينم عن قلب حي. ";
+            if(q.includes("لماذا") || q.includes("ليش")) {
+                res += "الله حكيم خبير، وكل تشريع في الإسلام له هدف؛ إما راحة للنفس، أو اختبار للإيمان، أو حماية للمجتمع.";
+            } else if(q.includes("صلاة") || q.includes("الصلاة")) {
+                res = "فرض الله الصلاة لتكون حبل الوصل الذي لا ينقطع بينك وبينه، ولتجد فيها راحتك النفسية كل يوم.";
+            } else {
+                res = "بصفتي مساعدك الذكي، أقول لك إن القرآن يدعونا دائماً للتدبر والعمل بالخير. ما رأيك أن نبحث عن آية تتحدث عن هذا الموضوع؟";
             }
             msgs.innerHTML += `<div class="msg bot">${res}</div>`;
             msgs.scrollTop = msgs.scrollHeight;
-            const s = new SpeechSynthesisUtterance(res);
-            s.lang = 'ar-SA';
-            window.speechSynthesis.speak(s);
+            const s = new SpeechSynthesisUtterance(res); s.lang = 'ar-SA'; window.speechSynthesis.speak(s);
         }, 800);
     }
 </script>
