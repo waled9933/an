@@ -2,73 +2,128 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>مصحف وليد الذهبي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Amiri&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; background: #0a3622; color: white; text-align: center; padding: 20px; }
-        .search-box { width: 90%; padding: 15px; border-radius: 10px; border: none; font-size: 18px; margin-bottom: 20px; }
-        .sura-card { background: #1e1e1e; padding: 15px; margin: 10px 0; border-radius: 12px; border-right: 5px solid #c5a059; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #c5a059; padding: 15px; display: none; color: black; font-weight: bold; }
-        #quran-text { background: white; color: black; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: justify; line-height: 2; font-size: 20px; display: none; }
+        :root { --p: #0a3622; --g: #c5a059; --bg: #f4f7f6; --txt: #333; --card: white; }
+        .dark { --bg: #121212; --txt: #e0e0e0; --card: #1e1e1e; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); color: var(--txt); margin: 0; padding-bottom: 100px; }
+        header { background: var(--p); height: 100px; border-radius: 0 0 25px 25px; padding: 20px; color: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .page { display: none; padding: 15px; }
+        .active-page { display: block; }
+        .mic-section { text-align: center; margin: -20px 20px 20px; background: var(--card); padding: 25px; border-radius: 20px; border: 2px solid var(--g); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .mic-btn { width: 70px; height: 70px; background: #e74c3c; color: white; border-radius: 50%; border: none; font-size: 30px; cursor: pointer; transition: 0.3s; }
+        .listening { animation: pulse 1s infinite; background: #c0392b; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .sura-item { background: var(--card); padding: 18px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; border-right: 6px solid var(--p); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .quran-view { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--g); }
+        .ayat-text { font-family: 'Amiri', serif; font-size: 24px; line-height: 2.3; text-align: justify; direction: rtl; }
+        .audio-player { position: fixed; bottom: 85px; width: 92%; left: 4%; background: var(--p); color: white; padding: 12px; border-radius: 15px; display: flex; align-items: center; gap: 12px; z-index: 1000; box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+        .play-btn { background: var(--g); border: none; width: 45px; height: 45px; border-radius: 50%; color: white; font-size: 20px; cursor: pointer; }
     </style>
 </head>
-<body>
-    <h2>مصحف وليد الذهبي 🕌</h2>
-    <input type="text" id="searchInput" class="search-box" placeholder="اكتب اسم السورة هنا..." onkeyup="filterSuras()">
-    
-    <div id="fihris"></div>
-    <div id="quran-text"></div>
+<body class="dark">
 
-    <div id="playerBar" class="player-bar">
-        <span id="playingName"></span>
-        <button onclick="toggleAudio()" style="margin-right:20px; padding:5px 15px;">إيقاف/تشغيل</button>
+<header><h3>مصحف وليد الذهبي 🌙</h3></header>
+
+<div id="home" class="page active-page">
+    <div class="mic-section">
+        <p style="margin-bottom: 15px; font-weight: bold;">🎤 اضغط هنا وابحث بصوتك عن السورة</p>
+        <button id="mic" class="mic-btn" onclick="handleMicClick()">🎤</button>
+        <p id="status" style="font-size: 12px; margin-top: 10px; color: var(--g);">جاهز للاستماع</p>
     </div>
+    <div id="fihris"></div>
+</div>
 
-    <script>
-        const suras = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلّم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
-        let audio = new Audio();
+<div id="reader" class="page">
+    <button onclick="stopAudio(); showPage('home')" style="background:var(--g); border:none; border-radius:8px; padding:8px 20px; color:white; margin-bottom:15px; cursor:pointer; font-weight:bold;">🔙 العودة للفهرس</button>
+    <div class="quran-view"><div id="content-body" class="ayat-text"></div></div>
+</div>
 
-        function renderFihris() {
-            const container = document.getElementById('fihris');
-            container.innerHTML = suras.map((s, i) => `
-                <div class="sura-card" onclick="openSurah(${i+1}, '${s}')">
-                    <span>${i+1}. ${s}</span>
-                    <span>🔊 إستماع وقراءة</span>
-                </div>
-            `).join('');
-        }
+<div id="player" class="audio-player" style="display: none;">
+    <button class="play-btn" onclick="toggleAudio()" id="p-btn">⏸</button>
+    <div style="flex:1"><div id="p-name" style="font-size: 14px; font-weight: bold;"></div><div style="font-size:10px; opacity:0.8;">بصوت الشيخ محمد صديق المنشاوي</div></div>
+    <div onclick="stopAudio()" style="cursor:pointer; padding: 10px; font-size: 18px;">✖</div>
+</div>
 
-        function filterSuras() {
-            let input = document.getElementById('searchInput').value;
-            let cards = document.getElementsByClassName('sura-card');
-            for (let card of cards) {
-                card.style.display = card.innerText.includes(input) ? "flex" : "none";
-            }
-        }
+<script>
+    const suras = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
+    let audio = new Audio();
+    
+    // فك قفل الصوت للأندرويد
+    const unlock = () => {
+        audio.play().then(() => { audio.pause(); audio.currentTime = 0; }).catch(()=>{});
+        document.removeEventListener('click', unlock);
+    };
+    document.addEventListener('click', unlock);
 
-        async function openSurah(id, name) {
-            // تشغيل الصوت
-            const audioId = String(id).padStart(3, '0');
-            audio.src = `https://server8.mp3quran.net/minsh/mjw/${audioId}.mp3`;
-            audio.play().catch(e => alert("اضغط على تشغيل لتسمع الصوت"));
+    const fihris = document.getElementById('fihris');
+    fihris.innerHTML = suras.map((s, i) => `<div class="sura-item" onclick="openSurah(${i+1}, '${s}')"><span><b>${i+1}. ${s}</b></span><span style="color:var(--g)">📖 🔊</span></div>`).join('');
 
-            document.getElementById('playerBar').style.display = "block";
-            document.getElementById('playingName').innerText = "تستمع الآن: سورة " + name;
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+        document.getElementById(id).classList.add('active-page');
+        window.scrollTo(0,0);
+    }
 
-            // جلب النص
+    async function openSurah(id, name) {
+        showPage('reader');
+        document.getElementById('content-body').innerHTML = "جاري تحميل الآيات من المصحف...";
+        const audioId = String(id).padStart(3, '0');
+        
+        audio.src = `https://server8.mp3quran.net/minsh/mjw/${audioId}.mp3`;
+        audio.play().catch(() => { document.getElementById('p-btn').innerText = "▶"; });
+        
+        document.getElementById('player').style.display = 'flex';
+        document.getElementById('p-name').innerText = "سورة " + name;
+        document.getElementById('p-btn').innerText = "⏸";
+
+        try {
             const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}`);
             const data = await res.json();
-            document.getElementById('quran-text').style.display = "block";
-            document.getElementById('quran-text').innerText = data.data.ayahs.map(a => a.text).join(" ");
-            window.scrollTo(0, document.getElementById('quran-text').offsetTop);
-        }
+            let text = data.data.ayahs.map(a => a.text + ` ﴿${a.numberInSurah}﴾`).join(" ");
+            document.getElementById('content-body').innerHTML = text;
+        } catch(e) { document.getElementById('content-body').innerHTML = "تحقق من اتصالك بالإنترنت."; }
+    }
 
-        function toggleAudio() {
-            if (audio.paused) audio.play();
-            else audio.pause();
-        }
+    function toggleAudio() {
+        if(audio.paused) { audio.play(); document.getElementById('p-btn').innerText = "⏸"; }
+        else { audio.pause(); document.getElementById('p-btn').innerText = "▶"; }
+    }
 
-        renderFihris();
-    </script>
+    function stopAudio() { audio.pause(); document.getElementById('player').style.display = 'none'; }
+
+    function handleMicClick() {
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(startVoiceSearch).catch(() => {
+            alert("يرجى السماح للميكروفون من إعدادات المتصفح أو التطبيق");
+        });
+    }
+
+    function startVoiceSearch() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) return alert("البحث الصوتي غير مدعوم في هذا الإصدار");
+        
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ar-SA';
+        document.getElementById('mic').classList.add('listening');
+        document.getElementById('status').innerText = "جاري الاستماع.. قل اسم السورة";
+
+        recognition.onresult = (event) => {
+            const text = event.results[0][0].transcript;
+            document.getElementById('mic').classList.remove('listening');
+            const index = suras.findIndex(s => text.includes(s));
+            if(index !== -1) openSurah(index + 1, suras[index]);
+            else document.getElementById('status').innerText = "لم أفهم: " + text;
+        };
+        recognition.onerror = () => {
+            document.getElementById('mic').classList.remove('listening');
+            document.getElementById('status').innerText = "خطأ في الميكروفون، حاول ثانية";
+        };
+        recognition.start();
+    }
+</script>
 </body>
 </html>
