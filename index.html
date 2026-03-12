@@ -3,60 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تجربة الصلاح الديني</title>
     <style>
-        body { font-family: sans-serif; background: #f4f7f6; text-align: center; padding: 20px; }
-        .sura-card { background: white; padding: 15px; margin: 10px; border-radius: 12px; border-right: 5px solid #0a3622; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        #player-area { background: #0a3622; color: white; padding: 20px; border-radius: 15px; margin-top: 20px; display: none; }
-        audio { width: 100%; margin-top: 10px; }
-        #tafsir-text { background: white; padding: 15px; margin-top: 10px; border-radius: 10px; text-align: justify; line-height: 1.6; }
+        body { font-family: sans-serif; background: #f0f2f5; text-align: center; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .play-btn { background: #00796b; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; margin: 10px 0; font-weight: bold; font-size: 18px; }
+        #audio-container { display: none; margin-top: 20px; background: #e0f2f1; padding: 15px; border-radius: 10px; }
+        audio { width: 100%; }
+        #msg { color: #555; font-size: 14px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <h2>🕋 تجربة "قصة التفسير" (الخيار الأول)</h2>
-    <p style="color: #666;">اختر سورة للتجربة الحية:</p>
+<div class="card">
+    <h2 style="color:#004d40">الصلاح الديني - اختبار الصوت</h2>
+    <p>اضغط لتجربة "قصة التفسير":</p>
+    
+    <button class="play-btn" onclick="runAudio('001', 'الفاتحة')">▶️ تشغيل سورة الفاتحة</button>
+    <button class="play-btn" onclick="runAudio('112', 'الإخلاص')">▶️ تشغيل سورة الإخلاص</button>
 
-    <div class="sura-card" onclick="startTafsir(1, 'الفاتحة')">1. سورة الفاتحة (نموذج قصير)</div>
-    <div class="sura-card" onclick="startTafsir(2, 'البقرة')">2. سورة البقرة (نموذج طويل)</div>
-    <div class="sura-card" onclick="startTafsir(112, 'الإخلاص')">112. سورة الإخلاص (نموذج من الأواخر)</div>
-
-    <div id="player-area">
-        <h3 id="playing-title"></h3>
-        <audio id="tafsir-audio" controls></audio>
-        <div id="tafsir-text">جاري تحميل قصة التفسير المكتوبة...</div>
+    <div id="audio-container">
+        <b id="s-name"></b>
+        <audio id="player" controls autoplay></audio>
+        <div id="msg">انتظر ثواني للتحميل...</div>
     </div>
+</div>
 
-    <script>
-        async function startTafsir(id, name) {
-            const playerArea = document.getElementById('player-area');
-            const audio = document.getElementById('tafsir-audio');
-            const title = document.getElementById('playing-title');
-            const textDiv = document.getElementById('tafsir-text');
+<script>
+    function runAudio(id, name) {
+        const player = document.getElementById('player');
+        const container = document.getElementById('audio-container');
+        const msg = document.getElementById('msg');
+        const sName = document.getElementById('s-name');
 
-            // 1. إظهار منطقة المشغل
-            playerArea.style.display = 'block';
-            title.innerText = "🎙️ قصة تفسير سورة " + name;
-            textDiv.innerHTML = "جاري جلب نص التفسير...";
+        container.style.display = 'block';
+        sName.innerText = "سورة " + name;
+        msg.innerText = "جاري محاولة الاتصال بالسيرفر...";
 
-            // 2. تشغيل الصوت من السيرفر المضمون (الخيار الأول)
-            const audioId = String(id).padStart(3, '0');
-            audio.src = `https://archive.org/download/Tafsir_Moyassar_Audio/${audioId}.mp3`;
-            audio.play().catch(() => console.log("في انتظار ضغطة المستخدم لتشغيل الصوت"));
+        // تغيير الرابط ليكون مباشر أكثر وتجنب الحظر
+        const fileUrl = `https://archive.org/download/Tafsir_Moyassar_Audio/${id}.mp3`;
+        player.src = fileUrl;
 
-            // 3. جلب التفسير المكتوب (API)
-            try {
-                const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.jalalayn`);
-                const data = await res.json();
-                let html = "";
-                data.data.ayahs.forEach(a => {
-                    html += `<p><b>(${a.numberInSurah})</b> ${a.text}</p>`;
-                });
-                textDiv.innerHTML = html;
-            } catch (e) {
-                textDiv.innerHTML = "تعذر تحميل النص، تأكد من اتصال الإنترنت.";
-            }
-        }
-    </script>
+        player.onplay = () => { msg.innerText = "✅ شغال الآن بجودة عالية"; };
+        
+        player.onerror = () => {
+            msg.innerText = "⚠️ مشكلة في السيرفر، جاري المحاولة من رابط احتياطي...";
+            // رابط احتياطي من سيرفر مختلف تماماً
+            player.src = `https://server14.mp3quran.net/s_hkm/${id}.mp3`;
+        };
+    }
+</script>
+
 </body>
 </html>
