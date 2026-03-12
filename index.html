@@ -1,116 +1,36 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>الصلاح الديني للقرآن</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Amiri&display=swap" rel="stylesheet">
-    <style>
-        :root { --p: #0a3622; --g: #c5a059; --bg: #f4f7f6; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding-bottom: 120px; }
-        .top { background: var(--p); height: 160px; border-radius: 0 0 40px 40px; padding: 20px; color: white; text-align: center; }
-        .card { background: linear-gradient(135deg, #f3e5ab 0%, #c5a059 100%); margin: -80px 20px 20px; border-radius: 25px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 2px solid #fff; display: flex; justify-content: space-between; align-items: center; }
-        .q-list { padding: 10px 20px; }
-        .s-card { background: white; padding: 18px; border-radius: 15px; margin-bottom: 12px; border-right: 6px solid var(--p); display: flex; justify-content: space-between; cursor: pointer; align-items: center; }
-        
-        #content-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .close-btn { background: var(--p); color: white; border: none; padding: 12px 25px; border-radius: 12px; cursor: pointer; margin-bottom: 15px; width: 100%; font-weight: bold; }
-        .tafsir-audio-box { background: #eef2f1; padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid var(--p); text-align: center; }
-        .tafsir-item { background: #f9f9f9; padding: 15px; border-radius: 12px; margin-bottom: 10px; border-right: 4px solid var(--g); font-family: 'Amiri', serif; font-size: 20px; line-height: 1.8; }
-
-        .player-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--p); padding: 15px; border-top: 3px solid var(--g); z-index: 1001; display: none; }
-        audio { width: 100%; height: 45px; }
-    </style>
-</head>
-<body>
-
-<div id="home-view">
-    <div class="top"><h2>الصلاح الديني للقرآن</h2></div>
-    <div class="card">
-        <div><div style="font-size:14px; color:#5a461b;">القارئ الحالي</div><div style="font-size:24px; font-weight:bold; color:#3a2d0d;">الشيخ ماهر المعيقلي</div></div>
-        <div style="font-size:50px;">🎙️</div>
-    </div>
-    <div class="q-list" id="main-list"></div>
-</div>
-
-<div id="content-view">
-    <button class="close-btn" onclick="closeView()">🔙 عودة للقائمة</button>
-    <div id="tafsir-player-area"></div>
-    <div id="content-body"></div>
-</div>
-
-<div class="player-footer" id="audio-box">
-    <div id="sura-label" style="color:white; font-size:14px; margin-bottom:8px; text-align:center;"></div>
-    <audio id="main-audio" controls autoplay></audio>
-</div>
-
 <script>
-    const suras = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الإنفطار","المطففين","الإنشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
-
-    const listDiv = document.getElementById('main-list');
-    listDiv.innerHTML = suras.map((s, i) => `
-        <div class="s-card">
-            <div onclick="openTafsir(${i+1}, '${s}')" style="flex:1;">
-                <b style="font-size:18px;">${i+1}. سورة ${s}</b>
-                <div style="font-size:12px; color:var(--g);">📖 التفسير المكتوب والصوتي</div>
-            </div>
-            <div onclick="playAudio(${i+1}, '${s}')" style="padding:10px; background:#f0f0f0; border-radius:10px; color:var(--p); font-weight:bold;">🎙️ استماع</div>
-        </div>
-    `).join('');
-
-    function playAudio(id, name) {
-        const audio = document.getElementById('main-audio');
-        // سيرفر الشيخ ماهر المعيقلي
-        audio.src = `https://server12.mp3quran.net/maher/${String(id).padStart(3, '0')}.mp3`;
-        document.getElementById('audio-box').style.display = 'block';
-        document.getElementById('sura-label').innerText = "تستمع للقرآن: سورة " + name;
-        audio.play();
-    }
-
-    async function openTafsir(id, name) {
-        const view = document.getElementById('content-view');
-        const body = document.getElementById('content-body');
-        const playerArea = document.getElementById('tafsir-player-area');
-        view.style.display = 'block';
-        body.innerHTML = `<div style="text-align:center; padding:20px;">جاري تحميل التفسير...</div>`;
-        
-        // استخدام سيرفر بديل ومضمون للتفسير الميسر (الإذاعة)
+    // دالة ذكية لتشغيل الصوت مع سيرفر احتياطي
+    function playSafeAudio(id, type) {
+        const audio = (type === 'quran') ? document.getElementById('main-audio') : document.getElementById('tafsir-audio');
         const audioId = String(id).padStart(3, '0');
-        const tafsirUrl = `https://server14.mp3quran.net/s_hkm/${audioId}.mp3`;
-
-        playerArea.innerHTML = `
-            <div class="tafsir-audio-box">
-                <div style="font-weight:bold; color:var(--p); margin-bottom:10px;">🎙️ استمع لقصة تفسير سورة ${name}</div>
-                <audio id="tafsir-audio" controls style="height:35px; width:100%;">
-                    <source src="${tafsirUrl}" type="audio/mpeg">
-                </audio>
-                <div style="font-size:11px; color:#666; margin-top:5px;">التفسير الميسر المسموع - سرد متواصل</div>
-            </div>`;
-
-        // محاولة تشغيل الصوت تلقائياً
-        const tAudio = document.getElementById('tafsir-audio');
-        tAudio.onerror = function() {
-            playerArea.innerHTML += `<div style="color:red; font-size:12px;">تنبيه: السيرفر الصوتي للتفسير قد يكون مشغولاً حالياً.</div>`;
+        
+        // السيرفرات الأساسية والاحتياطية
+        const servers = {
+            quran: [
+                `https://server12.mp3quran.net/maher/${audioId}.mp3`, // الأساسي
+                `https://server10.mp3quran.net/maher/${audioId}.mp3`  // الاحتياطي
+            ],
+            tafsir: [
+                `https://server14.mp3quran.net/s_hkm/${audioId}.mp3`, // الأساسي
+                `https://archive.org/download/tafsir_moussar/${audioId}.mp3` // احتياطي (أرشيف)
+            ]
         };
 
-        try {
-            const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.jalalayn`);
-            const data = await res.json();
-            let html = `<h2 style="text-align:center; color:var(--p);">تفسير سورة ${name} (مكتوب)</h2>`;
-            data.data.ayahs.forEach(a => {
-                html += `<div class="tafsir-item"><b>آية (${a.numberInSurah}):</b><br>${a.text}</div>`;
-            });
-            body.innerHTML = html;
-            view.scrollTo(0,0);
-        } catch(e) { body.innerHTML = `<div style="color:red; text-align:center; padding:20px;">تأكد من وجود إنترنت لعرض التفسير المكتوب.</div>`; }
-    }
+        let currentServerIndex = 0;
+        audio.src = servers[type][currentServerIndex];
 
-    function closeView() { 
-        document.getElementById('content-view').style.display = 'none';
-        // إيقاف صوت التفسير عند الخروج
-        const tAudio = document.getElementById('tafsir-audio');
-        if(tAudio) tAudio.pause();
+        // لو حصل خطأ في السيرفر الأول، جرب التاني فوراً
+        audio.onerror = function() {
+            if (currentServerIndex < servers[type].length - 1) {
+                currentServerIndex++;
+                console.log("السيرفر الأول معطل، جاري التحويل للسيرفر الاحتياطي...");
+                audio.src = servers[type][currentServerIndex];
+                audio.play();
+            } else {
+                alert("عذراً، يبدو أن هناك مشكلة مؤقتة في سيرفرات الصوت. جرب مرة أخرى لاحقاً.");
+            }
+        };
+
+        audio.play();
     }
 </script>
-</body>
-</html>
