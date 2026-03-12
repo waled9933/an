@@ -2,93 +2,59 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الصلاح الديني للقرآن</title>
+    <title>مصحف وليد PRO</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; text-align: center; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; }
-        select, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; }
-        button { background-color: #27ae60; color: white; cursor: pointer; transition: 0.3s; }
-        button:hover { background-color: #219150; }
-        .audio-section { margin-top: 20px; padding: 15px; background: #e8f5e9; border-radius: 10px; }
-        #tafsir-area { margin-top: 15px; font-size: 14px; color: #555; line-height: 1.6; text-align: justify; }
-        .error { color: red; font-weight: bold; }
+        body { font-family: 'Cairo', sans-serif; background-color: #f4f4f4; text-align: center; }
+        .container { max-width: 500px; margin: 50px auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #2d5a27; }
+        select { width: 90%; padding: 10px; margin: 20px 0; border-radius: 5px; font-size: 18px; }
+        audio { width: 90%; margin: 10px 0; }
+        .btn-back { background: #2d5a27; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>الصلاح الديني للقرآن</h1>
-    <p>مصحف وليد PRO - الإصدار المطور</p>
-
-    <label for="surahSelect">اختر السورة:</label>
-    <select id="surahSelect">
+    <h1>مصحف وليد PRO</h1>
+    
+    <select id="surahSelect" onchange="loadSurah()">
+        <option value="">-- اختر السورة --</option>
         </select>
 
-    <div class="audio-section">
+    <div id="playerArea">
         <h3>تلاوة الشيخ ماهر المعيقلي</h3>
-        <audio id="mainAudio" controls style="width: 100%;">
-            Your browser does not support the audio element.
-        </audio>
+        <audio id="quranAudio" controls></audio>
+        
+        <h3>تفسير الآيات</h3>
+        <div id="tafsirContent" style="text-align: right; padding: 10px; background: #eef7ee; margin-top: 10px; border-radius: 5px; min-height: 50px;">
+            اختر سورة لعرض التفسير...
+        </div>
     </div>
 
-    <div class="audio-section" style="background-color: #fff3e0;">
-        <h3>مكتبة التفسير الصوتي</h3>
-        <audio id="tafsirAudio" controls style="width: 100%;">
-            Your browser does not support the audio element.
-        </audio>
-        <div id="tafsirStatus"></div>
-    </div>
-
-    <div id="tafsir-area">
-        <strong>التفسير المكتوب:</strong>
-        <p id="tafsirText">اختر سورة لعرض التفسير والبدء بالاستماع...</p>
-    </div>
+    <br><br>
+    <button class="btn-back" onclick="window.location.reload()">رجوع للقائمة</button>
 </div>
 
 <script>
-    const surahNames = [
-        "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"
-    ];
+    const surahs = ["الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"];
 
-    const surahSelect = document.getElementById('surahSelect');
-    const mainAudio = document.getElementById('mainAudio');
-    const tafsirAudio = document.getElementById('tafsirAudio');
-    const tafsirText = document.getElementById('tafsirText');
-    const tafsirStatus = document.getElementById('tafsirStatus');
-
-    // ملء قائمة السور
-    surahNames.forEach((name, index) => {
+    const select = document.getElementById('surahSelect');
+    surahs.forEach((name, index) => {
         let option = document.createElement('option');
         option.value = String(index + 1).padStart(3, '0');
-        option.textContent = `${index + 1}. ${name}`;
-        surahSelect.appendChild(option);
+        option.textContent = (index + 1) + ". " + name;
+        select.appendChild(option);
     });
 
-    // تحديث الروابط عند الاختيار
-    surahSelect.addEventListener('change', function() {
-        const surahNum = this.value;
-        
-        // رابط التلاوة (ماهر المعيقلي)
-        mainAudio.src = `https://server12.mp3quran.net/maher/${surahNum}.mp3`;
-        
-        // رابط التفسير الصوتي (هنا تم تحديث الرابط ليكون أكثر استقراراً)
-        // سنستخدم روابط مباشرة من مكتبة التفسير لضمان عدم حدوث شاشة بيضاء
-        tafsirAudio.src = `https://download.quranicaudio.com/tafsir/arabic/saadi/${surahNum}.mp3`;
-        
-        // جلب التفسير المكتوب (مثال مبسط)
-        tafsirText.innerText = "جاري تحميل التفسير المكتوب لهذه السورة من قاعدة البيانات...";
-        
-        // معالجة أخطاء الصوت
-        tafsirAudio.onerror = function() {
-            tafsirStatus.innerHTML = '<span class="error">خطأ: ملف التفسير الصوتي غير متوفر حالياً لهذه السورة.</span>';
-        };
-        tafsirAudio.onplay = function() {
-            tafsirStatus.innerHTML = '<span style="color: green;">يعمل التفسير الآن...</span>';
-        };
-    });
-
+    function loadSurah() {
+        const val = select.value;
+        if (val) {
+            // الرابط اللي كنا متفقين عليه لماهر المعيقلي
+            document.getElementById('quranAudio').src = `https://server12.mp3quran.net/maher/${val}.mp3`;
+            document.getElementById('tafsirContent').innerText = "جاري جلب التفسير الخاص بسورة " + surahs[parseInt(val)-1] + "...";
+            // هنا كان بيتم الربط مع محرك التفسير آية بآية
+        }
+    }
 </script>
 
 </body>
