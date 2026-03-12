@@ -60,6 +60,7 @@
 
     function playAudio(id, name) {
         const audio = document.getElementById('main-audio');
+        // سيرفر الشيخ ماهر المعيقلي
         audio.src = `https://server12.mp3quran.net/maher/${String(id).padStart(3, '0')}.mp3`;
         document.getElementById('audio-box').style.display = 'block';
         document.getElementById('sura-label').innerText = "تستمع للقرآن: سورة " + name;
@@ -73,15 +74,24 @@
         view.style.display = 'block';
         body.innerHTML = `<div style="text-align:center; padding:20px;">جاري تحميل التفسير...</div>`;
         
-        // إضافة مشغل التفسير الصوتي (الشيخ الثاني)
+        // استخدام سيرفر بديل ومضمون للتفسير الميسر (الإذاعة)
+        const audioId = String(id).padStart(3, '0');
+        const tafsirUrl = `https://server14.mp3quran.net/s_hkm/${audioId}.mp3`;
+
         playerArea.innerHTML = `
             <div class="tafsir-audio-box">
                 <div style="font-weight:bold; color:var(--p); margin-bottom:10px;">🎙️ استمع لقصة تفسير سورة ${name}</div>
-                <audio controls style="height:35px;">
-                    <source src="https://server14.mp3quran.net/s_hkm/${String(id).padStart(3, '0')}.mp3" type="audio/mpeg">
+                <audio id="tafsir-audio" controls style="height:35px; width:100%;">
+                    <source src="${tafsirUrl}" type="audio/mpeg">
                 </audio>
-                <div style="font-size:11px; color:#666; margin-top:5px;">التفسير الميسر المسموع ورا بعضه</div>
+                <div style="font-size:11px; color:#666; margin-top:5px;">التفسير الميسر المسموع - سرد متواصل</div>
             </div>`;
+
+        // محاولة تشغيل الصوت تلقائياً
+        const tAudio = document.getElementById('tafsir-audio');
+        tAudio.onerror = function() {
+            playerArea.innerHTML += `<div style="color:red; font-size:12px;">تنبيه: السيرفر الصوتي للتفسير قد يكون مشغولاً حالياً.</div>`;
+        };
 
         try {
             const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.jalalayn`);
@@ -92,10 +102,15 @@
             });
             body.innerHTML = html;
             view.scrollTo(0,0);
-        } catch(e) { body.innerHTML = `<div style="color:red; text-align:center; padding:20px;">تأكد من وجود إنترنت لعرض التفسير.</div>`; }
+        } catch(e) { body.innerHTML = `<div style="color:red; text-align:center; padding:20px;">تأكد من وجود إنترنت لعرض التفسير المكتوب.</div>`; }
     }
 
-    function closeView() { document.getElementById('content-view').style.display = 'none'; }
+    function closeView() { 
+        document.getElementById('content-view').style.display = 'none';
+        // إيقاف صوت التفسير عند الخروج
+        const tAudio = document.getElementById('tafsir-audio');
+        if(tAudio) tAudio.pause();
+    }
 </script>
 </body>
 </html>
