@@ -2,57 +2,96 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>مصحف وليد PRO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الصلاح الديني للقرآن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Amiri&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #f4f4f4; text-align: center; padding: 20px; }
-        .main-card { background: white; max-width: 450px; margin: auto; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        h1 { color: #2d5a27; }
-        select { width: 100%; padding: 12px; margin: 20px 0; border-radius: 8px; font-size: 16px; border: 2px solid #2d5a27; }
-        audio { width: 100%; margin: 10px 0; }
-        .footer { margin-top: 20px; font-size: 12px; color: #888; }
+        :root { --p: #0a3622; --g: #c5a059; --bg: #f4f7f6; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding-bottom: 120px; }
+        .top { background: var(--p); height: 160px; border-radius: 0 0 40px 40px; padding: 20px; color: white; text-align: center; }
+        .card { background: linear-gradient(135deg, #f3e5ab 0%, #c5a059 100%); margin: -80px 20px 20px; border-radius: 25px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 2px solid #fff; display: flex; justify-content: space-between; align-items: center; }
+        
+        .q-list { padding: 10px 20px; }
+        .s-card { background: white; padding: 18px; border-radius: 15px; margin-bottom: 12px; border-right: 6px solid var(--p); display: flex; justify-content: space-between; cursor: pointer; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        
+        /* شاشة التفسير */
+        #content-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        .close-btn { background: var(--p); color: white; border: none; padding: 12px 25px; border-radius: 12px; cursor: pointer; margin-bottom: 15px; width: 100%; font-weight: bold; }
+        .tafsir-item { background: #f9f9f9; padding: 15px; border-radius: 12px; margin-bottom: 10px; border-right: 4px solid var(--g); font-family: 'Amiri', serif; font-size: 20px; line-height: 1.8; text-align: justify; }
+
+        .player-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--p); padding: 15px; border-top: 3px solid var(--g); z-index: 1001; display: none; }
+        audio { width: 100%; height: 45px; }
     </style>
 </head>
 <body>
 
-<div class="main-card">
-    <h1>مصحف وليد PRO</h1>
-    <p>النسخة الأساسية (العمود الفقري)</p>
-    
-    <select id="surahPicker" onchange="startApp()">
-        <option value="">-- اختر السورة --</option>
-        </select>
-
-    <div id="audioPlayer">
-        <h3>القرآن الكريم</h3>
-        <audio id="quran" controls></audio>
-        
-        <h3>التفسير الميسر</h3>
-        <audio id="tafsir" controls></audio>
+<div id="home-view">
+    <div class="top"><h2>الصلاح الديني للقرآن</h2></div>
+    <div class="card">
+        <div>
+            <div style="font-size:14px; color:#5a461b;">القارئ الحالي</div>
+            <div style="font-size:24px; font-weight:bold; color:#3a2d0d;">الشيخ ماهر المعيقلي</div>
+        </div>
+        <div style="font-size:50px;">🎙️</div>
     </div>
+    
+    <div class="q-list" id="main-list"></div>
+</div>
 
-    <div class="footer">مشروع وليد - 114 سورة كاملة</div>
+<div id="content-view">
+    <button class="close-btn" onclick="closeView()">🔙 عودة للقائمة الرئيسية</button>
+    <div id="content-body"></div>
+</div>
+
+<div class="player-footer" id="audio-box">
+    <div id="sura-label" style="color:white; font-size:14px; margin-bottom:8px; text-align:center;"></div>
+    <audio id="main-audio" controls autoplay></audio>
 </div>
 
 <script>
-    const names = ["الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"];
+    const suras = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
 
-    const picker = document.getElementById('surahPicker');
-    names.forEach((n, i) => {
-        let opt = document.createElement('option');
-        opt.value = String(i + 1).padStart(3, '0');
-        opt.innerHTML = (i + 1) + ". " + n;
-        picker.appendChild(opt);
-    });
+    const listDiv = document.getElementById('main-list');
+    listDiv.innerHTML = suras.map((s, i) => `
+        <div class="s-card">
+            <div onclick="openTafsir(${i+1}, '${s}')" style="flex:1;">
+                <b style="font-size:18px;">${i+1}. سورة ${s}</b>
+                <div style="font-size:12px; color:var(--g);">📖 عرض التفسير</div>
+            </div>
+            <div onclick="playAudio(${i+1}, '${s}')" style="padding:10px; background:#f0f0f0; border-radius:10px; color:var(--p); font-weight:bold;">🎙️ استماع</div>
+        </div>
+    `).join('');
 
-    function startApp() {
-        const id = picker.value;
-        if(id) {
-            // "الوقود" الأصلي - ماهر المعيقلي
-            document.getElementById('quran').src = `https://server12.mp3quran.net/maher/${id}.mp3`;
-            // "محرك التفسير" - السعدي
-            document.getElementById('tafsir').src = `https://download.quranicaudio.com/tafsir/arabic/saadi/${id}.mp3`;
+    function playAudio(id, name) {
+        const audio = document.getElementById('main-audio');
+        const audioId = String(id).padStart(3, '0');
+        audio.src = `https://server12.mp3quran.net/maher/${audioId}.mp3`;
+        document.getElementById('audio-box').style.display = 'block';
+        document.getElementById('sura-label').innerText = "تستمع الآن: سورة " + name;
+        audio.play();
+    }
+
+    async function openTafsir(id, name) {
+        const view = document.getElementById('content-view');
+        const body = document.getElementById('content-body');
+        view.style.display = 'block';
+        body.innerHTML = `<div style="text-align:center; padding:20px;">جاري تحميل تفسير سورة ${name}...</div>`;
+
+        try {
+            const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.jalalayn`);
+            const data = await res.json();
+            let html = `<h2 style="text-align:center; color:var(--p);">تفسير سورة ${name}</h2>`;
+            data.data.ayahs.forEach(a => {
+                html += `<div class="tafsir-item"><b>آية (${a.numberInSurah}):</b><br>${a.text}</div>`;
+            });
+            body.innerHTML = html;
+            view.scrollTo(0,0);
+        } catch(e) {
+            body.innerHTML = `<div style="color:red; text-align:center; padding:20px;">عذراً، التفسير يحتاج إنترنت للتحميل.</div>`;
         }
     }
+
+    function closeView() { document.getElementById('content-view').style.display = 'none'; }
 </script>
 
 </body>
