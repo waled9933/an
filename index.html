@@ -3,27 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>موسوعة المؤمن - الإصلاح النهائي</title>
+    <title>موسوعة المؤمن الشاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --p: #2d5a47; --gold: #b8860b; --bg: #f8faf9; }
         body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; color: #333; padding-bottom: 80px; }
+        
+        /* الشاشة الرئيسية */
         .home-screen { padding: 20px; text-align: center; }
-        .header-title { color: var(--p); font-size: 28px; font-weight: 900; margin-bottom: 25px; }
-        .icon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .main-icon { background: white; border-radius: 20px; padding: 20px 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); cursor: pointer; border-bottom: 5px solid #eee; transition: 0.2s; }
-        .main-icon span { font-size: 35px; display: block; margin-bottom: 10px; }
-        .main-icon p { margin: 0; font-weight: bold; font-size: 14px; }
-        .c1 { border-color: #2ecc71; } .c2 { border-color: #3498db; } .c3 { border-color: #f1c40f; } .c4 { border-color: #e67e22; }
-        .c5 { border-color: #9b59b6; } .c6 { border-color: #1abc9c; } .c7 { border-color: #e74c3c; } .c8 { border-color: #34495e; }
-        #view-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 10000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        .header-title { color: var(--p); font-size: 26px; font-weight: 900; margin-bottom: 25px; }
+        .icon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .main-icon { 
+            background: white; border-radius: 15px; padding: 20px 5px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; 
+            border-bottom: 4px solid #eee; transition: 0.2s;
+        }
+        .main-icon span { font-size: 30px; display: block; margin-bottom: 8px; }
+        .main-icon p { margin: 0; font-weight: bold; font-size: 13px; }
+
+        /* ألوان الأيقونات المتنوعة */
+        .c1 { border-color: #2ecc71; } .c2 { border-color: #3498db; }
+        .c3 { border-color: #f1c40f; } .c4 { border-color: #e67e22; }
+        .c5 { border-color: #9b59b6; } .c6 { border-color: #1abc9c; }
+        .c7 { border-color: #e74c3c; } .c8 { border-color: #34495e; }
+
+        /* شاشات العرض */
+        #view-screen { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: white; z-index: 10000; overflow-y: auto; padding: 20px; box-sizing: border-box;
+        }
         .nav-top { position: sticky; top: 0; background: white; padding-bottom: 10px; z-index: 11; border-bottom: 1px solid #eee; }
-        .btn-close { width: 100%; padding: 12px; background: #333; color: white; border: none; border-radius: 12px; font-weight: bold; margin-bottom: 10px; cursor: pointer; }
-        .audio-bar { background: #f1f3f4; padding: 15px; border-radius: 15px; margin: 10px 0; display: flex; justify-content: center; gap: 10px; border: 1px solid #ddd; }
-        .a-btn { border: none; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .q-text { font-family: 'Amiri', serif; font-size: 24px; line-height: 2; text-align: center; background: #fdfbf0; padding: 15px; border-radius: 15px; margin: 10px 0; }
-        .taf-card { background: #f9f9f9; padding: 15px; border-radius: 12px; border-right: 4px solid var(--gold); margin-bottom: 10px; }
-        .mic-btn { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; background: var(--gold); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 999; cursor: pointer; }
+        .btn-close { width: 100%; padding: 12px; background: #333; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+
+        /* لوحة الصوت */
+        .audio-bar { 
+            background: #f1f3f4; padding: 12px; border-radius: 12px; margin: 10px 0;
+            display: flex; justify-content: center; gap: 8px; border: 1px solid #ddd;
+        }
+        .a-btn { border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+        .q-text { font-family: 'Amiri', serif; font-size: 24px; line-height: 2.2; text-align: center; background: #fdfbf0; padding: 15px; border-radius: 15px; margin: 10px 0; border: 1px solid #eee; }
+        .card { background: #f9f9f9; padding: 15px; border-radius: 12px; border-right: 4px solid var(--p); margin-bottom: 10px; }
+
+        /* الميكروفون */
+        .mic-fab {
+            position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px;
+            background: var(--gold); border-radius: 50%; display: flex;
+            justify-content: center; align-items: center; font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 999; cursor: pointer;
+        }
+        .listening { animation: pulse 1s infinite; background: #e74c3c; color: white; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -47,25 +77,20 @@
         <button class="btn-close" onclick="closeScreen()">🔙 العودة للرئيسية</button>
         <div id="audio-panel" style="display:none;">
             <div class="audio-bar">
-                <button class="a-btn" id="playBtn">▶️ تشغيل</button>
-                <button class="a-btn" id="pauseBtn">⏸️ مؤقت</button>
-                <button class="a-btn" id="stopBtn" style="color:red;">⏹️ إنهاء</button>
+                <button class="a-btn" onclick="curAud.play()">▶️ تشغيل</button>
+                <button class="a-btn" onclick="curAud.pause()">⏸️ مؤقت</button>
+                <button class="a-btn" onclick="stopAud()" style="color:red;">⏹️ إنهاء</button>
             </div>
         </div>
     </div>
     <div id="view-body"></div>
 </div>
 
-<div class="mic-btn" onclick="startMic()">🎙️</div>
+<div class="mic-fab" id="micBtn" onclick="startMicSearch()">🎙️</div>
 
 <script>
     let curAud = new Audio();
     const suras = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
-
-    // ربط الأزرار برمجياً
-    document.getElementById('playBtn').addEventListener('click', () => curAud.play());
-    document.getElementById('pauseBtn').addEventListener('click', () => curAud.pause());
-    document.getElementById('stopBtn').addEventListener('click', () => { curAud.pause(); curAud.currentTime = 0; });
 
     function show(h, showAudio = false) {
         document.getElementById('view-body').innerHTML = h;
@@ -75,9 +100,12 @@
 
     function closeScreen() {
         document.getElementById('view-screen').style.display = 'none';
-        curAud.pause(); curAud.currentTime = 0; window.speechSynthesis.cancel();
+        stopAud(); window.speechSynthesis.cancel();
     }
 
+    function stopAud() { curAud.pause(); curAud.currentTime = 0; }
+
+    // 1. المصحف الصوتي
     function openQuran() {
         let h = `<h3>المصحف الشريف</h3><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">`;
         suras.forEach((s, i) => h += `<div class="main-icon" onclick="playSura(${i+1},'${s}')">${s}</div>`);
@@ -85,7 +113,8 @@
     }
 
     async function playSura(id, name) {
-        show("جاري تحميل السورة...", true);
+        show("<p>جاري تحميل السورة...</p>", true);
+        stopAud();
         curAud.src = `https://server12.mp3quran.net/maher/${String(id).padStart(3,'0')}.mp3`;
         curAud.play();
         const r = await fetch(`https://api.alquran.cloud/v1/surah/${id}`);
@@ -93,6 +122,7 @@
         show(`<div class="q-text"><h4>سورة ${name}</h4>${d.data.ayahs.map(a=>a.text+` ﴿${a.numberInSurah}﴾`).join(' ')}</div>`, true);
     }
 
+    // 2. التفسير الصوتي
     function openTafseerMenu() {
         let h = `<h3>تفسير القرآن</h3><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">`;
         suras.forEach((s, i) => h += `<div class="main-icon" style="border-color:#3498db" onclick="loadTaf(${i+1},'${s}')">${s}</div>`);
@@ -100,43 +130,56 @@
     }
 
     async function loadTaf(id, name) {
-        show("جاري تحميل التفسير...");
+        show("<p>جاري تحميل التفسير...</p>");
         const [qR, tR] = await Promise.all([fetch(`https://api.alquran.cloud/v1/surah/${id}`), fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.jalalayn`)]);
         const qD = await qR.json(), tD = await tR.json();
-        let h = `<h2>تفسير ${name}</h2><button class="a-btn" onclick="spkTaf('${name}')">🔊 قراءة التفسير صوتياً</button><div id="taf-content">`;
-        qD.data.ayahs.forEach((a, i) => h += `<div class="q-text" style="font-size:18px;">${a.text}</div><div class="taf-card">${tD.data.ayahs[i].text}</div>`);
+        let h = `<h2>تفسير سورة ${name}</h2><button class="a-btn" onclick="spkTaf('${name}')">🔊 قراءة التفسير</button><div id="taf-box">`;
+        qD.data.ayahs.forEach((a, i) => h += `<div class="q-text" style="font-size:18px;">${a.text}</div><div class="card">${tD.data.ayahs[i].text}</div>`);
         show(h + "</div>");
     }
 
-    function spkTaf(name) {
+    function spkTaf(n) {
         window.speechSynthesis.cancel();
-        let txt = document.getElementById('taf-content').innerText;
-        let m = new SpeechSynthesisUtterance("تفسير سورة " + name + ". " + txt);
+        let m = new SpeechSynthesisUtterance("تفسير سورة " + n + ". " + document.getElementById('taf-box').innerText);
         m.lang = 'ar-SA'; window.speechSynthesis.speak(m);
     }
 
-    function openWahidStory() { show(`<h2>✨ قصة الوحي</h2><div class="taf-card">كان النبي ﷺ يخلو بغار حراء... حتى جاءه جبريل وقال له اقرأ.. عاد يرتجف للسيدة خديجة فقالت له: والله لا يخزيك الله أبداً.</div>`); }
-    function openSahaba() { show(`<h2>👥 مواقف الصحابة</h2><div class="taf-card"><b>خديجة:</b> أول من آمنت.. <b>أبو بكر:</b> قال صدقت.. <b>علي:</b> آمن وهو صبي..</div>`); }
-    function openTasbih() { show(`<h2>📿 المسبحة</h2><div style="text-align:center; padding:40px; background:var(--p); color:white; border-radius:20px;" onclick="document.getElementById('cc').innerText++"><h1 id="cc" style="font-size:60px;">0</h1><p>اضغط للعد</p></div><button class="btn-close" style="margin-top:10px" onclick="document.getElementById('cc').innerText=0">تصفير</button>`); }
-    function openNames() { show("<h2>💎 أسماء الله</h2><div class='taf-card'>الله، الرحمن، الرحيم، الملك، القدوس...</div>"); }
-    function openAzkar() { show("<h2>☀️ الأذكار</h2><div class='taf-card'>أصبحنا وأصبح الملك لله..</div>"); }
-    async function openPrayers() {
-        const r = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt&method=5');
-        const d = await r.json(); 
-        show(`<h2>🕌 المواقيت</h2><div class='taf-card'>الفجر: ${d.data.timings.Fajr}<br>الظهر: ${d.data.timings.Dhuhr}<br>المغرب: ${d.data.timings.Maghrib}</div>`);
-    }
-
-    function startMic() {
+    // 3. الميكروفون (البحث الذكي)
+    function startMicSearch() {
         const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if(!Speech) return alert("المتصفح لا يدعم البحث الصوتي");
+        if(!Speech) return alert("المتصفح لا يدعم الميكروفون");
         const rec = new Speech(); rec.lang = 'ar-SA';
+        const btn = document.getElementById('micBtn');
+        
+        rec.onstart = () => btn.classList.add('listening');
+        rec.onend = () => btn.classList.remove('listening');
+        
         rec.onresult = (e) => {
             let word = e.results[0][0].transcript;
             let idx = suras.findIndex(s => word.includes(s));
-            if(idx !== -1) playSura(idx+1, suras[idx]);
+            if(idx !== -1) {
+                closeScreen(); // غلق أي شاشة مفتوحة
+                playSura(idx+1, suras[idx]); // فتح السورة وتشغيلها
+            } else {
+                alert("قل اسم السورة بوضوح، مثلاً: سورة الكهف");
+            }
         };
         rec.start();
     }
+
+    // 4. باقي الأقسام المستعادة
+    function openWahidStory() { show(`<h2>✨ قصة الوحي</h2><div class="card">بدأ الوحي في غار حراء.. عندما قال جبريل للنبي ﷺ: اقرأ. عاد يرتجف للسيدة خديجة فقالت له: والله لا يخزيك الله أبداً.</div>`); }
+    function openSahaba() { show(`<h2>👥 مواقف الصحابة</h2><div class="card"><b>خديجة:</b> أول من آمنت وثبتته.. <br><b>أبو بكر:</b> قال إن كان قال فقد صدق..<br><b>علي:</b> آمن وهو صبي بكل شجاعة.</div>`); }
+    function openTasbih() { show(`<h2>📿 المسبحة</h2><div style="text-align:center; padding:40px; background:var(--p); color:white; border-radius:15px;" onclick="document.getElementById('c').innerText++"><h1 id="c">0</h1><p>اضغط للعد</p></div><button class="btn-close" style="margin-top:10px" onclick="document.getElementById('c').innerText=0">تصفير</button>`); }
+    function openAzkar() { show(`<h2>☀️ الأذكار</h2><div class="card">أذكار الصباح والمساء، وحصن المسلم اليومي.</div>`); }
+    async function openPrayers() {
+        try {
+            const r = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt&method=5');
+            const d = await r.json(); 
+            show(`<h2>🕌 المواقيت</h2><div class='card'>الفجر: ${d.data.timings.Fajr}<br>الظهر: ${d.data.timings.Dhuhr}<br>المغرب: ${d.data.timings.Maghrib}</div>`);
+        } catch(e) { show("<h2>🕌 المواقيت</h2><p>تأكد من اتصالك بالإنترنت</p>"); }
+    }
+    function openNames() { show(`<h2>💎 أسماء الله الحسنى</h2><div class="card">الرحمن، الرحيم، الملك، القدوس، السلام، المؤمن، المهيمن...</div>`); }
 </script>
 </body>
 </html>
