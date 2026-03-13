@@ -3,42 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>مصحف الهداية الذكي</title>
+    <title>مصحف الهداية الناطق</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Amiri&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --p: #0a3622; --g: #a68549; --bg: #f4f7f6; --txt: #333; --card-bg: #ffffff;
-        }
-        [data-theme="dark"] {
-            --p: #1a4d35; --bg: #121212; --txt: #e0e0e0; --card-bg: #1e1e1e;
-        }
+        :root { --p: #0a3622; --g: #a68549; --bg: #f4f7f6; --txt: #333; --card-bg: #ffffff; }
+        [data-theme="dark"] { --p: #1a4d35; --bg: #121212; --txt: #e0e0e0; --card-bg: #1e1e1e; }
         body { font-family: 'Tajawal', sans-serif; background: var(--bg); color: var(--txt); margin: 0; padding-bottom: 120px; transition: 0.3s; }
         
-        /* الهيدر والبحث */
-        .top { background: var(--p); padding: 30px 20px 80px; border-radius: 0 0 40px 40px; text-align: center; color: white; position: relative; }
+        .top { background: var(--p); padding: 30px 20px 80px; border-radius: 0 0 40px 40px; text-align: center; color: white; }
         .search-box { margin: -50px 20px 10px; }
-        .search-box input { width: 100%; padding: 15px 20px; border-radius: 15px; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); font-family: 'Tajawal'; font-size: 16px; box-sizing: border-box; }
+        .search-box input { width: 100%; padding: 15px 20px; border-radius: 15px; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); font-size: 16px; box-sizing: border-box; outline: none; }
 
-        /* القراء والوضع الليلي */
         .controls { display: flex; justify-content: space-around; padding: 10px 20px; gap: 10px; }
         select, .theme-btn { padding: 10px; border-radius: 10px; border: 1px solid var(--g); background: var(--card-bg); color: var(--txt); font-family: 'Tajawal'; cursor: pointer; flex: 1; }
 
-        /* قائمة السور */
         .q-list { padding: 10px 20px; }
         .s-card { background: var(--card-bg); padding: 18px; border-radius: 15px; margin-bottom: 12px; border-right: 6px solid var(--p); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 
-        /* الميكروفون العائم */
         .mic-btn { position: fixed; bottom: 100px; left: 20px; width: 60px; height: 60px; background: #d9534f; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 3000; cursor: pointer; animation: pulse 2s infinite; border: none; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(217, 83, 79, 0); } 100% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0); } }
 
-        /* شاشة القراءة والتفسير */
         #content-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 4000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
         .close-btn { background: var(--p); color: white; border: none; padding: 15px; border-radius: 12px; cursor: pointer; margin-bottom: 15px; width: 100%; font-weight: bold; }
         .quran-text { font-family: 'Amiri', serif; font-size: 26px; line-height: 2; text-align: center; color: var(--p); background: #fffdf5; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #eee; }
-        .tafsir-item { background: var(--card-bg); padding: 15px; border-radius: 12px; margin-bottom: 10px; border-right: 4px solid var(--g); font-family: 'Tajawal'; line-height: 1.6; }
+        
+        .tafsir-item { background: var(--card-bg); padding: 15px; border-radius: 12px; margin-bottom: 10px; border-right: 4px solid var(--g); display: flex; justify-content: space-between; align-items: flex-start; }
+        .tafsir-text { flex: 1; padding-left: 10px; font-size: 18px; line-height: 1.6; }
+        .speak-btn { background: #f0f0f0; border: none; padding: 8px; border-radius: 50%; cursor: pointer; font-size: 18px; }
 
-        .player-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--p); padding: 15px; border-top: 3px solid var(--g); z-index: 1001; display: none; text-align: center; }
-        audio { width: 100%; filter: sepia(20%) saturate(70%) grayscale(1); }
+        .player-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--p); padding: 15px; border-top: 3px solid var(--g); z-index: 1001; display: none; text-align: center; color: white; }
+        audio { width: 100%; margin-top: 10px; }
     </style>
 </head>
 <body data-theme="light">
@@ -47,12 +41,12 @@
 
 <div id="home-view">
     <div class="top">
-        <h2>مصحف الهداية الذكي</h2>
-        <p style="font-size: 14px; opacity: 0.9;">اقرأ، استمع، وابحث بصوتك</p>
+        <h2>مصحف الهداية الناطق</h2>
+        <p style="font-size: 14px; opacity: 0.9;">استمع للقرآن وللتفسير بصوتك</p>
     </div>
 
     <div class="search-box">
-        <input type="text" id="searchInput" placeholder="ابحث عن اسم السورة هنا..." onkeyup="filterSuras()">
+        <input type="text" id="searchInput" placeholder="ابحث عن اسم السورة..." onkeyup="filterSuras()">
     </div>
 
     <div class="controls">
@@ -73,7 +67,7 @@
 </div>
 
 <div class="player-footer" id="audio-box">
-    <div id="sura-label" style="color:white; font-size:14px; margin-bottom:8px; font-weight: bold;"></div>
+    <div id="sura-label" style="font-size:14px; font-weight: bold;"></div>
     <audio id="main-audio" controls></audio>
 </div>
 
@@ -83,14 +77,14 @@
     function renderList(list) {
         const listDiv = document.getElementById('main-list');
         listDiv.innerHTML = list.map(s => {
-            let originalIndex = suras.indexOf(s) + 1;
+            let idx = suras.indexOf(s) + 1;
             return `
             <div class="s-card">
-                <div onclick="openContent(${originalIndex}, '${s}')" style="flex:1;">
-                    <b style="font-size:18px;">${originalIndex}. ${s}</b>
-                    <div style="font-size:13px; color:var(--g); margin-top:5px;">📖 قراءة وتفسير</div>
+                <div onclick="openContent(${idx}, '${s}')" style="flex:1; cursor:pointer;">
+                    <b style="font-size:18px;">${idx}. ${s}</b>
+                    <div style="font-size:13px; color:var(--g); margin-top:5px;">📖 قراءة وتفسير ناطق</div>
                 </div>
-                <div onclick="playAudio(${originalIndex}, '${s}')" style="padding:10px; background:#f0f0f0; border-radius:10px; color:#0a3622; font-weight:bold; cursor:pointer;">🎙️ استماع</div>
+                <div onclick="playAudio(${idx}, '${s}')" style="padding:10px; background:#f0f0f0; border-radius:10px; color:#0a3622; font-weight:bold; cursor:pointer;">🎙️ تلاوة</div>
             </div>`;
         }).join('');
     }
@@ -98,101 +92,85 @@
 
     function filterSuras() {
         let val = document.getElementById('searchInput').value;
-        let filtered = suras.filter(s => s.includes(val));
-        renderList(filtered);
+        renderList(suras.filter(s => s.includes(val)));
     }
 
     function toggleTheme() {
         const body = document.body;
-        const btn = document.querySelector('.theme-btn');
-        if(body.getAttribute('data-theme') === 'light') {
-            body.setAttribute('data-theme', 'dark');
-            btn.innerText = "☀️ الوضع الفاتح";
-        } else {
-            body.setAttribute('data-theme', 'light');
-            btn.innerText = "🌙 وضع الليل";
-        }
+        const isDark = body.getAttribute('data-theme') === 'dark';
+        body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        document.querySelector('.theme-btn').innerText = isDark ? "🌙 وضع الليل" : "☀️ الوضع الفاتح";
     }
 
     function playAudio(id, name) {
         const audio = document.getElementById('main-audio');
         const reciter = document.getElementById('reciterSelect').value;
         const audioId = String(id).padStart(3, '0');
-        
-        let server = "https://server12.mp3quran.net/maher/"; // Default
-        if(reciter === 'alafasy') server = "https://server10.mp3quran.net/afs/";
-        if(reciter === 'minshawi') server = "https://server10.mp3quran.net/minsh/";
-
-        audio.src = `${server}${audioId}.mp3`;
+        let srv = reciter === 'alafasy' ? "10/afs" : (reciter === 'minshawi' ? "10/minsh" : "12/maher");
+        audio.src = `https://server${srv}/${audioId}.mp3`;
         document.getElementById('audio-box').style.display = 'block';
-        document.getElementById('sura-label').innerText = "أنت تستمع الآن إلى سورة " + name;
+        document.getElementById('sura-label').innerText = "تلاوة سورة " + name;
         audio.play();
+    }
+
+    // ميزة التفسير الناطق
+    function speakTafsir(text) {
+        window.speechSynthesis.cancel(); // إيقاف أي صوت يعمل حالياً
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'ar-SA';
+        msg.rate = 0.9; // سرعة الكلام (هادئة قليلاً)
+        window.speechSynthesis.speak(msg);
     }
 
     async function openContent(id, name) {
         const view = document.getElementById('content-view');
         const body = document.getElementById('content-body');
         view.style.display = 'block';
-        body.innerHTML = `<div style="text-align:center; padding:50px;">جاري تحميل السورة والتفسير...</div>`;
+        body.innerHTML = `<div style="text-align:center; padding:50px;">جاري تحميل السورة...</div>`;
 
         try {
-            const [quranRes, tafsirRes] = await Promise.all([
+            const [qRes, tRes] = await Promise.all([
                 fetch(`https://api.alquran.cloud/v1/surah/${id}`),
                 fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.jalalayn`)
             ]);
-            const quranData = await quranRes.json();
-            const tafsirData = await tafsirRes.json();
+            const qData = await qRes.json();
+            const tData = await tRes.json();
 
-            let quranHtml = `<div class="quran-text">`;
-            quranData.data.ayahs.forEach(a => quranHtml += a.text + ` ﴿${a.numberInSurah}﴾ `);
-            quranHtml += `</div><hr><h3 style="text-align:center;">التفسير الميسر</h3>`;
-
-            tafsirData.data.ayahs.forEach(a => {
-                quranHtml += `<div class="tafsir-item"><b>الآية (${a.numberInSurah}):</b> ${a.text}</div>`;
+            let html = `<h2 style="text-align:center; color:var(--p);">سورة ${name}</h2>`;
+            html += `<div class="quran-text">` + qData.data.ayahs.map(a => a.text + ` ﴿${a.numberInSurah}﴾`).join(' ') + `</div><hr>`;
+            
+            tData.data.ayahs.forEach(a => {
+                html += `
+                <div class="tafsir-item">
+                    <div class="tafsir-text"><b>الآية (${a.numberInSurah}):</b><br>${a.text}</div>
+                    <button class="speak-btn" onclick="speakTafsir('${a.text.replace(/'/g, "\\'")}')" title="استمع للتفسير">🔊</button>
+                </div>`;
             });
 
-            body.innerHTML = `<h2 style="text-align:center; color:var(--p);">سورة ${name}</h2>` + quranHtml;
+            body.innerHTML = html;
             view.scrollTo(0,0);
-        } catch(e) {
-            body.innerHTML = `<div style="color:red; text-align:center; padding:50px;">فشل الاتصال. يرجى التأكد من الإنترنت.</div>`;
-        }
+        } catch(e) { body.innerHTML = `<div style="color:red; text-align:center; padding:50px;">خطأ في الاتصال بالإنترنت.</div>`; }
     }
 
-    function closeView() { document.getElementById('content-view').style.display = 'none'; }
+    function closeView() { 
+        window.speechSynthesis.cancel(); // إيقاف الصوت عند الخروج
+        document.getElementById('content-view').style.display = 'none'; 
+    }
 
-    // ميزة البحث الصوتي الذكية
     function startVoiceSearch() {
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         recognition.lang = 'ar-SA';
-        const micBtn = document.getElementById('micIcon');
-        
-        micBtn.style.background = "#4cae4c";
-        micBtn.innerText = "⏳";
+        const mic = document.getElementById('micIcon');
+        mic.style.background = "#4cae4c"; mic.innerText = "⏳";
 
-        recognition.onresult = (event) => {
-            let word = event.results[0][0].transcript;
-            micBtn.innerText = "🎙️";
-            micBtn.style.background = "#d9534f";
-            
-            // تنظيف الكلمة المنطوقة
-            let cleanWord = word.replace("سورة", "").trim();
-            let index = suras.findIndex(s => s.includes(cleanWord));
-            
-            if(index !== -1) {
-                alert("تم العثور على سورة " + suras[index]);
-                playAudio(index + 1, suras[index]);
-                openContent(index + 1, suras[index]);
-            } else {
-                alert("لم أفهم اسم السورة: " + word);
-            }
+        recognition.onresult = (e) => {
+            let word = e.results[0][0].transcript.replace("سورة", "").trim();
+            mic.style.background = "#d9534f"; mic.innerText = "🎙️";
+            let idx = suras.findIndex(s => s.includes(word));
+            if(idx !== -1) { playAudio(idx+1, suras[idx]); openContent(idx+1, suras[idx]); }
+            else { alert("لم أتعرف على السورة: " + word); }
         };
-
-        recognition.onerror = () => {
-            micBtn.innerText = "🎙️";
-            micBtn.style.background = "#d9534f";
-            alert("حدث خطأ في التعرف على الصوت.");
-        };
-
+        recognition.onerror = () => { mic.style.background = "#d9534f"; mic.innerText = "🎙️"; };
         recognition.start();
     }
 </script>
