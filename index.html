@@ -3,185 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>حقيبة المسلم الشاملة</title>
+    <title>موسوعة المسلم الشاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Amiri&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #0a3622; --g: #a68549; --bg: #f4f7f6; --txt: #333; --card-bg: #ffffff; }
-        [data-theme="dark"] { --p: #1a4d35; --bg: #121212; --txt: #e0e0e0; --card-bg: #1e1e1e; }
+        :root { --p: #0a3622; --g: #c5a059; --bg: #f4f7f6; --card: #ffffff; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding-bottom: 90px; color: #333; }
         
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); color: var(--txt); margin: 0; padding-bottom: 80px; transition: 0.3s; }
+        .top-bar { background: var(--p); padding: 25px 20px; text-align: center; color: white; border-radius: 0 0 30px 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         
-        /* الهيدر */
-        .header { background: var(--p); padding: 25px; text-align: center; color: white; border-radius: 0 0 30px 30px; }
-        
-        /* التبويبات السفلية */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: var(--card-bg); display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 5000; }
-        .nav-item { text-align: center; font-size: 12px; color: #888; cursor: pointer; flex: 1; }
-        .nav-item.active { color: var(--p); font-weight: bold; }
-        .nav-item i { display: block; font-size: 20px; margin-bottom: 2px; }
+        .icon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 15px; }
+        .icon-item { background: var(--card); padding: 15px 5px; border-radius: 18px; text-align: center; box-shadow: 0 3px 8px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #f0f0f0; }
+        .icon-item span { display: block; font-size: 30px; margin-bottom: 5px; }
+        .icon-item p { margin: 0; font-size: 12px; font-weight: bold; color: var(--p); }
 
-        /* الأقسام */
-        .tab-content { display: none; padding: 20px; animation: fadeIn 0.5s; }
+        .tab-content { display: none; padding: 10px; animation: fadeIn 0.4s; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* البطاقات والتنسيق */
-        .card { background: var(--card-bg); padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border-right: 5px solid var(--p); }
-        .btn-main { background: var(--p); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; cursor: pointer; font-family: 'Tajawal'; font-weight: bold; }
+        .card { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 10px; border-right: 5px solid var(--p); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         
-        /* المسبحة */
-        .tasbih-area { text-align: center; padding: 40px 20px; background: var(--p); color: white; border-radius: 20px; margin: 20px 0; cursor: pointer; }
-        .counter { font-size: 50px; font-weight: bold; }
+        #view-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 10000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        .back-btn { background: var(--p); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; margin-bottom: 15px; font-weight: bold; cursor: pointer; }
 
-        /* شاشة العرض الكاملة */
-        #full-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 6000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        .nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; padding: 10px 0; border-top: 2px solid #eee; z-index: 5000; }
+        .nav-btn { flex: 1; text-align: center; color: #777; font-size: 12px; cursor: pointer; }
+        .nav-btn.active { color: var(--p); font-weight: bold; }
+        .nav-btn b { display: block; font-size: 20px; }
         
-        /* الميكروفون العائم */
-        .mic-btn { position: fixed; bottom: 100px; left: 20px; width: 55px; height: 55px; background: #d9534f; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px; z-index: 4000; cursor: pointer; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-
-        .quran-text { font-family: 'Amiri', serif; font-size: 24px; line-height: 2; text-align: center; background: #fffdf5; padding: 15px; border-radius: 10px; border: 1px solid #ddd; color: #222; }
+        .quran-text { font-family: 'Amiri', serif; font-size: 24px; text-align: center; line-height: 2; background: #fffdf5; padding: 15px; border-radius: 10px; }
+        .prayer-time { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
     </style>
 </head>
 <body>
 
-<button class="mic-btn" onclick="startVoiceSearch()" id="micIcon">🎙️</button>
-
-<div id="full-view">
-    <button class="btn-main" style="background:#555; margin-bottom:15px;" onclick="closeFullView()">🔙 عودة</button>
-    <div id="full-content"></div>
+<div id="view-screen">
+    <button class="back-btn" onclick="closeScreen()">🔙 العودة</button>
+    <div id="view-body"></div>
 </div>
 
-<div id="quran-tab" class="tab-content active">
-    <div class="header"><h2>مصحف الهداية</h2><p id="daily-verse">"فَاصْبِرْ إِنَّ وَعْدَ اللَّهِ حَقٌّ"</p></div>
-    <div style="margin-top:15px;"><input type="text" id="srch" placeholder="ابحث عن سورة..." onkeyup="filterS()" style="width:100%; padding:12px; border-radius:10px; border:1px solid #ddd;"></div>
-    <div id="sura-list" style="margin-top:15px;"></div>
+<div id="tab-quran" class="tab-content active">
+    <div class="top-bar"><h2>مصحف الهداية</h2></div>
+    <div style="padding:15px;"><input type="text" id="q-search" placeholder="ابحث عن سورة..." onkeyup="searchS()" style="width:100%; padding:12px; border-radius:12px; border:1px solid #ddd; outline:none;"></div>
+    <div id="sura-container"></div>
 </div>
 
-<div id="library-tab" class="tab-content">
-    <div class="header"><h2>المكتبة الإسلامية</h2></div>
-    <div class="card" onclick="showStory('intro')"><h3>📖 قصة بدء الوحي</h3><p>كيف بدأ نزول القرآن على النبي ﷺ..</p></div>
-    <div class="card" onclick="showStory('iman')"><h3>✨ مفهوم الإيمان</h3><p>أركان الإيمان وحلاوته في القلب..</p></div>
-    <div class="card" onclick="showStory('taqwa')"><h3>🛡️ مفهوم التقوى</h3><p>تعريف التقوى وأثرها على المسلم..</p></div>
-    <div class="card" onclick="showHadith()"><h3>💬 أحاديث نبوية</h3><p>مجموعة من الأحاديث الصحيحة..</p></div>
-</div>
-
-<div id="azkar-tab" class="tab-content">
-    <div class="header"><h2>الأذكار والعبادات</h2></div>
-    <div class="card" onclick="showAzkar('morning')">☀️ أذكار الصباح</div>
-    <div class="card" onclick="showAzkar('evening')">🌙 أذكار المساء</div>
-    <div class="tasbih-area" onclick="countTasbih()">
-        <p>المسبحة الإلكترونية (اضغط هنا)</p>
-        <div class="counter" id="t-count">0</div>
-        <button onclick="resetTasbih(event)" style="background:none; border:1px solid white; color:white; border-radius:5px; padding:5px 10px; margin-top:10px;">تصفير</button>
+<div id="tab-more" class="tab-content">
+    <div class="top-bar"><h2>المكتبة الإيمانية</h2></div>
+    <div class="icon-grid">
+        <div class="icon-item" onclick="showIntro()"><span>📜</span><p>بدء الوحي</p></div>
+        <div class="icon-item" onclick="showHadiths()"><span>💬</span><p>أحاديث</p></div>
+        <div class="icon-item" onclick="showPrayers()"><span>🕌</span><p>مواقيت</p></div>
+        <div class="icon-item" onclick="showNames()"><span>✨</span><p>أسماء الله</p></div>
+        <div class="icon-item" onclick="showAzkar('morning')"><span>☀️</span><p>أذكار</p></div>
+        <div class="icon-item" onclick="showTasbih()"><span>📿</span><p>المسبحة</p></div>
+        <div class="icon-item" onclick="showTopic('iman')"><span>💎</span><p>الإيمان</p></div>
+        <div class="icon-item" onclick="showTopic('taqwa')"><span>🛡️</span><p>التقوى</p></div>
+        <div class="icon-item" onclick="window.open('https://www.google.com/maps/search/mosque')"><span>📍</span><p>المساجد</p></div>
     </div>
-    <div class="card" onclick="window.open('https://www.google.com/maps/search/mosque')">📍 أقرب المساجد إليك</div>
 </div>
 
-<div class="bottom-nav">
-    <div class="nav-item active" onclick="switchTab('quran-tab', this)"><i>📖</i>المصحف</div>
-    <div class="nav-item" onclick="switchTab('library-tab', this)"><i>📚</i>المكتبة</div>
-    <div class="nav-item" onclick="switchTab('azkar-tab', this)"><i>📿</i>الأذكار</div>
-</div>
-
-<div id="player" style="position:fixed; bottom:65px; width:100%; background:var(--p); color:white; padding:10px; display:none; text-align:center; z-index:4500;">
-    <div id="p-title" style="font-size:12px;"></div>
-    <audio id="maudio" controls style="width:90%; height:30px;"></audio>
+<div class="nav">
+    <div class="nav-btn active" onclick="switchT('tab-quran', this)"><b>📖</b>المصحف</div>
+    <div class="nav-btn" onclick="switchT('tab-more', this)"><b>🌟</b>المكتبة</div>
 </div>
 
 <script>
     const suras = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
 
-    function switchTab(id, el) {
+    function switchT(id, el) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         el.classList.add('active');
     }
 
-    function renderS(list) {
-        document.getElementById('sura-list').innerHTML = list.map(s => {
+    function renderSuras(list) {
+        document.getElementById('sura-container').innerHTML = list.map(s => {
             let i = suras.indexOf(s) + 1;
             return `<div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-                <div onclick="openQ(${i},'${s}')"><b>${i}. ${s}</b><br><small style="color:var(--g)">تفسير وقراءة ناطقة</small></div>
-                <button onclick="playQ(${i},'${s}')" style="border:none; background:#eee; padding:8px; border-radius:5px;">🔊 استماع</button>
+                <div onclick="openSura(${i},'${s}')" style="flex:1;"><b>${i}. ${s}</b><br><small>تفسير ناطق</small></div>
+                <button onclick="playSura(${i},'${s}')" style="border:none; background:#f0f0f0; padding:8px; border-radius:8px;">▶️</button>
             </div>`;
         }).join('');
     }
-    renderS(suras);
+    renderSuras(suras);
 
-    function filterS() {
-        let v = document.getElementById('srch').value;
-        renderS(suras.filter(s => s.includes(v)));
+    function searchS() {
+        let v = document.getElementById('q-search').value;
+        renderSuras(suras.filter(s => s.includes(v)));
     }
 
-    let tCount = 0;
-    function countTasbih() { tCount++; document.getElementById('t-count').innerText = tCount; if(window.navigator.vibrate) window.navigator.vibrate(50); }
-    function resetTasbih(e) { e.stopPropagation(); tCount = 0; document.getElementById('t-count').innerText = 0; }
-
-    function playQ(id, name) {
-        const a = document.getElementById('maudio');
-        a.src = `https://server12.mp3quran.net/maher/${String(id).padStart(3,'0')}.mp3`;
-        document.getElementById('player').style.display = 'block';
-        document.getElementById('p-title').innerText = "تلاوة سورة " + name;
-        a.play();
+    // مواقيت الصلاة (API مبسط)
+    async function showPrayers() {
+        showS("جاري جلب المواقيت...");
+        try {
+            const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt&method=5');
+            const data = await res.json();
+            const t = data.data.timings;
+            let h = `<h2>مواقيت الصلاة</h2><div class='card'>
+                <div class='prayer-time'><span>الفجر</span> <b>${t.Fajr}</b></div>
+                <div class='prayer-time'><span>الظهر</span> <b>${t.Dhuhr}</b></div>
+                <div class='prayer-time'><span>العصر</span> <b>${t.Asr}</b></div>
+                <div class='prayer-time'><span>المغرب</span> <b>${t.Maghrib}</b></div>
+                <div class='prayer-time'><span>العشاء</span> <b>${t.Isha}</b></div>
+            </div>`;
+            showS(h);
+        } catch(e) { showS("تحتاج إنترنت لعرض المواقيت"); }
     }
 
-    async function openQ(id, name) {
-        const full = document.getElementById('full-view');
-        const cont = document.getElementById('full-content');
-        full.style.display = 'block';
-        cont.innerHTML = "جاري التحميل...";
+    // أسماء الله الحسنى
+    function showNames() {
+        const names = [
+            {n: "الله", m: "الاسم الأقدس المتفرد بالألوهية"},
+            {n: "الرحمن", m: "واسع الرحمة بجميع خلقه"},
+            {n: "الرحيم", m: "الرحيم بالمؤمنين خاصة"},
+            {n: "الملك", m: "المتصرف في ملكه كما يشاء"},
+            {n: "القدوس", m: "المنزه عن كل نقص"},
+            {n: "السلام", m: "ناشر السلام بين الأنام"}
+        ]; // تم الاختصار هنا للمساحة، يمكنك إضافة الـ 99 كاملة بنفس النمط
+        showS("<h2>أسماء الله الحسنى</h2>" + names.map(x => `<div class='card'><b>${x.n}</b>: ${x.m}</div>`).join(''));
+    }
+
+    // قصة بدء الوحي
+    function showIntro() {
+        showS(`<h2>قصة بدء الوحي</h2><p class='card'>بدأ الأمر برؤيا صادقة، ثم التحنث في غار حراء. نزل جبريل وقال: "اقرأ"، قال النبي: "ما أنا بقارئ".. حتى نزلت {اقرأ باسم ربك الذي خلق}. رجع النبي يرتجف لخديجة قائلاً: "زملوني زملوني".. وطمأنته قائلة: "كلا والله لا يخزيك الله أبداً".</p>`);
+    }
+
+    function showHadiths() {
+        const h = ["إنما الأعمال بالنيات", "خيركم من تعلم القرآن وعلمه", "الدين النصيحة", "من صمت نجا"];
+        showS("<h2>أحاديث نبوية</h2>" + h.map(x => `<div class='card'> قال ﷺ: ${x}</div>`).join(''));
+    }
+
+    function showAzkar(type) {
+        const az = ["سبحان الله (33)", "الحمد لله (33)", "الله أكبر (34)", "لا إله إلا الله"];
+        showS("<h2>أذكار المسلم</h2>" + az.map(z => `<div class='card' onclick='this.style.opacity=0.5'>${z}</div>`).join(''));
+    }
+
+    function showTasbih() {
+        showS(`<h2>المسبحة</h2><div style="text-align:center; padding:40px; background:var(--p); color:white; border-radius:20px;" onclick="document.getElementById('cc').innerText++">
+            <h1 id="cc" style="font-size:70px;">0</h1><p>اضغط للعد</p>
+            <button onclick="event.stopPropagation(); document.getElementById('cc').innerText=0">تصفير</button>
+        </div>`);
+    }
+
+    function showTopic(key) {
+        const t = {iman:"الإيمان هو اعتقاد بالقلب وقول باللسان", taqwa:"التقوى هي وقاية النفس من عذاب الله"};
+        showS(`<h2>${key==='iman'?'الإيمان':'التقوى'}</h2><p class='card'>${t[key]}</p>`);
+    }
+
+    function showS(content) { document.getElementById('view-body').innerHTML = content; document.getElementById('view-screen').style.display='block'; }
+    function closeScreen() { document.getElementById('view-screen').style.display='none'; window.speechSynthesis.cancel(); }
+    
+    function playSura(id, name) { 
+        let a = new Audio(`https://server12.mp3quran.net/maher/${String(id).padStart(3,'0')}.mp3`);
+        a.play(); alert("تشغيل سورة " + name); 
+    }
+
+    async function openSura(id, name) {
+        showS("جاري التحميل...");
         try {
             const [qR, tR] = await Promise.all([
                 fetch(`https://api.alquran.cloud/v1/surah/${id}`),
                 fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.jalalayn`)
             ]);
-            const qD = await qR.json(); const tD = await tR.json();
-            let h = `<h2>سورة ${name}</h2><div class="quran-text">${qD.data.ayahs.map(a=>a.text+` ﴿${a.numberInSurah}﴾`).join(' ')}</div><hr>`;
-            tD.data.ayahs.forEach(a => {
-                h += `<div class="card"><b>الآية ${a.numberInSurah}:</b><br>${a.text} <button onclick="speak('${a.text.replace(/'/g,"")}')" style="border:none; background:none; cursor:pointer;">🔊</button></div>`;
-            });
-            cont.innerHTML = h;
-        } catch(e) { cont.innerHTML = "خطأ في التحميل"; }
+            const qD = await qR.json(), tD = await tR.json();
+            let h = `<h2>سورة ${name}</h2><div class="quran-text">${qD.data.ayahs.map(a=>a.text+` [${a.numberInSurah}]`).join(' ')}</div>`;
+            tD.data.ayahs.forEach(a => h += `<div class='card'><b>تفسير ${a.numberInSurah}:</b><br>${a.text} <button onclick="spk('${a.text.replace(/'/g,"")}')">🔊</button></div>`);
+            showS(h);
+        } catch(e) { showS("خطأ اتصال"); }
     }
-
-    function speak(txt) { window.speechSynthesis.cancel(); let m = new SpeechSynthesisUtterance(txt); m.lang='ar-SA'; window.speechSynthesis.speak(m); }
-    function closeFullView() { document.getElementById('full-view').style.display='none'; window.speechSynthesis.cancel(); }
-
-    const libraryData = {
-        intro: "<h2>قصة بدء الوحي</h2><p>بدأ الوحي برسول الله ﷺ بالرؤيا الصالحة، ثم حُبب إليه الخلاء، فكان يخلو بغار حراء يتحنث فيه الليالي ذوات العدد.. حتى جاءه الحق وهو في الغار، فقال له جبريل: اقرأ! قال: ما أنا بقارئ..</p>",
-        iman: "<h2>مفهوم الإيمان</h2><p>الإيمان هو أن تؤمن بالله وملائكته وكتبه ورسله واليوم الآخر والقدر خيره وشره. وهو اعتقاد بالقلب وقول باللسان وعمل بالأركان.</p>",
-        taqwa: "<h2>مفهوم التقوى</h2><p>التقوى هي الخوف من الجليل، والعمل بالتنزيل، والقناعة بالقليل، والاستعداد ليوم الرحيل. وهي أن تجعل بينك وبين عذاب الله وقاية.</p>"
-    };
-
-    function showStory(key) {
-        document.getElementById('full-view').style.display = 'block';
-        document.getElementById('full-content').innerHTML = libraryData[key];
-    }
-
-    function showHadith() {
-        const h = ["قال ﷺ: إنما الأعمال بالنيات", "قال ﷺ: خيركم من تعلم القرآن وعلمه", "قال ﷺ: اتق الله حيثما كنت"];
-        document.getElementById('full-view').style.display = 'block';
-        document.getElementById('full-content').innerHTML = "<h2>أحاديث نبوية</h2>" + h.map(i => `<div class='card'>${i}</div>`).join('');
-    }
-
-    function showAzkar(type) {
-        const az = type === 'morning' ? ["أصبحنا وأصبح الملك لله", "يا حي يا قيوم برحمتك أستغيث"] : ["أمسين وأمسى الملك لله", "اللهم بك أمسينا وبك أصبحنا"];
-        document.getElementById('full-view').style.display = 'block';
-        document.getElementById('full-content').innerHTML = `<h2>أذكار ${type==='morning'?'الصباح':'المساء'}</h2>` + az.map(i => `<div class='card' onclick='this.style.opacity=0.5'>${i} (اضغط عند الانتهاء)</div>`).join('');
-    }
-
-    function startVoiceSearch() {
-        const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        rec.lang = 'ar-SA';
-        rec.onresult = (e) => {
-            let w = e.results[0][0].transcript.replace("سورة","").trim();
-            let idx = suras.findIndex(s => s.includes(w));
-            if(idx !== -1) { openQ(idx+1, suras[idx]); playQ(idx+1, suras[idx]); }
-            else alert("لم أفهم اسم السورة: " + w);
-        };
-        rec.start();
-    }
+    function spk(t) { window.speechSynthesis.cancel(); let m=new SpeechSynthesisUtterance(t); m.lang='ar-SA'; window.speechSynthesis.speak(m); }
 </script>
 </body>
 </html>
