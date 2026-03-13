@@ -3,181 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>الموسوعة الإيمانية - التحكم الصوتي</title>
+    <title>موسوعة المؤمن الشاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-light: #f8faf9;
-            --primary-green: #2d5a47;
-            --gold: #b8860b;
-        }
-
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background: #f0f4f2;
-            margin: 0;
-            padding-bottom: 20px;
-        }
-
-        /* الشاشة الرئيسية */
+        :root { --p: #2d5a47; --gold: #b8860b; --bg: #f0f4f2; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; color: #333; }
+        
+        /* الواجهة الرئيسية */
         .home-screen { padding: 20px; text-align: center; }
-        .header-title { color: var(--primary-green); margin-bottom: 30px; font-weight: 900; }
-
-        .icon-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+        .header-title { color: var(--p); font-size: 28px; font-weight: 900; margin: 20px 0; }
+        
+        .icon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .main-icon { 
+            background: white; border-radius: 20px; padding: 25px 10px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); cursor: pointer; 
+            border-bottom: 5px solid #eee; transition: 0.2s;
         }
-
-        .main-icon {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            cursor: pointer;
-            border-bottom: 5px solid #ccc;
-        }
+        .main-icon:active { transform: scale(0.95); }
+        .main-icon span { font-size: 40px; display: block; margin-bottom: 10px; }
+        .main-icon p { margin: 0; font-weight: bold; font-size: 15px; }
 
         /* ألوان الأيقونات */
-        .ic-quran { border-color: #2ecc71; }
-        .ic-tafseer { border-color: #3498db; }
-        .ic-story { border-color: #f1c40f; }
-        .ic-sahaba { border-color: #e67e22; }
+        .c1 { border-color: #2ecc71; } .c2 { border-color: #3498db; }
+        .c3 { border-color: #f1c40f; } .c4 { border-color: #e67e22; }
+        .c5 { border-color: #9b59b6; } .c6 { border-color: #1abc9c; }
+        .c7 { border-color: #e74c3c; } .c8 { border-color: #34495e; }
 
-        /* شاشة القراءة */
-        #content-screen {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: white;
-            z-index: 10000;
-            overflow-y: auto;
-            padding: 20px;
-            box-sizing: border-box;
+        /* شاشة العرض */
+        #view-screen { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: white; z-index: 10000; overflow-y: auto; padding: 20px; box-sizing: border-box;
         }
+        .nav-top { position: sticky; top: 0; background: white; padding-bottom: 10px; z-index: 11; border-bottom: 1px solid #eee; }
+        .btn-close { width: 100%; padding: 12px; background: #333; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; }
 
-        /* لوحة التحكم في الصوت */
-        .audio-controls {
-            background: #f1f3f4;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        /* لوحة الصوت */
+        .audio-bar { 
+            background: #f8f9fa; padding: 15px; border-radius: 15px; margin: 10px 0;
+            display: flex; justify-content: center; gap: 10px; border: 1px solid #ddd;
         }
+        .a-btn { border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
-        .control-btn {
-            border: none;
-            background: white;
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .quran-text {
-            font-family: 'Amiri', serif;
-            font-size: 26px;
-            line-height: 2.2;
-            text-align: center;
-            padding: 15px;
-            background: #fdfbf0;
-            border-radius: 15px;
-        }
-
-        .back-btn {
-            width: 100%;
-            padding: 12px;
-            background: #333;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
+        .content-card { background: #fff; padding: 20px; border-radius: 15px; border-right: 5px solid var(--p); margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .q-text { font-family: 'Amiri', serif; font-size: 26px; line-height: 2.2; text-align: center; background: #fdfbf0; padding: 20px; border-radius: 15px; }
     </style>
 </head>
 <body>
 
 <div class="home-screen">
-    <h2 class="header-title">الكنوز الإيمانية</h2>
+    <h1 class="header-title">الكنوز الإيمانية</h1>
     <div class="icon-grid">
-        <div class="main-icon ic-quran" onclick="openQuran()"><span>📖</span><p>المصحف الكريم</p></div>
-        <div class="main-icon ic-tafseer" onclick="openTafseer()"><span>📜</span><p>التفسير</p></div>
-        <div class="main-icon ic-story" onclick="openStory()"><span>✨</span><p>قصة الوحي</p></div>
-        <div class="main-icon ic-sahaba" onclick="openSahaba()"><span>👥</span><p>الصحابة</p></div>
+        <div class="main-icon c1" onclick="openQuran()"><span>📖</span><p>المصحف الكريم</p></div>
+        <div class="main-icon c2" onclick="openTafseerMenu()"><span>📜</span><p>تفسير القرآن</p></div>
+        <div class="main-icon c3" onclick="openWahidStory()"><span>✨</span><p>قصة الوحي</p></div>
+        <div class="main-icon c4" onclick="openSahaba()"><span>👥</span><p>مواقف الصحابة</p></div>
+        <div class="main-icon c5" onclick="openAzkar()"><span>☀️</span><p>الأذكار</p></div>
+        <div class="main-icon c6" onclick="openTasbih()"><span>📿</span><p>المسبحة</p></div>
+        <div class="main-icon c7" onclick="openPrayers()"><span>🕌</span><p>المواقيت</p></div>
+        <div class="main-icon c8" onclick="openNames()"><span>💎</span><p>أسماء الله</p></div>
     </div>
 </div>
 
-<div id="content-screen">
-    <button class="back-btn" onclick="closeScreen()">🔙 خروج للرئيسية</button>
-    <div id="audio-panel" style="display:none;">
-        <div class="audio-controls">
-            <button class="control-btn" onclick="resumeAudio()">▶️ تشغيل</button>
-            <button class="control-btn" onclick="pauseAudio()">⏸️ مؤقت</button>
-            <button class="control-btn" onclick="stopAudio()" style="color:red;">⏹️ إيقاف</button>
+<div id="view-screen">
+    <div class="nav-top">
+        <button class="btn-close" onclick="closeScreen()">🔙 العودة للرئيسية</button>
+        <div id="audio-panel" style="display:none;">
+            <div class="audio-bar">
+                <button class="a-btn" onclick="ctrlAud('play')">▶️ تشغيل</button>
+                <button class="a-btn" onclick="ctrlAud('pause')">⏸️ مؤقت</button>
+                <button class="a-btn" onclick="ctrlAud('stop')" style="color:red;">⏹️ إنهاء</button>
+            </div>
         </div>
     </div>
-    <div id="screen-body"></div>
+    <div id="view-body"></div>
 </div>
 
 <script>
-    let currentAudio = new Audio();
+    let curAud = new Audio();
     const suras = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
 
-    function openQuran() {
-        let h = `<h3>اختر سورة</h3><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">`;
-        suras.forEach((s, i) => {
-            h += `<div class="main-icon" style="padding:15px;" onclick="loadSura(${i+1}, '${s}')">${s}</div>`;
-        });
-        h += `</div>`;
-        document.getElementById('audio-panel').style.display = 'none';
-        document.getElementById('screen-body').innerHTML = h;
-        document.getElementById('content-screen').style.display = 'block';
+    function show(h, showAudio = false) {
+        document.getElementById('view-body').innerHTML = h;
+        document.getElementById('view-screen').style.display = 'block';
+        document.getElementById('audio-panel').style.display = showAudio ? 'block' : 'none';
     }
-
-    async function loadSura(id, name) {
-        document.getElementById('screen-body').innerHTML = "جاري التحميل...";
-        
-        // تجهيز الصوت
-        stopAudio();
-        currentAudio.src = `https://server12.mp3quran.net/maher/${String(id).padStart(3,'0')}.mp3`;
-        currentAudio.play();
-        
-        document.getElementById('audio-panel').style.display = 'block';
-
-        // تحميل النص
-        try {
-            const r = await fetch(`https://api.alquran.cloud/v1/surah/${id}`);
-            const d = await r.json();
-            let txt = `<div class="quran-text"><h4>سورة ${name}</h4>`;
-            d.data.ayahs.forEach(a => txt += a.text + ` ﴿${a.numberInSurah}﴾ `);
-            txt += `</div>`;
-            document.getElementById('screen-body').innerHTML = txt;
-        } catch(e) {
-            document.getElementById('screen-body').innerHTML = "خطأ في الاتصال بالإنترنت";
-        }
-    }
-
-    // وظائف التحكم بالصوت
-    function pauseAudio() { currentAudio.pause(); }
-    function resumeAudio() { currentAudio.play(); }
-    function stopAudio() { currentAudio.pause(); currentAudio.currentTime = 0; }
 
     function closeScreen() {
-        document.getElementById('content-screen').style.display = 'none';
-        stopAudio();
+        document.getElementById('view-screen').style.display = 'none';
+        ctrlAud('stop');
+        window.speechSynthesis.cancel();
     }
 
-    // بقية الأقسام (للتعديل لاحقاً)
-    function openTafseer() { alert("سنقوم بتعديله في الخطوة القادمة كما اتفقنا"); }
-    function openStory() { alert("سنقوم بتعديله في الخطوة القادمة"); }
-    function openSahaba() { alert("سنقوم بتعديله في الخطوة القادمة"); }
+    function ctrlAud(action) {
+        if(action==='play') curAud.play();
+        if(action==='pause') curAud.pause();
+        if(action==='stop') { curAud.pause(); curAud.currentTime = 0; }
+    }
+
+    // 1. المصحف الصوتي
+    function openQuran() {
+        let h = `<h3>المصحف الشريف</h3><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">`;
+        suras.forEach((s, i) => h += `<div class="main-icon" style="padding:15px;" onclick="playSura(${i+1},'${s}')">${s}</div>`);
+        show(h + "</div>");
+    }
+
+    async function playSura(id, name) {
+        show("جاري التحميل...", true);
+        ctrlAud('stop');
+        curAud.src = `https://server12.mp3quran.net/maher/${String(id).padStart(3,'0')}.mp3`;
+        curAud.play();
+        const r = await fetch(`https://api.alquran.cloud/v1/surah/${id}`);
+        const d = await r.json();
+        let txt = `<div class="q-text"><h4>سورة ${name}</h4>${d.data.ayahs.map(a=>a.text+` ﴿${a.numberInSurah}﴾`).join(' ')}</div>`;
+        show(txt, true);
+    }
+
+    // 2. التفسير (صفحة مستقلة)
+    function openTafseerMenu() {
+        let h = `<h3>تفسير القرآن</h3><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">`;
+        suras.forEach((s, i) => h += `<div class="main-icon" style="padding:15px; border-color:#3498db" onclick="loadTaf(${i+1},'${s}')">${s}</div>`);
+        show(h + "</div>");
+    }
+    async function loadTaf(id, name) {
+        show("جاري تحميل التفسير...");
+        const [qR, tR] = await Promise.all([fetch(`https://api.alquran.cloud/v1/surah/${id}`), fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.jalalayn`)]);
+        const qD = await qR.json(), tD = await tR.json();
+        let h = `<h2>تفسير ${name}</h2>`;
+        qD.data.ayahs.forEach((a, i) => h += `<div class="q-text" style="font-size:20px; margin-bottom:5px;">${a.text}</div><div class="content-card"><b>التفسير:</b> ${tD.data.ayahs[i].text}</div>`);
+        show(h);
+    }
+
+    // 3. قصة الوحي
+    function openWahidStory() {
+        show(`<h2>✨ قصة بدء الوحي</h2><div class="content-card">كان النبي ﷺ يخلو بغار حراء... حتى جاءه جبريل وقال له "اقرأ".. فعاد يرتجف للسيدة خديجة..</div><button class="btn-close" onclick="spkStory('wahid')">🔊 استمع للقصة</button>`);
+    }
+    function openSahaba() {
+        show(`<h2>👥 مواقف الصحابة</h2><div class="content-card"><b>خديجة:</b> أول من آمنت وثبتته.</div><div class="content-card"><b>أبو بكر:</b> قال إن كان قال فقد صدق.</div><div class="content-card"><b>علي:</b> آمن وهو صبي بكل شجاعة.</div>`);
+    }
+
+    // 4. باقي الأقسام
+    function openTasbih() {
+        show(`<h2>📿 المسبحة</h2><div style="text-align:center; padding:40px; background:var(--p); color:white; border-radius:20px;" onclick="document.getElementById('cc').innerText++"><h1 id="cc" style="font-size:60px;">0</h1><p>اضغط للعد</p></div><button class="btn-close" style="margin-top:10px" onclick="document.getElementById('cc').innerText=0">تصفير</button>`);
+    }
+    function openNames() { show("<h2>💎 أسماء الله الحسنى</h2><div class='content-card'>الله، الرحمن، الرحيم، الملك، القدوس...</div>"); }
+    function openAzkar() { show("<h2>☀️ الأذكار</h2><div class='content-card'>أصبحنا وأصبح الملك لله..</div>"); }
+    async function openPrayers() {
+        const r = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt&method=5');
+        const d = await r.json(); const t = d.data.timings;
+        show(`<h2>🕌 المواقيت</h2><div class='content-card'>الفجر: ${t.Fajr}<br>الظهر: ${t.Dhuhr}<br>المغرب: ${t.Maghrib}</div>`);
+    }
+
+    function spkStory(type) {
+        window.speechSynthesis.cancel();
+        let t = type==='wahid' ? "كان النبي صلى الله عليه وسلم يخلو بغار حراء" : "السيدة خديجة كانت أول من آمنت";
+        let m = new SpeechSynthesisUtterance(t); m.lang='ar-SA'; window.speechSynthesis.speak(m);
+    }
 </script>
 </body>
 </html>
