@@ -3,177 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>مصحف الهداية الناطق</title>
+    <title>حقيبة المسلم الشاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Amiri&display=swap" rel="stylesheet">
     <style>
         :root { --p: #0a3622; --g: #a68549; --bg: #f4f7f6; --txt: #333; --card-bg: #ffffff; }
         [data-theme="dark"] { --p: #1a4d35; --bg: #121212; --txt: #e0e0e0; --card-bg: #1e1e1e; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); color: var(--txt); margin: 0; padding-bottom: 120px; transition: 0.3s; }
         
-        .top { background: var(--p); padding: 30px 20px 80px; border-radius: 0 0 40px 40px; text-align: center; color: white; }
-        .search-box { margin: -50px 20px 10px; }
-        .search-box input { width: 100%; padding: 15px 20px; border-radius: 15px; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); font-size: 16px; box-sizing: border-box; outline: none; }
-
-        .controls { display: flex; justify-content: space-around; padding: 10px 20px; gap: 10px; }
-        select, .theme-btn { padding: 10px; border-radius: 10px; border: 1px solid var(--g); background: var(--card-bg); color: var(--txt); font-family: 'Tajawal'; cursor: pointer; flex: 1; }
-
-        .q-list { padding: 10px 20px; }
-        .s-card { background: var(--card-bg); padding: 18px; border-radius: 15px; margin-bottom: 12px; border-right: 6px solid var(--p); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-
-        .mic-btn { position: fixed; bottom: 100px; left: 20px; width: 60px; height: 60px; background: #d9534f; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 3000; cursor: pointer; animation: pulse 2s infinite; border: none; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(217, 83, 79, 0); } 100% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0); } }
-
-        #content-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 4000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .close-btn { background: var(--p); color: white; border: none; padding: 15px; border-radius: 12px; cursor: pointer; margin-bottom: 15px; width: 100%; font-weight: bold; }
-        .quran-text { font-family: 'Amiri', serif; font-size: 26px; line-height: 2; text-align: center; color: var(--p); background: #fffdf5; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #eee; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); color: var(--txt); margin: 0; padding-bottom: 80px; transition: 0.3s; }
         
-        .tafsir-item { background: var(--card-bg); padding: 15px; border-radius: 12px; margin-bottom: 10px; border-right: 4px solid var(--g); display: flex; justify-content: space-between; align-items: flex-start; }
-        .tafsir-text { flex: 1; padding-left: 10px; font-size: 18px; line-height: 1.6; }
-        .speak-btn { background: #f0f0f0; border: none; padding: 8px; border-radius: 50%; cursor: pointer; font-size: 18px; }
+        /* الهيدر */
+        .header { background: var(--p); padding: 25px; text-align: center; color: white; border-radius: 0 0 30px 30px; }
+        
+        /* التبويبات السفلية */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: var(--card-bg); display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 5000; }
+        .nav-item { text-align: center; font-size: 12px; color: #888; cursor: pointer; flex: 1; }
+        .nav-item.active { color: var(--p); font-weight: bold; }
+        .nav-item i { display: block; font-size: 20px; margin-bottom: 2px; }
 
-        .player-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--p); padding: 15px; border-top: 3px solid var(--g); z-index: 1001; display: none; text-align: center; color: white; }
-        audio { width: 100%; margin-top: 10px; }
+        /* الأقسام */
+        .tab-content { display: none; padding: 20px; animation: fadeIn 0.5s; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* البطاقات والتنسيق */
+        .card { background: var(--card-bg); padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border-right: 5px solid var(--p); }
+        .btn-main { background: var(--p); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; cursor: pointer; font-family: 'Tajawal'; font-weight: bold; }
+        
+        /* المسبحة */
+        .tasbih-area { text-align: center; padding: 40px 20px; background: var(--p); color: white; border-radius: 20px; margin: 20px 0; cursor: pointer; }
+        .counter { font-size: 50px; font-weight: bold; }
+
+        /* شاشة العرض الكاملة */
+        #full-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 6000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        
+        /* الميكروفون العائم */
+        .mic-btn { position: fixed; bottom: 100px; left: 20px; width: 55px; height: 55px; background: #d9534f; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px; z-index: 4000; cursor: pointer; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
+        .quran-text { font-family: 'Amiri', serif; font-size: 24px; line-height: 2; text-align: center; background: #fffdf5; padding: 15px; border-radius: 10px; border: 1px solid #ddd; color: #222; }
     </style>
 </head>
-<body data-theme="light">
+<body>
 
 <button class="mic-btn" onclick="startVoiceSearch()" id="micIcon">🎙️</button>
 
-<div id="home-view">
-    <div class="top">
-        <h2>مصحف الهداية الناطق</h2>
-        <p style="font-size: 14px; opacity: 0.9;">استمع للقرآن وللتفسير بصوتك</p>
-    </div>
-
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="ابحث عن اسم السورة..." onkeyup="filterSuras()">
-    </div>
-
-    <div class="controls">
-        <select id="reciterSelect">
-            <option value="maher">الشيخ ماهر المعيقلي</option>
-            <option value="alafasy">الشيخ مشاري العفاسي</option>
-            <option value="minshawi">الشيخ محمد صديق المنشاوي</option>
-        </select>
-        <button class="theme-btn" onclick="toggleTheme()">🌙 وضع الليل</button>
-    </div>
-    
-    <div class="q-list" id="main-list"></div>
+<div id="full-view">
+    <button class="btn-main" style="background:#555; margin-bottom:15px;" onclick="closeFullView()">🔙 عودة</button>
+    <div id="full-content"></div>
 </div>
 
-<div id="content-view">
-    <button class="close-btn" onclick="closeView()">🔙 العودة للقائمة</button>
-    <div id="content-body"></div>
+<div id="quran-tab" class="tab-content active">
+    <div class="header"><h2>مصحف الهداية</h2><p id="daily-verse">"فَاصْبِرْ إِنَّ وَعْدَ اللَّهِ حَقٌّ"</p></div>
+    <div style="margin-top:15px;"><input type="text" id="srch" placeholder="ابحث عن سورة..." onkeyup="filterS()" style="width:100%; padding:12px; border-radius:10px; border:1px solid #ddd;"></div>
+    <div id="sura-list" style="margin-top:15px;"></div>
 </div>
 
-<div class="player-footer" id="audio-box">
-    <div id="sura-label" style="font-size:14px; font-weight: bold;"></div>
-    <audio id="main-audio" controls></audio>
+<div id="library-tab" class="tab-content">
+    <div class="header"><h2>المكتبة الإسلامية</h2></div>
+    <div class="card" onclick="showStory('intro')"><h3>📖 قصة بدء الوحي</h3><p>كيف بدأ نزول القرآن على النبي ﷺ..</p></div>
+    <div class="card" onclick="showStory('iman')"><h3>✨ مفهوم الإيمان</h3><p>أركان الإيمان وحلاوته في القلب..</p></div>
+    <div class="card" onclick="showStory('taqwa')"><h3>🛡️ مفهوم التقوى</h3><p>تعريف التقوى وأثرها على المسلم..</p></div>
+    <div class="card" onclick="showHadith()"><h3>💬 أحاديث نبوية</h3><p>مجموعة من الأحاديث الصحيحة..</p></div>
+</div>
+
+<div id="azkar-tab" class="tab-content">
+    <div class="header"><h2>الأذكار والعبادات</h2></div>
+    <div class="card" onclick="showAzkar('morning')">☀️ أذكار الصباح</div>
+    <div class="card" onclick="showAzkar('evening')">🌙 أذكار المساء</div>
+    <div class="tasbih-area" onclick="countTasbih()">
+        <p>المسبحة الإلكترونية (اضغط هنا)</p>
+        <div class="counter" id="t-count">0</div>
+        <button onclick="resetTasbih(event)" style="background:none; border:1px solid white; color:white; border-radius:5px; padding:5px 10px; margin-top:10px;">تصفير</button>
+    </div>
+    <div class="card" onclick="window.open('https://www.google.com/maps/search/mosque')">📍 أقرب المساجد إليك</div>
+</div>
+
+<div class="bottom-nav">
+    <div class="nav-item active" onclick="switchTab('quran-tab', this)"><i>📖</i>المصحف</div>
+    <div class="nav-item" onclick="switchTab('library-tab', this)"><i>📚</i>المكتبة</div>
+    <div class="nav-item" onclick="switchTab('azkar-tab', this)"><i>📿</i>الأذكار</div>
+</div>
+
+<div id="player" style="position:fixed; bottom:65px; width:100%; background:var(--p); color:white; padding:10px; display:none; text-align:center; z-index:4500;">
+    <div id="p-title" style="font-size:12px;"></div>
+    <audio id="maudio" controls style="width:90%; height:30px;"></audio>
 </div>
 
 <script>
     const suras = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
 
-    function renderList(list) {
-        const listDiv = document.getElementById('main-list');
-        listDiv.innerHTML = list.map(s => {
-            let idx = suras.indexOf(s) + 1;
-            return `
-            <div class="s-card">
-                <div onclick="openContent(${idx}, '${s}')" style="flex:1; cursor:pointer;">
-                    <b style="font-size:18px;">${idx}. ${s}</b>
-                    <div style="font-size:13px; color:var(--g); margin-top:5px;">📖 قراءة وتفسير ناطق</div>
-                </div>
-                <div onclick="playAudio(${idx}, '${s}')" style="padding:10px; background:#f0f0f0; border-radius:10px; color:#0a3622; font-weight:bold; cursor:pointer;">🎙️ تلاوة</div>
+    function switchTab(id, el) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        el.classList.add('active');
+    }
+
+    function renderS(list) {
+        document.getElementById('sura-list').innerHTML = list.map(s => {
+            let i = suras.indexOf(s) + 1;
+            return `<div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                <div onclick="openQ(${i},'${s}')"><b>${i}. ${s}</b><br><small style="color:var(--g)">تفسير وقراءة ناطقة</small></div>
+                <button onclick="playQ(${i},'${s}')" style="border:none; background:#eee; padding:8px; border-radius:5px;">🔊 استماع</button>
             </div>`;
         }).join('');
     }
-    renderList(suras);
+    renderS(suras);
 
-    function filterSuras() {
-        let val = document.getElementById('searchInput').value;
-        renderList(suras.filter(s => s.includes(val)));
+    function filterS() {
+        let v = document.getElementById('srch').value;
+        renderS(suras.filter(s => s.includes(v)));
     }
 
-    function toggleTheme() {
-        const body = document.body;
-        const isDark = body.getAttribute('data-theme') === 'dark';
-        body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        document.querySelector('.theme-btn').innerText = isDark ? "🌙 وضع الليل" : "☀️ الوضع الفاتح";
+    let tCount = 0;
+    function countTasbih() { tCount++; document.getElementById('t-count').innerText = tCount; if(window.navigator.vibrate) window.navigator.vibrate(50); }
+    function resetTasbih(e) { e.stopPropagation(); tCount = 0; document.getElementById('t-count').innerText = 0; }
+
+    function playQ(id, name) {
+        const a = document.getElementById('maudio');
+        a.src = `https://server12.mp3quran.net/maher/${String(id).padStart(3,'0')}.mp3`;
+        document.getElementById('player').style.display = 'block';
+        document.getElementById('p-title').innerText = "تلاوة سورة " + name;
+        a.play();
     }
 
-    function playAudio(id, name) {
-        const audio = document.getElementById('main-audio');
-        const reciter = document.getElementById('reciterSelect').value;
-        const audioId = String(id).padStart(3, '0');
-        let srv = reciter === 'alafasy' ? "10/afs" : (reciter === 'minshawi' ? "10/minsh" : "12/maher");
-        audio.src = `https://server${srv}/${audioId}.mp3`;
-        document.getElementById('audio-box').style.display = 'block';
-        document.getElementById('sura-label').innerText = "تلاوة سورة " + name;
-        audio.play();
-    }
-
-    // ميزة التفسير الناطق
-    function speakTafsir(text) {
-        window.speechSynthesis.cancel(); // إيقاف أي صوت يعمل حالياً
-        const msg = new SpeechSynthesisUtterance(text);
-        msg.lang = 'ar-SA';
-        msg.rate = 0.9; // سرعة الكلام (هادئة قليلاً)
-        window.speechSynthesis.speak(msg);
-    }
-
-    async function openContent(id, name) {
-        const view = document.getElementById('content-view');
-        const body = document.getElementById('content-body');
-        view.style.display = 'block';
-        body.innerHTML = `<div style="text-align:center; padding:50px;">جاري تحميل السورة...</div>`;
-
+    async function openQ(id, name) {
+        const full = document.getElementById('full-view');
+        const cont = document.getElementById('full-content');
+        full.style.display = 'block';
+        cont.innerHTML = "جاري التحميل...";
         try {
-            const [qRes, tRes] = await Promise.all([
+            const [qR, tR] = await Promise.all([
                 fetch(`https://api.alquran.cloud/v1/surah/${id}`),
                 fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.jalalayn`)
             ]);
-            const qData = await qRes.json();
-            const tData = await tRes.json();
-
-            let html = `<h2 style="text-align:center; color:var(--p);">سورة ${name}</h2>`;
-            html += `<div class="quran-text">` + qData.data.ayahs.map(a => a.text + ` ﴿${a.numberInSurah}﴾`).join(' ') + `</div><hr>`;
-            
-            tData.data.ayahs.forEach(a => {
-                html += `
-                <div class="tafsir-item">
-                    <div class="tafsir-text"><b>الآية (${a.numberInSurah}):</b><br>${a.text}</div>
-                    <button class="speak-btn" onclick="speakTafsir('${a.text.replace(/'/g, "\\'")}')" title="استمع للتفسير">🔊</button>
-                </div>`;
+            const qD = await qR.json(); const tD = await tR.json();
+            let h = `<h2>سورة ${name}</h2><div class="quran-text">${qD.data.ayahs.map(a=>a.text+` ﴿${a.numberInSurah}﴾`).join(' ')}</div><hr>`;
+            tD.data.ayahs.forEach(a => {
+                h += `<div class="card"><b>الآية ${a.numberInSurah}:</b><br>${a.text} <button onclick="speak('${a.text.replace(/'/g,"")}')" style="border:none; background:none; cursor:pointer;">🔊</button></div>`;
             });
-
-            body.innerHTML = html;
-            view.scrollTo(0,0);
-        } catch(e) { body.innerHTML = `<div style="color:red; text-align:center; padding:50px;">خطأ في الاتصال بالإنترنت.</div>`; }
+            cont.innerHTML = h;
+        } catch(e) { cont.innerHTML = "خطأ في التحميل"; }
     }
 
-    function closeView() { 
-        window.speechSynthesis.cancel(); // إيقاف الصوت عند الخروج
-        document.getElementById('content-view').style.display = 'none'; 
+    function speak(txt) { window.speechSynthesis.cancel(); let m = new SpeechSynthesisUtterance(txt); m.lang='ar-SA'; window.speechSynthesis.speak(m); }
+    function closeFullView() { document.getElementById('full-view').style.display='none'; window.speechSynthesis.cancel(); }
+
+    const libraryData = {
+        intro: "<h2>قصة بدء الوحي</h2><p>بدأ الوحي برسول الله ﷺ بالرؤيا الصالحة، ثم حُبب إليه الخلاء، فكان يخلو بغار حراء يتحنث فيه الليالي ذوات العدد.. حتى جاءه الحق وهو في الغار، فقال له جبريل: اقرأ! قال: ما أنا بقارئ..</p>",
+        iman: "<h2>مفهوم الإيمان</h2><p>الإيمان هو أن تؤمن بالله وملائكته وكتبه ورسله واليوم الآخر والقدر خيره وشره. وهو اعتقاد بالقلب وقول باللسان وعمل بالأركان.</p>",
+        taqwa: "<h2>مفهوم التقوى</h2><p>التقوى هي الخوف من الجليل، والعمل بالتنزيل، والقناعة بالقليل، والاستعداد ليوم الرحيل. وهي أن تجعل بينك وبين عذاب الله وقاية.</p>"
+    };
+
+    function showStory(key) {
+        document.getElementById('full-view').style.display = 'block';
+        document.getElementById('full-content').innerHTML = libraryData[key];
+    }
+
+    function showHadith() {
+        const h = ["قال ﷺ: إنما الأعمال بالنيات", "قال ﷺ: خيركم من تعلم القرآن وعلمه", "قال ﷺ: اتق الله حيثما كنت"];
+        document.getElementById('full-view').style.display = 'block';
+        document.getElementById('full-content').innerHTML = "<h2>أحاديث نبوية</h2>" + h.map(i => `<div class='card'>${i}</div>`).join('');
+    }
+
+    function showAzkar(type) {
+        const az = type === 'morning' ? ["أصبحنا وأصبح الملك لله", "يا حي يا قيوم برحمتك أستغيث"] : ["أمسين وأمسى الملك لله", "اللهم بك أمسينا وبك أصبحنا"];
+        document.getElementById('full-view').style.display = 'block';
+        document.getElementById('full-content').innerHTML = `<h2>أذكار ${type==='morning'?'الصباح':'المساء'}</h2>` + az.map(i => `<div class='card' onclick='this.style.opacity=0.5'>${i} (اضغط عند الانتهاء)</div>`).join('');
     }
 
     function startVoiceSearch() {
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.lang = 'ar-SA';
-        const mic = document.getElementById('micIcon');
-        mic.style.background = "#4cae4c"; mic.innerText = "⏳";
-
-        recognition.onresult = (e) => {
-            let word = e.results[0][0].transcript.replace("سورة", "").trim();
-            mic.style.background = "#d9534f"; mic.innerText = "🎙️";
-            let idx = suras.findIndex(s => s.includes(word));
-            if(idx !== -1) { playAudio(idx+1, suras[idx]); openContent(idx+1, suras[idx]); }
-            else { alert("لم أتعرف على السورة: " + word); }
+        const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        rec.lang = 'ar-SA';
+        rec.onresult = (e) => {
+            let w = e.results[0][0].transcript.replace("سورة","").trim();
+            let idx = suras.findIndex(s => s.includes(w));
+            if(idx !== -1) { openQ(idx+1, suras[idx]); playQ(idx+1, suras[idx]); }
+            else alert("لم أفهم اسم السورة: " + w);
         };
-        recognition.onerror = () => { mic.style.background = "#d9534f"; mic.innerText = "🎙️"; };
-        recognition.start();
+        rec.start();
     }
 </script>
-
 </body>
 </html>
