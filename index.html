@@ -1,121 +1,41 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>مصحف وليد PRO - الملكوت</title>
-<style>
-    :root { --gold: #c9a063; --light-gold: #fff8e1; --text-glow: 0 0 10px rgba(201, 160, 99, 0.7); }
-    body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Amiri', serif; background-color: #000; color: white; }
-    
-    /* خلفية الكون والكابينة */
-    .bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('space.jpg'); background-size: cover; background-position: center; z-index: -2; }
-    
-    /* طبقة النجوم المتحركة */
-    .stars { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; z-index: -1; animation: twinkle 5s infinite; }
-    @keyframes twinkle { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مصحف وليد PRO - الملكوت</title>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; }
+        
+        /* الخلفية */
+        .bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('space.jpg') no-repeat center center/cover; z-index: -1; }
 
-    /* المصحف الثري دي الذهبي (الذي يميل) */
-    .quran-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotateX(20deg) rotateY(10deg); width: 80%; max-width: 400px; z-index: 10; transition: transform 0.1s ease-out; perspective: 1000px; }
-    .quran-3d { width: 100%; height: auto; display: block; filter: drop-shadow(0 0 20px rgba(201, 160, 99, 0.5)); }
+        /* المصحف الـ 3D الذهبي اللي بيلف */
+        .quran-3d {
+            width: 200px; height: 250px;
+            background: linear-gradient(135deg, #d4af37, #f1e05a, #d4af37);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.9);
+            display: flex; justify-content: center; align-items: center;
+            color: #000; font-weight: bold; font-size: 1.2rem;
+            transform-style: preserve-3d;
+            animation: rotateQuran 10s infinite linear;
+            border: 2px solid #fff;
+        }
 
-    /* صفحات النور والآيات الذهبية */
-    .ayah-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70%; text-align: center; font-size: 1.5rem; color: var(--light-gold); text-shadow: var(--text-glow); z-index: 20; animation: fadeAyah 2s infinite; }
-    @keyframes fadeAyah { 0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.95); } 20%, 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
-
-    /* مشغل الصوت الذكي */
-    .audio-player { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 350px; background: rgba(0, 0, 0, 0.7); border: 1px solid var(--gold); border-radius: 20px; padding: 10px; z-index: 30; backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: space-between; }
-    .audio-btn { background: var(--gold); border: none; color: black; padding: 10px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; transition: transform 0.2s; }
-    .audio-btn:active { transform: scale(0.9); }
-    .audio-btn.tafsir { background: transparent; color: var(--gold); border: 1px solid var(--gold); font-size: 0.9rem; border-radius: 10px; padding: 8px 15px; }
-
-    /* زرار القصة (Story Mode) */
-    .story-btn { position: fixed; top: 20px; right: 20px; background: rgba(201, 160, 99, 0.2); color: var(--gold); border: 1px solid var(--gold); border-radius: 10px; padding: 8px 15px; font-size: 0.9rem; cursor: pointer; z-index: 30; backdrop-filter: blur(2px); }
-
-</style>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&display=swap" rel="stylesheet">
+        @keyframes rotateQuran {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+    </style>
 </head>
 <body>
 
-<div class="bg-container"></div>
-<div class="stars"></div>
+    <div class="bg"></div>
 
-<div class="quran-container" id="quran-3d-container">
-    <img src="quran_3d.png" alt="مصحف 3D" class="quran-3d">
-    <div class="ayah-text" id="ayah-text">جاري تحميل الآيات النورانية...</div>
-</div>
+    <div class="quran-3d">
+        المصحف الشريف
+    </div>
 
-<button class="story-btn">ابدأ رحلة التدبر القصصية</button>
-
-<div class="audio-player">
-    <button class="audio-btn" id="play-pause-btn">▶</button>
-    <button class="audio-btn tafsir" id="tafsir-btn">تفسير العدوي</button>
-    <audio id="main-audio" src="https://download.quranicaudio.com/quran/maher_almuaiqly/067.mp3"></audio>
-</div>
-
-<script>
-    // --- النجوم المتحركة ---
-    function createStars() {
-        const starsContainer = document.querySelector('.stars');
-        for (let i = 0; i < 50; i++) {
-            const star = document.createElement('div');
-            star.style.position = 'absolute';
-            star.style.width = '2px';
-            star.style.height = '2px';
-            star.style.background = '#fff';
-            star.style.borderRadius = '50%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.animationDelay = Math.random() * 5 + 's';
-            starsContainer.appendChild(star);
-        }
-    }
-    createStars();
-
-    // --- المصحف الثري دي الذي يميل مع الموبايل (الجيروسكوب) ---
-    const quranContainer = document.getElementById('quran-3d-container');
-    if (window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', (event) => {
-            // تحويل حركة الموبايل (gamma و beta) لميل المصحف
-            const tiltX = event.beta / 5; // ميل للأمام والخلف
-            const tiltY = -event.gamma / 5; // ميل لليمين والشمال
-            quranContainer.style.transform = `translate(-50%, -50%) rotateX(${20 + tiltX}deg) rotateY(${10 + tiltY}deg)`;
-        });
-    }
-
-    // --- الآيات النورانية ---
-    const ayahs = [
-        "تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ ﴿1﴾",
-        "الَّذِي خَلَقَ الْمَوْتَ وَالحَيَاةَ لِيَبْلُوَكُمْ أَيُّكُمْ أَحْسَنُ عَمَلًا ۚ وَهُوَ الْعَزِيزُ الْغَفُورُ ﴿2﴾",
-        "الَّذِي خَلَقَ سَبْعَ سَمَاوَاتٍ طِبَاقًا ۖ مَا تَرَىٰ فِي خَلْقِ الرَّحْمَٰنِ مِن تَفَاوُتٍ ۖ فَارْجِعِ الْبَصَرَ هَلْ تَرَىٰ مِن فُطُورٍ ﴿3﴾"
-    ];
-    let ayahIndex = 0;
-    const ayahText = document.getElementById('ayah-text');
-    setInterval(() => {
-        ayahText.textContent = ayahs[ayahIndex];
-        ayahIndex = (ayahIndex + 1) % ayahs.length;
-    }, 4000); // تغيير الآية كل 4 ثواني
-
-    // --- مشغل الصوت ---
-    const audio = document.getElementById('main-audio');
-    const playPauseBtn = document.getElementById('play-pause-btn');
-    playPauseBtn.addEventListener('click', () => {
-        if (audio.paused) {
-            audio.play();
-            playPauseBtn.textContent = '||';
-        } else {
-            audio.pause();
-            playPauseBtn.textContent = '▶';
-        }
-    });
-
-    // --- تفسير العدوي (جاري البحث عن روابط مباشرة) ---
-    document.getElementById('tafsir-btn').addEventListener('click', () => {
-        alert("يا وليد، جاري تجهيز تفسير سورة الملك بصوت الشيخ مصطفى العدوي. هذه الميزة ستكون متاحة قريباً!");
-    });
-
-</script>
 </body>
 </html>
